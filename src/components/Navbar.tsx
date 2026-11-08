@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useRef } from 'react';
+import Link from 'next/link';
 import {
   ShieldCheck,
   Stethoscope,
@@ -19,6 +20,7 @@ import {
   Database,
   Building,
   PlusCircle,
+  Globe,
 } from 'lucide-react';
 import { ClinicTenant, UserProfile } from '@/lib/types';
 import { CURRENT_CLINIC, CURRENT_USER } from '@/lib/mockData';
@@ -117,6 +119,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>{clinic?.planName || 'Plano Pro'} ({clinic?.trialDaysLeft || 14}d)</span>
               </button>
             )}
+
+            <Link
+              href="/lp"
+              target="_blank"
+              className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-medium transition"
+              title="Visualizar a Landing Page pública de divulgação do OdontoShield"
+            >
+              <Globe className="w-3.5 h-3.5 text-cyan-400" />
+              <span>Ver LP</span>
+            </Link>
 
             {onOpenNewTenant && (
               <button

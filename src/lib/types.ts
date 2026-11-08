@@ -28,6 +28,11 @@ export interface UserProfile {
   roleName: string;
   croNumber?: string;
   croState?: string;
+  councilNumber?: string;
+  councilState?: string;
+  cpf?: string;
+  phone?: string;
+  pin?: string;
 }
 
 export interface TeamMember {
@@ -40,6 +45,7 @@ export interface TeamMember {
   councilNumber?: string;
   councilState?: string;
   cpf: string;
+  pin?: string;
   active: boolean;
   joinedAt: string;
   lastActive?: string;

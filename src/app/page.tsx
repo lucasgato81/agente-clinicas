@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ShieldCheck,
   Sparkles,
@@ -58,6 +58,7 @@ import { EquipmentModal } from '@/components/EquipmentModal';
 import { PatientSafetyCenter } from '@/components/PatientSafetyCenter';
 import { TraceabilityModule } from '@/components/TraceabilityModule';
 import { PopsModule } from '@/components/PopsModule';
+import { LoginModal } from '@/components/LoginModal';
 import {
   CURRENT_CLINIC,
   CURRENT_USER,
@@ -130,6 +131,64 @@ export default function HomePage() {
   const [selectedKitForCme, setSelectedKitForCme] = useState<InstrumentKitTemplate | undefined>(undefined);
   const [finalizingBatch, setFinalizingBatch] = useState<CmeBatchItem | null>(null);
   const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+
+  // Sincronização em tempo real (PostgreSQL / Nuvem Render) e Restauração de Sessão
+  useEffect(() => {
+    // 1. Restaurar sessão salva do usuário
+    try {
+      const savedUser = localStorage.getItem('odontoshield_auth_user');
+      if (savedUser) {
+        setCurrentUser(JSON.parse(savedUser));
+      }
+    } catch (e) {
+      console.warn('Erro ao restaurar sessão local:', e);
+    }
+
+    // 2. Sincronizar dados entre celulares e computadores
+    const syncCloudData = async () => {
+      try {
+        const res = await fetch('/api/sync');
+        if (res.ok) {
+          const data = await res.json();
+          if (data.batches && data.batches.length > 0) {
+            setBatches(data.batches);
+          }
+          if (data.packages && data.packages.length > 0) {
+            setPackages(data.packages);
+          }
+          if (data.incidents && data.incidents.length > 0) {
+            setIncidents(data.incidents);
+          }
+        }
+      } catch {
+        // Fallback silencioso caso offline
+      }
+    };
+
+    syncCloudData();
+    const interval = setInterval(syncCloudData, 6000); // Polling a cada 6s
+    return () => clearInterval(interval);
+  }, []);
+
+  // Dispara ação para o backend / banco de dados na nuvem
+  const postSyncAction = (type: string, payload: unknown) => {
+    fetch('/api/sync', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, payload }),
+    }).catch((err) => console.warn('[SYNC ERROR]', err));
+  };
+
+  const handleLoginSuccess = (user: UserProfile) => {
+    setCurrentUser(user);
+    try {
+      localStorage.setItem('odontoshield_auth_user', JSON.stringify(user));
+    } catch (e) {
+      console.warn(e);
+    }
+    setIsLoginModalOpen(false);
+  };
 
   // Lightbox de Evidência Fotográfica
   const [lightboxData, setLightboxData] = useState<{
@@ -180,21 +239,9 @@ export default function HomePage() {
     }
   };
 
-  // Alternar Usuário Ativo de Teste (RT vs ASB)
+  // Alternar Usuário Ativo de Teste (Abre Modal de Login com PIN / Senha)
   const handleSwitchUser = () => {
-    if (currentUser.role === 'DENTAL_ASSISTANT') {
-      setCurrentUser({
-        id: 'user-rt-01',
-        name: clinic.technicalResponsibleName || 'Dr. Rodrigo Mendes',
-        email: clinic.technicalResponsibleEmail || 'rt@odontoinova.com.br',
-        role: 'TECHNICAL_RESPONSIBLE',
-        roleName: 'Responsável Técnico (RT)',
-        croNumber: clinic.technicalResponsibleCro || '102.450',
-        croState: clinic.technicalResponsibleCroState || 'SP',
-      });
-    } else {
-      setCurrentUser(CURRENT_USER);
-    }
+    setIsLoginModalOpen(true);
   };
 
   // Salvar Dados da Clínica
@@ -206,6 +253,17 @@ export default function HomePage() {
 
   // Ações de Negócio
   const handlePackageConsumed = (pkgId: string, patientName: string, dentistName: string) => {
+    const targetPkg = packages.find((p) => p.id === pkgId);
+    const usedAt = new Date().toISOString().replace('T', ' ').slice(0, 16);
+    if (targetPkg) {
+      postSyncAction('USE_PACKAGE', {
+        qrCodeToken: targetPkg.qrCodeToken,
+        patientName,
+        dentistName,
+        usedAt,
+      });
+    }
+
     setPackages((prev) =>
       prev.map((p) => {
         if (p.id === pkgId) {
@@ -214,7 +272,7 @@ export default function HomePage() {
             status: 'USED',
             patientName,
             dentistName,
-            usedAt: new Date().toISOString().replace('T', ' ').slice(0, 16),
+            usedAt,
           };
         }
         return p;
@@ -225,6 +283,7 @@ export default function HomePage() {
   const handleCycleCreated = (newBatch: CmeBatchItem, newPackages: SterilePackageItem[]) => {
     setBatches((prev) => [newBatch, ...prev]);
     setPackages((prev) => [...newPackages, ...prev]);
+    postSyncAction('NEW_BATCH', newBatch);
   };
 
   const handleFinalizeBatch = (
@@ -239,6 +298,23 @@ export default function HomePage() {
     bioPhotoUrl?: string
   ) => {
     const targetBatch = batches.find((b) => b.id === batchId);
+    const finishedAt = new Date().toISOString().replace('T', ' ').slice(0, 16);
+
+    if (targetBatch) {
+      postSyncAction('NEW_BATCH', {
+        ...targetBatch,
+        status: isApproved ? 'APPROVED' : 'REJECTED',
+        finishedAt,
+        temperatureC,
+        pressureBar,
+        cycleTimeMin,
+        physicalOk: isApproved,
+        chemicalClass5Ok,
+        chemicalPhotoUrl,
+        hasBiological: hasBiological || false,
+        bioPhotoUrl,
+      });
+    }
 
     setBatches((prev) =>
       prev.map((b) => {
@@ -246,7 +322,7 @@ export default function HomePage() {
           return {
             ...b,
             status: isApproved ? 'APPROVED' : 'REJECTED',
-            finishedAt: new Date().toISOString().replace('T', ' ').slice(0, 16),
+            finishedAt,
             temperatureC,
             pressureBar,
             cycleTimeMin,
@@ -349,6 +425,8 @@ export default function HomePage() {
 
   // Salvar Assinatura Touch no POP
   const handleSignatureSaved = (popId: string, record: PopSignatureRecord) => {
+    postSyncAction('SIGN_POP', { popId, record });
+
     setPops((prev) =>
       prev.map((p) => {
         if (p.id === popId) {
@@ -390,6 +468,8 @@ export default function HomePage() {
 
   // Salvar Evidência Fotográfica no POP
   const handleSavePhotoEvidence = (popId: string, evidence: PhotoEvidenceRecord) => {
+    postSyncAction('SAVE_PHOTO_PROOF', { popId, evidence });
+
     setPops((prev) =>
       prev.map((p) => {
         if (p.id === popId) {
@@ -1681,6 +1761,17 @@ export default function HomePage() {
             setIsEquipmentModalOpen(false);
             setEditingEquipment(null);
           }}
+        />
+      )}
+
+      {isLoginModalOpen && (
+        <LoginModal
+          teamMembers={teamMembers.length > 0 ? teamMembers : MOCK_TEAM_MEMBERS}
+          currentUser={currentUser}
+          isOpen={isLoginModalOpen}
+          onClose={() => setIsLoginModalOpen(false)}
+          onLoginSuccess={handleLoginSuccess}
+          allowClose={true}
         />
       )}
     </div>

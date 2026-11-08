@@ -3,7 +3,19 @@
 import React, { useEffect, useState } from 'react';
 import QRCode from 'qrcode';
 import { SterilePackageItem } from '@/lib/types';
-import { X, Printer, QrCode as QrIcon, CheckCircle2, PenTool, Grid, Copy, Check } from 'lucide-react';
+import {
+  X,
+  Printer,
+  QrCode as QrIcon,
+  CheckCircle2,
+  PenTool,
+  Grid,
+  Copy,
+  Check,
+  ExternalLink,
+  ShieldCheck,
+  Tag,
+} from 'lucide-react';
 import { PimacoSheetModal } from './PimacoSheetModal';
 
 interface CmeLabelModalProps {
@@ -13,8 +25,10 @@ interface CmeLabelModalProps {
 
 export const CmeLabelModal: React.FC<CmeLabelModalProps> = ({ pkg, onClose }) => {
   const [qrDataUrl, setQrDataUrl] = useState<string>('');
-  const [format, setFormat] = useState<'short_code' | 'thermal' | 'pimaco'>('short_code');
-  const [copied, setCopied] = useState<boolean>(false);
+  const [format, setFormat] = useState<'thermal' | 'short_code' | 'pimaco'>('thermal');
+  const [thermalSize, setThermalSize] = useState<'50x30' | '40x25'>('50x30');
+  const [copiedCode, setCopiedCode] = useState<boolean>(false);
+  const [copiedLink, setCopiedLink] = useState<boolean>(false);
   const [isPimacoOpen, setIsPimacoOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -25,13 +39,23 @@ export const CmeLabelModal: React.FC<CmeLabelModalProps> = ({ pkg, onClose }) =>
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onClose]);
 
+  const getPublicUrl = () => {
+    if (!pkg) return '';
+    const origin =
+      typeof window !== 'undefined'
+        ? window.location.origin
+        : 'https://agente-clinicas.onrender.com';
+    return `${origin}/rastrear?token=${encodeURIComponent(pkg.qrCodeToken)}`;
+  };
+
   useEffect(() => {
     if (pkg) {
-      QRCode.toDataURL(pkg.qrCodeToken, {
-        width: 180,
+      const publicUrl = getPublicUrl();
+      QRCode.toDataURL(publicUrl, {
+        width: 200,
         margin: 1,
         color: {
-          dark: '#0f172a',
+          dark: '#000000',
           light: '#ffffff',
         },
       }).then((url) => setQrDataUrl(url));
@@ -46,189 +70,263 @@ export const CmeLabelModal: React.FC<CmeLabelModalProps> = ({ pkg, onClose }) =>
 
   const handleCopyShortCode = () => {
     navigator.clipboard.writeText(pkg.shortCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    setCopiedCode(true);
+    setTimeout(() => setCopiedCode(false), 2000);
+  };
+
+  const handleCopyPublicLink = () => {
+    navigator.clipboard.writeText(getPublicUrl());
+    setCopiedLink(true);
+    setTimeout(() => setCopiedLink(false), 2000);
   };
 
   return (
     <>
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-3 md:p-4 overflow-y-auto"
         onClick={onClose}
       >
         <div
-          className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-150 max-h-[92vh] flex flex-col my-auto"
+          className="bg-slate-900 border border-slate-800 rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-150 max-h-[95vh] flex flex-col my-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Cabeçalho */}
           <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90 shrink-0">
-            <div className="flex items-center space-x-2">
-              <QrIcon className="w-5 h-5 text-cyan-400" />
+            <div className="flex items-center space-x-2.5">
+              <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-md shadow-cyan-950/50">
+                <Tag className="w-4 h-4" />
+              </div>
               <div>
-                <h3 className="font-semibold text-slate-100 text-sm">Identificação & Rastreabilidade do Pacote</h3>
-                <p className="text-[11px] text-slate-400">{pkg.description.slice(0, 36)}...</p>
+                <h3 className="font-bold text-slate-100 text-sm flex items-center space-x-1.5">
+                  <span>Etiqueta CME com QR Code</span>
+                  <span className="text-[10px] bg-cyan-950 text-cyan-300 border border-cyan-800 px-1.5 py-0.2 rounded font-mono">
+                    RDC 1002
+                  </span>
+                </h3>
+                <p className="text-[11px] text-slate-400 truncate max-w-xs">{pkg.description}</p>
               </div>
             </div>
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-slate-200 p-1 rounded-lg hover:bg-slate-800 transition"
+              className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition"
+              title="Fechar"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {/* Conteúdo */}
-          <div className="p-6 space-y-5 overflow-y-auto flex-1">
-            {/* Seletor de Modalidade (Zero Custo vs Térmica vs Folha A4) */}
-            <div className="flex space-x-1.5 bg-slate-950 p-1 rounded-xl text-xs border border-slate-800">
+          <div className="p-5 md:p-6 space-y-4 overflow-y-auto flex-1">
+            {/* Seletor de Modalidade (Térmica vs Manual vs Folha Pimaco) */}
+            <div className="flex space-x-1 bg-slate-950 p-1 rounded-2xl text-xs border border-slate-800">
               <button
-                onClick={() => setFormat('short_code')}
-                className={`flex-1 py-2 font-medium rounded-lg transition flex items-center justify-center space-x-1 ${
-                  format === 'short_code'
-                    ? 'bg-cyan-500 text-slate-950 font-bold shadow'
-                    : 'text-slate-400 hover:text-slate-200'
-                }`}
-              >
-                <PenTool className="w-3.5 h-3.5" />
-                <span>Código Curto (Caneta)</span>
-              </button>
-
-              <button
+                type="button"
                 onClick={() => setFormat('thermal')}
-                className={`flex-1 py-2 font-medium rounded-lg transition flex items-center justify-center space-x-1 ${
+                className={`flex-1 py-2 font-bold rounded-xl transition flex items-center justify-center space-x-1.5 ${
                   format === 'thermal'
-                    ? 'bg-cyan-500 text-slate-950 font-bold shadow'
+                    ? 'bg-cyan-500 text-slate-950 shadow-md'
                     : 'text-slate-400 hover:text-slate-200'
                 }`}
               >
                 <Printer className="w-3.5 h-3.5" />
-                <span>Térmica (50x30)</span>
+                <span>Impressora Térmica</span>
               </button>
 
               <button
+                type="button"
+                onClick={() => setFormat('short_code')}
+                className={`flex-1 py-2 font-medium rounded-xl transition flex items-center justify-center space-x-1.5 ${
+                  format === 'short_code'
+                    ? 'bg-cyan-500 text-slate-950 font-bold shadow-md'
+                    : 'text-slate-400 hover:text-slate-200'
+                }`}
+              >
+                <PenTool className="w-3.5 h-3.5" />
+                <span>Caneta / Manual</span>
+              </button>
+
+              <button
+                type="button"
                 onClick={() => setIsPimacoOpen(true)}
-                className="flex-1 py-2 font-medium rounded-lg transition flex items-center justify-center space-x-1 text-slate-400 hover:text-cyan-300 hover:bg-slate-900"
+                className="flex-1 py-2 font-medium rounded-xl transition flex items-center justify-center space-x-1.5 text-slate-400 hover:text-cyan-300 hover:bg-slate-900"
               >
                 <Grid className="w-3.5 h-3.5" />
                 <span>Folha Pimaco A4</span>
               </button>
             </div>
 
-            {/* Visualização: Opção 1 - Código Curto (Zero Custo de Hardware) */}
-            {format === 'short_code' && (
-              <div className="space-y-4">
-                <div className="bg-gradient-to-br from-slate-950 to-slate-900 border-2 border-cyan-500/50 rounded-2xl p-6 text-center space-y-3 relative overflow-hidden">
-                  <div className="absolute top-2 right-2">
-                    <button
-                      onClick={handleCopyShortCode}
-                      className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[10px] flex items-center space-x-1 transition"
-                    >
-                      {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
-                      <span>{copied ? 'Copiado!' : 'Copiar'}</span>
-                    </button>
-                  </div>
-
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-cyan-400 block">
-                    IDENTIFICADOR COMPACTO MANUAL
-                  </span>
-
-                  <div className="font-mono text-4xl sm:text-5xl font-black text-white tracking-widest py-2 bg-slate-950 rounded-xl border border-slate-800 shadow-inner">
-                    {pkg.shortCode}
-                  </div>
-
-                  <div className="text-xs text-slate-300 space-y-1">
-                    <p className="font-semibold text-slate-200">{pkg.description}</p>
-                    <div className="flex justify-center space-x-4 text-[11px] text-slate-400 pt-1">
-                      <span>Lote: <strong>{pkg.batchCode}</strong></span>
-                      <span>Validade: <strong className="text-red-400">{pkg.expiresAt}</strong></span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-slate-950/70 rounded-xl p-3 border border-slate-800 text-xs text-slate-300 space-y-1.5">
-                  <div className="flex items-center space-x-1.5 text-cyan-400 font-semibold">
-                    <PenTool className="w-4 h-4" />
-                    <span>Instrução para a ASB (Zero Custo de Impressora)</span>
-                  </div>
-                  <p className="text-[11px] text-slate-400 leading-relaxed">
-                    Escreva o código acima <strong>{pkg.shortCode}</strong> e a data de validade <strong>{pkg.expiresAt}</strong> com caneta permanente atóxica diretamente sobre a área plástica externa do grau cirúrgico. O dentista poderá digitar este código diretamente no prontuário para manter a rastreabilidade RDC 1002.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Visualização: Opção 2 - Etiqueta Térmica 50x30mm */}
+            {/* Visualização: Opção Térmica */}
             {format === 'thermal' && (
               <div className="space-y-4">
-                <div className="flex justify-center">
+                {/* Tamanho da Etiqueta */}
+                <div className="flex items-center justify-between text-xs px-1">
+                  <span className="text-slate-400 font-medium">Tamanho da Bobina Térmica:</span>
+                  <div className="flex space-x-1 bg-slate-950 p-0.5 rounded-lg border border-slate-800">
+                    <button
+                      type="button"
+                      onClick={() => setThermalSize('50x30')}
+                      className={`px-2.5 py-1 rounded text-[11px] font-semibold transition ${
+                        thermalSize === '50x30'
+                          ? 'bg-cyan-950 text-cyan-300 border border-cyan-800'
+                          : 'text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      50 x 30 mm (Padrão Odonto)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setThermalSize('40x25')}
+                      className={`px-2.5 py-1 rounded text-[11px] font-semibold transition ${
+                        thermalSize === '40x25'
+                          ? 'bg-cyan-950 text-cyan-300 border border-cyan-800'
+                          : 'text-slate-400 hover:text-slate-200'
+                      }`}
+                    >
+                      40 x 25 mm (Compacto)
+                    </button>
+                  </div>
+                </div>
+
+                {/* Preview Fiel da Etiqueta Térmica */}
+                <div className="flex justify-center py-2">
                   <div
                     id="printable-label"
-                    className="bg-white text-slate-900 border border-slate-300 rounded-lg p-3 w-[270px] shadow-lg flex flex-col justify-between"
-                    style={{ minHeight: '160px' }}
+                    className={`bg-white text-slate-950 border border-slate-400 rounded-lg p-2.5 shadow-2xl flex flex-col justify-between transition-all ${
+                      thermalSize === '50x30' ? 'w-[280px] h-[170px]' : 'w-[240px] h-[150px]'
+                    }`}
                   >
-                    <div className="border-b border-slate-300 pb-1.5 mb-1.5 flex justify-between items-start">
+                    {/* Linha 1: Clínica / RDC / Criticidade */}
+                    <div className="border-b border-black pb-1 flex justify-between items-start">
                       <div>
-                        <div className="text-[10px] font-black uppercase tracking-wider text-slate-900">
+                        <div className="text-[10px] font-black uppercase tracking-wider text-black leading-none">
                           ODONTOSHIELD CME
                         </div>
-                        <div className="text-[9px] font-bold text-cyan-800 flex items-center space-x-1">
-                          <span>{pkg.shortCode}</span>
-                          <span className="text-slate-500 font-normal">({pkg.batchCode})</span>
+                        <div className="text-[8px] font-mono text-slate-700 font-semibold mt-0.5">
+                          Lote: {pkg.batchCode} • {pkg.shortCode}
                         </div>
                       </div>
-                      <span className="text-[8px] bg-slate-200 font-bold px-1 py-0.5 rounded text-slate-800">
-                        {pkg.criticality === 'CRITICAL' ? 'CRÍTICO' : 'SEMICRÍTICO'}
+                      <span className="text-[7px] bg-black text-white font-black px-1.5 py-0.5 rounded uppercase">
+                        {pkg.criticality === 'CRITICAL' ? 'Artigo Crítico' : 'Semicrítico'}
                       </span>
                     </div>
 
-                    <div className="flex items-center space-x-2">
-                      {qrDataUrl && (
+                    {/* Linha 2: QR Code e Dados do Pacote */}
+                    <div className="flex items-center space-x-2 py-1">
+                      {qrDataUrl ? (
                         <img
                           src={qrDataUrl}
-                          alt="QR Code Lote"
-                          className="w-16 h-16 border border-slate-200 rounded shrink-0"
+                          alt="QR Code Rastreabilidade"
+                          className={`${
+                            thermalSize === '50x30' ? 'w-16 h-16' : 'w-13 h-13'
+                          } border border-slate-300 rounded shrink-0`}
                         />
+                      ) : (
+                        <div className="w-16 h-16 bg-slate-200 rounded animate-pulse" />
                       )}
                       <div className="text-[9px] space-y-0.5 leading-tight flex-1">
-                        <p className="font-bold text-slate-900 line-clamp-2">{pkg.description}</p>
-                        <p className="text-slate-600">Emb: {pkg.packagedAt.slice(0, 10)}</p>
-                        <p className="font-extrabold text-red-700">VAL: {pkg.expiresAt}</p>
+                        <p className="font-extrabold text-black line-clamp-2">{pkg.description}</p>
+                        <p className="text-[8px] text-slate-700">Emb: {pkg.packagedAt.slice(0, 10)}</p>
+                        <p className="font-black text-red-700 text-[10px]">VAL: {pkg.expiresAt}</p>
                       </div>
                     </div>
 
-                    <div className="border-t border-slate-200 pt-1 mt-1.5 text-[7px] text-slate-500 flex justify-between font-mono">
+                    {/* Linha 3: Rodapé Legal */}
+                    <div className="border-t border-black pt-1 text-[7px] text-black flex justify-between font-mono font-semibold">
                       <span>RDC 1002/2025</span>
                       <span>{pkg.qrCodeToken}</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex justify-center">
+                {/* Botões de Ação de Impressão */}
+                <div className="flex flex-col sm:flex-row gap-2 justify-center pt-1">
                   <button
+                    type="button"
                     onClick={handlePrint}
-                    className="flex items-center space-x-1.5 px-4 py-2 text-xs font-semibold bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-lg shadow-md transition"
+                    className="flex items-center justify-center space-x-2 px-5 py-2.5 text-xs font-bold bg-cyan-500 hover:bg-cyan-400 text-slate-950 rounded-xl shadow-lg shadow-cyan-950/50 transition active:scale-98"
                   >
                     <Printer className="w-4 h-4" />
-                    <span>Disparar Impressão Térmica</span>
+                    <span>Imprimir na Térmica (Argox/Zebra/Elgin)</span>
                   </button>
+
+                  <button
+                    type="button"
+                    onClick={handleCopyPublicLink}
+                    className="flex items-center justify-center space-x-1.5 px-3 py-2 text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl transition"
+                    title="Copia o link público de verificação sanitária"
+                  >
+                    {copiedLink ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedLink ? 'Link Copiado!' : 'Copiar Link Público'}</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* Visualização: Opção Código Curto Manual (Zero Custo) */}
+            {format === 'short_code' && (
+              <div className="space-y-4">
+                <div className="bg-gradient-to-br from-slate-950 to-slate-900 border-2 border-cyan-500/50 rounded-2xl p-6 text-center space-y-3 relative overflow-hidden">
+                  <div className="absolute top-3 right-3">
+                    <button
+                      type="button"
+                      onClick={handleCopyShortCode}
+                      className="p-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-[10px] flex items-center space-x-1 transition"
+                    >
+                      {copiedCode ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                      <span>{copiedCode ? 'Copiado!' : 'Copiar'}</span>
+                    </button>
+                  </div>
+
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-cyan-400 block">
+                    CÓDIGO CURTO MANUAL (CANETA EM GRAU CIRÚRGICO)
+                  </span>
+
+                  <div className="font-mono text-4xl sm:text-5xl font-black text-white tracking-widest py-3 bg-slate-950 rounded-2xl border border-slate-800 shadow-inner">
+                    {pkg.shortCode}
+                  </div>
+
+                  <div className="text-xs text-slate-300 space-y-1">
+                    <p className="font-bold text-slate-100">{pkg.description}</p>
+                    <div className="flex justify-center space-x-4 text-[11px] text-slate-400 pt-1">
+                      <span>
+                        Lote: <strong>{pkg.batchCode}</strong>
+                      </span>
+                      <span>
+                        Validade: <strong className="text-red-400">{pkg.expiresAt}</strong>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-slate-950/70 rounded-2xl p-3.5 border border-slate-800 text-xs text-slate-300 space-y-1.5">
+                  <div className="flex items-center space-x-1.5 text-cyan-400 font-semibold">
+                    <PenTool className="w-4 h-4" />
+                    <span>Instrução para a ASB / TSB (Zero Custo de Equipamento):</span>
+                  </div>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    Escreva o código <strong>{pkg.shortCode}</strong> e a data de validade <strong>{pkg.expiresAt}</strong> com caneta permanente atóxica diretamente sobre a área plástica externa do grau cirúrgico. No atendimento, o dentista pode apenas digitar este código no leitor em 2 segundos.
+                  </p>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Rodapé com Ações */}
-          <div className="px-6 py-4 border-t border-slate-800 bg-slate-900/90 flex items-center justify-between shrink-0">
-            <button
-              onClick={() => setIsPimacoOpen(true)}
-              className="text-xs text-cyan-400 hover:text-cyan-300 font-medium flex items-center space-x-1"
+          {/* Rodapé com Link do Passaporte Público */}
+          <div className="px-6 py-3.5 border-t border-slate-800 bg-slate-950/90 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-2 shrink-0">
+            <a
+              href={getPublicUrl()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-cyan-400 hover:text-cyan-300 flex items-center space-x-1.5"
             >
-              <Grid className="w-3.5 h-3.5" />
-              <span>Abrir Template A4 (30 Etiquetas Pimaco)</span>
-            </button>
+              <ExternalLink className="w-3.5 h-3.5" />
+              <span>Ver Passaporte de Biossegurança Online</span>
+            </a>
 
             <button
+              type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition"
+              className="px-4 py-1.5 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 rounded-xl transition"
             >
               Fechar
             </button>
@@ -236,9 +334,7 @@ export const CmeLabelModal: React.FC<CmeLabelModalProps> = ({ pkg, onClose }) =>
         </div>
       </div>
 
-      {isPimacoOpen && (
-        <PimacoSheetModal pkg={pkg} onClose={() => setIsPimacoOpen(false)} />
-      )}
+      {isPimacoOpen && <PimacoSheetModal pkg={pkg} onClose={() => setIsPimacoOpen(false)} />}
     </>
   );
 };

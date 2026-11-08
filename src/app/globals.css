@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #090d16;
-  --foreground: #f8fafc;
+  --background: #F4F8F6;
+  --foreground: #0F172A;
+  --sage-border: #E2ECE6;
+  --sage-primary: #0D9488;
+  --sage-dark: #134E4A;
 }
 
 body {
@@ -12,27 +15,27 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Barra de rolagem horizontal visível apenas para computadores/desktop */
+/* Barra de rolagem horizontal visível para computadores (Tema Grau Cirúrgico) */
 @media (min-width: 768px) {
   .desktop-horizontal-scrollbar {
     scrollbar-width: thin;
-    scrollbar-color: #06b6d4 rgba(15, 23, 42, 0.9);
+    scrollbar-color: #0D9488 #E2ECE6;
   }
   .desktop-horizontal-scrollbar::-webkit-scrollbar {
-    height: 7px;
+    height: 6px;
     display: block !important;
   }
   .desktop-horizontal-scrollbar::-webkit-scrollbar-track {
-    background: #0f172a;
+    background: #E2ECE6;
     border-radius: 9999px;
   }
   .desktop-horizontal-scrollbar::-webkit-scrollbar-thumb {
-    background: #06b6d4;
+    background: #0D9488;
     border-radius: 9999px;
-    border: 1px solid #0891b2;
+    border: 1px solid #0F766E;
   }
   .desktop-horizontal-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #22d3ee;
+    background: #059669;
   }
 }
 

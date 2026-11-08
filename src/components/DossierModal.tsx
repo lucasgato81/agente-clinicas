@@ -53,10 +53,10 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="bg-white text-slate-900 border border-slate-200 rounded-3xl max-w-4xl w-full my-8 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto">
+      <div className="bg-white text-slate-900 border border-[#E2ECE6] rounded-3xl max-w-4xl w-full my-8 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         {/* Barra Superior / Ações */}
-        <div className="bg-slate-900 text-white px-6 py-3.5 flex items-center justify-between border-b border-slate-800 shrink-0">
+        <div className="bg-teal-900 text-white px-6 py-3.5 flex items-center justify-between border-b border-teal-800 shrink-0">
           <div className="flex items-center space-x-2">
             <ShieldCheck className="w-5 h-5 text-emerald-400" />
             <span className="font-semibold text-sm">Dossiê Sanitário Consolidado - RDC 1002/2025 Anvisa</span>
@@ -67,7 +67,7 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
                 type="button"
                 onClick={handleSignGovBr}
                 disabled={isSigning}
-                className="flex items-center space-x-1.5 px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-xs font-semibold shadow-sm transition disabled:opacity-50"
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-teal-600 hover:bg-teal-500 text-white rounded-lg text-xs font-semibold shadow-sm transition disabled:opacity-50"
               >
                 <FileBadge className="w-4 h-4" />
                 <span>{isSigning ? 'Assinando...' : 'Assinar com Gov.br'}</span>
@@ -83,7 +83,7 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
             </button>
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition"
+              className="text-teal-200 hover:text-white p-1 rounded-lg hover:bg-teal-800 transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -91,11 +91,11 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
         </div>
 
         {/* Conteúdo Imprimível do Dossiê */}
-        <div id="dossier-print-area" className="p-8 space-y-6 overflow-y-auto bg-slate-50 text-slate-800">
+        <div id="dossier-print-area" className="p-8 space-y-6 overflow-y-auto bg-[#F4F8F6] text-slate-800">
           {/* Cabeçalho Oficial */}
-          <div className="border-b-2 border-slate-900 pb-4 flex justify-between items-start">
+          <div className="border-b-2 border-slate-900 pb-4 flex justify-between items-start bg-white p-5 rounded-2xl border border-[#E2ECE6] shadow-xs">
             <div>
-              <div className="text-xs font-bold uppercase tracking-wider text-cyan-800 mb-0.5">
+              <div className="text-xs font-bold uppercase tracking-wider text-teal-800 mb-0.5">
                 RELATÓRIO TÉCNICO DE CONFORMIDADE REGULATÓRIA
               </div>
               <h1 className="text-xl font-black text-slate-900">{CURRENT_CLINIC.legalName}</h1>
@@ -125,22 +125,22 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
 
           {/* 1. Indicadores Chave de Prontidão Sanitária */}
           <div className="grid grid-cols-4 gap-3">
-            <div className="bg-white border border-slate-200 p-3.5 rounded-xl shadow-sm">
+            <div className="bg-white border border-[#E2ECE6] p-3.5 rounded-xl shadow-xs">
               <span className="text-[10px] text-slate-500 uppercase font-semibold">Índice de Conformidade</span>
               <div className="text-2xl font-black text-emerald-600 mt-0.5">100%</div>
               <span className="text-[10px] text-slate-500">RDC 1002/2025 Plena</span>
             </div>
-            <div className="bg-white border border-slate-200 p-3.5 rounded-xl shadow-sm">
+            <div className="bg-white border border-[#E2ECE6] p-3.5 rounded-xl shadow-xs">
               <span className="text-[10px] text-slate-500 uppercase font-semibold">Ciclos Esterilização</span>
               <div className="text-2xl font-black text-slate-900 mt-0.5">{MOCK_CME_BATCHES.length} Lotes</div>
               <span className="text-[10px] text-emerald-700 font-medium">Biológicos Aprovados</span>
             </div>
-            <div className="bg-white border border-slate-200 p-3.5 rounded-xl shadow-sm">
+            <div className="bg-white border border-[#E2ECE6] p-3.5 rounded-xl shadow-xs">
               <span className="text-[10px] text-slate-500 uppercase font-semibold">POPs Homologados</span>
               <div className="text-2xl font-black text-slate-900 mt-0.5">{MOCK_POPS.length}/8 POPs</div>
               <span className="text-[10px] text-emerald-700 font-medium">100% Equipe Ciente</span>
             </div>
-            <div className="bg-white border border-slate-200 p-3.5 rounded-xl shadow-sm">
+            <div className="bg-white border border-[#E2ECE6] p-3.5 rounded-xl shadow-xs">
               <span className="text-[10px] text-slate-500 uppercase font-semibold">Parque de Equipamentos</span>
               <div className="text-2xl font-black text-slate-900 mt-0.5">{MOCK_EQUIPMENTS.length} Ativos</div>
               <span className="text-[10px] text-emerald-700 font-medium">Manutenções em Dia</span>
@@ -148,13 +148,13 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
           </div>
 
           {/* 2. Histórico de Esterilização */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-3">
+          <div className="bg-white border border-[#E2ECE6] rounded-xl p-5 shadow-xs space-y-3">
             <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2 border-b border-slate-100 pb-2">
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
               <span>2. Monitoramento de Cargas da CME & Indicadores Biológicos</span>
             </h3>
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 text-slate-600 border-b border-slate-200">
+              <thead className="bg-[#F8FAF9] text-slate-600 border-b border-[#E2ECE6] font-semibold text-[10px] uppercase">
                 <tr>
                   <th className="py-2 px-3">Lote</th>
                   <th className="py-2 px-3">Autoclave</th>
@@ -165,13 +165,13 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
                   <th className="py-2 px-3">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-[#E2ECE6]">
                 {MOCK_CME_BATCHES.map((batch) => (
-                  <tr key={batch.id} className="hover:bg-slate-50/50">
-                    <td className="py-2 px-3 font-mono font-bold text-slate-900">{batch.batchCode}</td>
-                    <td className="py-2 px-3">{batch.autoclaveName}</td>
-                    <td className="py-2 px-3 text-slate-600">{batch.startedAt}</td>
-                    <td className="py-2 px-3">{batch.temperatureC}°C / {batch.pressureBar} bar</td>
+                  <tr key={batch.id} className="odd:bg-white even:bg-[#F8FAF9]/50 hover:bg-teal-50/30">
+                    <td className="py-2 px-3 font-mono font-bold text-teal-800">{batch.batchCode}</td>
+                    <td className="py-2 px-3 text-slate-700">{batch.autoclaveName}</td>
+                    <td className="py-2 px-3 text-slate-500">{batch.startedAt}</td>
+                    <td className="py-2 px-3 text-slate-700">{batch.temperatureC}°C / {batch.pressureBar} bar</td>
                     <td className="py-2 px-3">
                       <span className="text-emerald-700 font-bold">Virado (Aprovado)</span>
                     </td>
@@ -183,7 +183,7 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
                       )}
                     </td>
                     <td className="py-2 px-3">
-                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#DCFCE7] text-emerald-800 border border-emerald-300">
                         LIBERADO
                       </span>
                     </td>
@@ -194,13 +194,13 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
           </div>
 
           {/* 3. Manutenções de Equipamentos e Laudos */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-3">
+          <div className="bg-white border border-[#E2ECE6] rounded-xl p-5 shadow-xs space-y-3">
             <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2 border-b border-slate-100 pb-2">
-              <Clock className="w-4 h-4 text-cyan-700" />
+              <Clock className="w-4 h-4 text-teal-700" />
               <span>3. Equipamentos Críticos, Laudos NR-13 e Levantamento Radiométrico</span>
             </h3>
             <table className="w-full text-left text-xs">
-              <thead className="bg-slate-50 text-slate-600 border-b border-slate-200">
+              <thead className="bg-[#F8FAF9] text-slate-600 border-b border-[#E2ECE6] font-semibold text-[10px] uppercase">
                 <tr>
                   <th className="py-2 px-3">Equipamento</th>
                   <th className="py-2 px-3">Marca / Modelo</th>
@@ -210,13 +210,13 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
                   <th className="py-2 px-3">Laudo Técnico</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-[#E2ECE6]">
                 {MOCK_EQUIPMENTS.map((eq) => (
-                  <tr key={eq.id}>
+                  <tr key={eq.id} className="odd:bg-white even:bg-[#F8FAF9]/50 hover:bg-teal-50/30">
                     <td className="py-2 px-3 font-semibold text-slate-900">{eq.name}</td>
-                    <td className="py-2 px-3">{eq.brand} - {eq.model}</td>
-                    <td className="py-2 px-3 font-mono text-slate-600">{eq.serialNumber}</td>
-                    <td className="py-2 px-3">{eq.lastMaintenance}</td>
+                    <td className="py-2 px-3 text-slate-700">{eq.brand} - {eq.model}</td>
+                    <td className="py-2 px-3 font-mono text-teal-800 font-bold">{eq.serialNumber}</td>
+                    <td className="py-2 px-3 text-slate-600">{eq.lastMaintenance}</td>
                     <td className="py-2 px-3 font-semibold text-emerald-700">{eq.nextMaintenance}</td>
                     <td className="py-2 px-3">
                       {eq.hasLaudo ? (
@@ -232,20 +232,20 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
           </div>
 
           {/* 4. Lista dos 8 POPs Obrigatórios */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-3">
+          <div className="bg-white border border-[#E2ECE6] rounded-xl p-5 shadow-xs space-y-3">
             <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2 border-b border-slate-100 pb-2">
-              <Building2 className="w-4 h-4 text-cyan-700" />
+              <Building2 className="w-4 h-4 text-teal-700" />
               <span>4. Procedimentos Operacionais Padrão (POPs) & Treinamento da Equipe</span>
             </h3>
             <div className="grid grid-cols-2 gap-2 text-xs">
               {MOCK_POPS.map((pop) => (
-                <div key={pop.id} className="border border-slate-100 p-2.5 rounded-lg bg-slate-50 flex items-start justify-between">
+                <div key={pop.id} className="border border-[#E2ECE6] p-2.5 rounded-lg bg-[#F8FAF9] flex items-start justify-between">
                   <div>
-                    <span className="font-mono text-[10px] font-bold text-cyan-800">{pop.code}</span>
-                    <p className="font-semibold text-slate-800 text-[11px] line-clamp-1">{pop.title}</p>
+                    <span className="font-mono text-[10px] font-bold text-teal-800">{pop.code}</span>
+                    <p className="font-semibold text-slate-900 text-[11px] line-clamp-1">{pop.title}</p>
                     <p className="text-[10px] text-slate-500">Rev: {pop.reviewDue} | RT: {pop.approvedByRt.slice(0, 18)}</p>
                   </div>
-                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 shrink-0">
+                  <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-[#DCFCE7] text-emerald-800 border border-emerald-300 shrink-0">
                     {pop.signaturesCount}/{pop.totalTeamCount} Cientes
                   </span>
                 </div>

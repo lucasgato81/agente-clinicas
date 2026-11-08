@@ -272,27 +272,27 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-3 md:p-4 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-3 md:p-4 overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-150 max-h-[95vh] flex flex-col my-auto"
+        className="bg-white border border-[#E2ECE6] rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-150 max-h-[95vh] flex flex-col my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Cabeçalho Fixo */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-800 bg-slate-900/90 shrink-0">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-[#E2ECE6] bg-white shrink-0">
           <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white shadow-md shadow-cyan-950/50">
+            <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-600 flex items-center justify-center text-white shadow-md shadow-teal-900/10">
               <Camera className="w-4 h-4" />
             </div>
             <div>
-              <h3 className="font-bold text-slate-100 text-sm flex items-center space-x-1.5">
+              <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-1.5">
                 <span>Leitor de QR Code & Vínculo ao Paciente</span>
-                <span className="text-[10px] bg-cyan-950 text-cyan-300 border border-cyan-800 px-1.5 py-0.2 rounded font-mono">
+                <span className="text-[10px] bg-teal-50 text-teal-800 border border-teal-200 px-1.5 py-0.2 rounded font-mono font-bold">
                   RDC 1002
                 </span>
               </h3>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-slate-500">
                 Aponte a câmera para a embalagem estéril para vincular em 2 segundos
               </p>
             </div>
@@ -302,16 +302,16 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
             <button
               type="button"
               onClick={() => setSoundEnabled(!soundEnabled)}
-              className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition"
+              className="text-slate-400 hover:text-teal-700 p-1.5 rounded-lg hover:bg-slate-100 transition"
               title={soundEnabled ? 'Silenciar Bip' : 'Ativar Bip Sonoro'}
             >
-              {soundEnabled ? <Volume2 className="w-4 h-4 text-cyan-400" /> : <VolumeX className="w-4 h-4" />}
+              {soundEnabled ? <Volume2 className="w-4 h-4 text-teal-600" /> : <VolumeX className="w-4 h-4" />}
             </button>
             <button
               type="button"
               onClick={onClose}
               aria-label="Fechar"
-              className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition"
+              className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition"
             >
               <X className="w-5 h-5" />
             </button>
@@ -319,44 +319,44 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
         </div>
 
         {/* Corpo Rolável */}
-        <div className="p-4 md:p-6 space-y-4 overflow-y-auto flex-1">
+        <div className="p-4 md:p-6 space-y-4 overflow-y-auto flex-1 bg-white">
           {/* Seção Superior: Visor de Câmera Real com html5-qrcode */}
-          <div className="relative bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden p-3 text-center">
+          <div className="relative bg-[#F4F8F6] border border-[#E2ECE6] rounded-2xl overflow-hidden p-3 text-center">
             {/* Contêiner da Câmera */}
-            <div className="relative mx-auto max-w-sm rounded-xl overflow-hidden bg-black/60 aspect-square flex items-center justify-center">
+            <div className="relative mx-auto max-w-sm rounded-xl overflow-hidden bg-black/80 aspect-square flex items-center justify-center shadow-inner">
               <div id={readerElementId} className="w-full h-full" />
 
               {/* Mira visual animada de scanner */}
               {cameraState === 'running' && (
                 <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-                  <div className="w-56 h-56 border-2 border-cyan-400/80 rounded-2xl relative">
+                  <div className="w-56 h-56 border-2 border-teal-400/90 rounded-2xl relative shadow-[0_0_15px_rgba(20,184,166,0.3)]">
                     {/* Linha laser de escaneamento */}
-                    <div className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_12px_#22d3ee] animate-bounce" />
+                    <div className="absolute left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-teal-400 to-transparent shadow-[0_0_12px_#2dd4bf] animate-bounce" />
                     {/* Cantoneiras */}
-                    <div className="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-cyan-400" />
-                    <div className="absolute -top-1 -right-1 w-4 h-4 border-t-2 border-r-2 border-cyan-400" />
-                    <div className="absolute -bottom-1 -left-1 w-4 h-4 border-b-2 border-l-2 border-cyan-400" />
-                    <div className="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-cyan-400" />
+                    <div className="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-teal-400" />
+                    <div className="absolute -top-1 -right-1 w-4 h-4 border-t-2 border-r-2 border-teal-400" />
+                    <div className="absolute -bottom-1 -left-1 w-4 h-4 border-b-2 border-l-2 border-teal-400" />
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 border-b-2 border-r-2 border-teal-400" />
                   </div>
                 </div>
               )}
 
               {/* Estado de Carregando / Erro */}
               {cameraState === 'starting' && (
-                <div className="absolute inset-0 bg-slate-950 flex flex-col items-center justify-center space-y-2 text-slate-400 text-xs">
-                  <RefreshCw className="w-6 h-6 animate-spin text-cyan-400" />
+                <div className="absolute inset-0 bg-slate-900/80 flex flex-col items-center justify-center space-y-2 text-white text-xs">
+                  <RefreshCw className="w-6 h-6 animate-spin text-teal-400" />
                   <span>Iniciando câmera...</span>
                 </div>
               )}
 
               {cameraState === 'error' && (
-                <div className="absolute inset-0 bg-slate-950/95 p-4 flex flex-col items-center justify-center text-center space-y-3">
-                  <Camera className="w-10 h-10 text-slate-600" />
+                <div className="absolute inset-0 bg-slate-900/95 p-4 flex flex-col items-center justify-center text-center space-y-3">
+                  <Camera className="w-10 h-10 text-slate-500" />
                   <p className="text-xs text-amber-300 max-w-xs">{cameraError || 'Câmera não disponível.'}</p>
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex items-center space-x-1.5 px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-xs font-semibold shadow transition"
+                    className="flex items-center space-x-1.5 px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white rounded-lg text-xs font-semibold shadow transition"
                   >
                     <Upload className="w-3.5 h-3.5" />
                     <span>Carregar Foto do QR</span>
@@ -366,16 +366,16 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
             </div>
 
             {/* Barra de Controles da Câmera */}
-            <div className="mt-3 flex items-center justify-between text-xs text-slate-400 px-2">
+            <div className="mt-3 flex items-center justify-between text-xs text-slate-600 px-2">
               <div className="flex items-center space-x-2">
                 {camerasList.length > 1 && (
                   <button
                     type="button"
                     onClick={handleSwitchCamera}
-                    className="flex items-center space-x-1 px-2.5 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-cyan-400 hover:text-cyan-300 transition"
+                    className="flex items-center space-x-1 px-2.5 py-1 bg-white hover:bg-slate-50 border border-[#E2ECE6] rounded-lg text-teal-700 font-medium transition shadow-xs"
                     title="Alternar entre câmera frontal e traseira"
                   >
-                    <SwitchCamera className="w-3.5 h-3.5" />
+                    <SwitchCamera className="w-3.5 h-3.5 text-teal-600" />
                     <span>Alternar Câmera</span>
                   </button>
                 )}
@@ -383,9 +383,9 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
                 <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="flex items-center space-x-1 px-2.5 py-1 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-slate-300 hover:text-white transition"
+                  className="flex items-center space-x-1 px-2.5 py-1 bg-white hover:bg-slate-50 border border-[#E2ECE6] rounded-lg text-slate-700 font-medium transition shadow-xs"
                 >
-                  <Upload className="w-3.5 h-3.5" />
+                  <Upload className="w-3.5 h-3.5 text-slate-500" />
                   <span>Foto/Arquivo</span>
                 </button>
                 <input
@@ -398,34 +398,34 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
                 />
               </div>
 
-              <span className="text-[11px] text-cyan-400 font-mono">
+              <span className="text-[11px] text-teal-700 font-mono font-semibold">
                 {cameraState === 'running' ? '● Câmera Ativa' : '○ Standby'}
               </span>
             </div>
 
             {/* Busca Manual / Digitação de Código Curto */}
-            <form onSubmit={handleManualSearch} className="mt-3 pt-3 border-t border-slate-800/80 flex gap-2">
+            <form onSubmit={handleManualSearch} className="mt-3 pt-3 border-t border-[#E2ECE6] flex gap-2">
               <div className="relative flex-1">
-                <Search className="w-3.5 h-3.5 text-slate-500 absolute left-3 top-2.5" />
+                <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
                 <input
                   type="text"
                   value={manualCode}
                   onChange={(e) => setManualCode(e.target.value)}
                   placeholder="Ou digite o Código Curto (ex: PK-8291 ou ODONTO-...)"
-                  className="w-full bg-slate-900 border border-slate-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 font-mono"
+                  className="w-full bg-white border border-[#E2ECE6] rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 font-mono"
                 />
               </div>
               <button
                 type="submit"
-                className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl text-xs transition shrink-0"
+                className="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-xl text-xs transition shadow-xs shrink-0"
               >
                 Localizar
               </button>
             </form>
 
             {/* Atalhos Rápidos para Demonstração */}
-            <div className="mt-2.5 pt-2 border-t border-slate-800/60 flex items-center justify-between text-[11px]">
-              <span className="text-slate-400">Atalhos rápidos para teste:</span>
+            <div className="mt-2.5 pt-2 border-t border-[#E2ECE6] flex items-center justify-between text-[11px]">
+              <span className="text-slate-500">Atalhos rápidos para teste:</span>
               <div className="flex flex-wrap gap-1">
                 {packages
                   .filter((p) => p.status === 'STERILIZED')
@@ -435,7 +435,7 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
                       key={pkg.id}
                       type="button"
                       onClick={() => handleSimulateScan(pkg)}
-                      className="px-2 py-0.5 text-[10px] bg-slate-900 hover:bg-cyan-950 hover:text-cyan-300 text-slate-400 border border-slate-800 hover:border-cyan-700 rounded-md transition"
+                      className="px-2 py-0.5 text-[10px] bg-white hover:bg-teal-50 hover:text-teal-800 text-slate-700 border border-[#E2ECE6] hover:border-teal-300 rounded-md transition shadow-2xs"
                     >
                       {pkg.shortCode} ({pkg.description.slice(0, 14)}...)
                     </button>
@@ -446,62 +446,62 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
 
           {/* Dados do Pacote Escaneado */}
           {selectedPkg ? (
-            <div className="bg-slate-950/80 border border-cyan-500/40 rounded-2xl p-4 space-y-3 shadow-lg ring-1 ring-cyan-500/20 animate-in fade-in slide-in-from-bottom-2 duration-200">
+            <div className="bg-teal-50/50 border border-teal-200 rounded-2xl p-4 space-y-3 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-200">
               <div className="flex items-start justify-between">
                 <div>
                   <div className="flex items-center space-x-2">
-                    <span className="text-[10px] uppercase font-bold text-cyan-400 tracking-wider font-mono">
+                    <span className="text-[10px] uppercase font-bold text-teal-800 tracking-wider font-mono">
                       {selectedPkg.batchCode} • {selectedPkg.shortCode}
                     </span>
-                    <span className="text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded">
+                    <span className="text-[10px] bg-white border border-[#E2ECE6] text-slate-700 px-1.5 py-0.5 rounded font-medium">
                       {selectedPkg.criticality === 'CRITICAL' ? 'Artigo Crítico' : 'Semicrítico'}
                     </span>
                   </div>
-                  <h4 className="text-sm font-bold text-white mt-0.5">{selectedPkg.description}</h4>
-                  <p className="text-xs text-slate-400">Embalagem: {selectedPkg.packageType}</p>
+                  <h4 className="text-sm font-bold text-slate-900 mt-0.5">{selectedPkg.description}</h4>
+                  <p className="text-xs text-slate-600">Embalagem: {selectedPkg.packageType}</p>
                 </div>
 
                 {selectedPkg.status === 'IN_PROCESS' ? (
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-amber-950 text-amber-300 border border-amber-800">
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-amber-50 text-amber-800 border border-amber-200">
                     EM ANDAMENTO NA AUTOCLAVE
                   </span>
                 ) : (
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-emerald-950 text-emerald-300 border border-emerald-800 flex items-center space-x-1">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+                  <span className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-[#DCFCE7] text-emerald-800 border border-emerald-300 flex items-center space-x-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                     <span>ESTÉRIL & VÁLIDO</span>
                   </span>
                 )}
               </div>
 
               {selectedPkg.status === 'IN_PROCESS' && (
-                <div className="p-2.5 rounded-xl bg-amber-950/40 border border-amber-800/60 text-[11px] text-amber-300 flex items-center space-x-2">
-                  <AlertCircle className="w-4 h-4 shrink-0" />
+                <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-[11px] text-amber-800 flex items-center space-x-2">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-amber-600" />
                   <span>
                     Este pacote ainda está em ciclo de autoclave. Ele só pode ser aberto após a liberação da carga na CME.
                   </span>
                 </div>
               )}
 
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs border-t border-slate-800 pt-2.5 text-slate-300 bg-slate-900/60 p-2.5 rounded-xl">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs border-t border-teal-100 pt-2.5 text-slate-700 bg-white p-2.5 rounded-xl border border-[#E2ECE6]">
                 <div>
-                  <span className="text-slate-400 text-[10px] block">Data Esterilização:</span>
-                  <span className="font-medium">{selectedPkg.packagedAt}</span>
+                  <span className="text-slate-500 text-[10px] block">Data Esterilização:</span>
+                  <span className="font-semibold text-slate-800">{selectedPkg.packagedAt}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 text-[10px] block">Validade da Barreira:</span>
-                  <span className="text-cyan-300 font-bold">{selectedPkg.expiresAt}</span>
+                  <span className="text-slate-500 text-[10px] block">Validade da Barreira:</span>
+                  <span className="text-teal-700 font-bold">{selectedPkg.expiresAt}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 text-[10px] block">Lote CME:</span>
-                  <span className="font-mono text-cyan-300 font-bold">{selectedPkg.batchCode}</span>
+                  <span className="text-slate-500 text-[10px] block">Lote CME:</span>
+                  <span className="font-mono text-teal-800 font-bold">{selectedPkg.batchCode}</span>
                 </div>
               </div>
 
               {/* Formulário de Vínculo com o Paciente */}
-              <div className="space-y-3 pt-2 border-t border-slate-800">
+              <div className="space-y-3 pt-2 border-t border-teal-200/70">
                 <div>
-                  <label className="text-xs font-semibold text-slate-300 flex items-center space-x-1.5 mb-1">
-                    <User className="w-3.5 h-3.5 text-cyan-400" />
+                  <label className="text-xs font-semibold text-slate-800 flex items-center space-x-1.5 mb-1">
+                    <User className="w-3.5 h-3.5 text-teal-600" />
                     <span>Nome ou Prontuário do Paciente *</span>
                   </label>
                   <input
@@ -511,21 +511,21 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
                     onChange={(e) => setPatientName(e.target.value)}
                     placeholder="Ex: Carlos Eduardo Silveira (Prontuário #4830)"
                     autoFocus
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 disabled:opacity-50"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 disabled:opacity-50"
                   />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <div>
-                    <label className="text-xs font-medium text-slate-300 flex items-center space-x-1 mb-1">
-                      <Stethoscope className="w-3.5 h-3.5 text-cyan-400" />
+                    <label className="text-xs font-medium text-slate-700 flex items-center space-x-1 mb-1">
+                      <Stethoscope className="w-3.5 h-3.5 text-teal-600" />
                       <span>Cirurgião-Dentista</span>
                     </label>
                     <select
                       disabled={selectedPkg.status === 'IN_PROCESS'}
                       value={dentistName}
                       onChange={(e) => setDentistName(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500 disabled:opacity-50"
+                      className="w-full bg-white border border-[#E2ECE6] rounded-xl px-2 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-teal-600 disabled:opacity-50"
                     >
                       <option value="Dr. Lucas Ribeiro (RT)">Dr. Lucas Ribeiro (RT)</option>
                       <option value="Dra. Camila Vasconcelos">Dra. Camila Vasconcelos</option>
@@ -535,14 +535,14 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
                   </div>
 
                   <div>
-                    <label className="text-xs font-medium text-slate-300 block mb-1">
+                    <label className="text-xs font-medium text-slate-700 block mb-1">
                       Cadeira / Consultório
                     </label>
                     <select
                       disabled={selectedPkg.status === 'IN_PROCESS'}
                       value={chair}
                       onChange={(e) => setChair(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500 disabled:opacity-50"
+                      className="w-full bg-white border border-[#E2ECE6] rounded-xl px-2 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-teal-600 disabled:opacity-50"
                     >
                       <option value="Consultório 01 (Cirúrgico)">Consultório 01 (Cirúrgico)</option>
                       <option value="Consultório 02 (Clínica Geral)">Consultório 02 (Clínica Geral)</option>
@@ -551,14 +551,14 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
                   </div>
 
                   <div>
-                    <label className="text-xs font-medium text-slate-300 block mb-1">
+                    <label className="text-xs font-medium text-slate-700 block mb-1">
                       Procedimento
                     </label>
                     <select
                       disabled={selectedPkg.status === 'IN_PROCESS'}
                       value={procedureType}
                       onChange={(e) => setProcedureType(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-2 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500 disabled:opacity-50"
+                      className="w-full bg-white border border-[#E2ECE6] rounded-xl px-2 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-teal-600 disabled:opacity-50"
                     >
                       <option value="Cirurgia / Exodontia">Cirurgia / Exodontia</option>
                       <option value="Implante Dentário">Implante Dentário</option>
@@ -572,9 +572,9 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
               </div>
             </div>
           ) : (
-            <div className="bg-slate-950/40 border border-dashed border-slate-800 rounded-2xl p-6 text-center text-xs text-slate-400 space-y-1">
-              <Camera className="w-6 h-6 mx-auto text-slate-600 mb-1" />
-              <p className="font-medium text-slate-300">Nenhum pacote selecionado</p>
+            <div className="bg-[#F8FAF9] border border-dashed border-[#E2ECE6] rounded-2xl p-6 text-center text-xs text-slate-500 space-y-1">
+              <Camera className="w-6 h-6 mx-auto text-teal-600/70 mb-1" />
+              <p className="font-semibold text-slate-700">Nenhum pacote selecionado</p>
               <p className="text-[11px] text-slate-500">
                 Aponte a câmera para o QR Code da embalagem ou use os atalhos acima para testar.
               </p>
@@ -582,11 +582,11 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
           )}
 
           {isSuccess && (
-            <div className="bg-emerald-950/90 border border-emerald-600 text-emerald-200 text-xs p-3.5 rounded-2xl flex items-center space-x-2.5 animate-in zoom-in-95 duration-150">
-              <Check className="w-5 h-5 text-emerald-400 shrink-0" />
+            <div className="bg-[#DCFCE7] border border-emerald-300 text-emerald-900 text-xs p-3.5 rounded-2xl flex items-center space-x-2.5 animate-in zoom-in-95 duration-150">
+              <Check className="w-5 h-5 text-emerald-600 shrink-0" />
               <div>
                 <p className="font-bold">Abertura e Vínculo Confirmados com Sucesso!</p>
-                <p className="text-[11px] text-emerald-300/90">
+                <p className="text-[11px] text-emerald-800">
                   Rastreabilidade RDC 1002 gravada e associada ao prontuário do paciente.
                 </p>
               </div>
@@ -595,11 +595,11 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
         </div>
 
         {/* Rodapé Fixo */}
-        <div className="px-5 py-4 border-t border-slate-800 bg-slate-900/95 flex items-center justify-between shrink-0">
+        <div className="px-5 py-4 border-t border-[#E2ECE6] bg-[#F8FAF9] flex items-center justify-between shrink-0">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white hover:bg-slate-800 rounded-xl transition"
+            className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 rounded-xl transition"
           >
             Cancelar (ESC)
           </button>
@@ -607,7 +607,7 @@ export const QrScannerModal: React.FC<QrScannerModalProps> = ({ packages, onClos
             type="button"
             onClick={handleConfirmUsage}
             disabled={!selectedPkg || selectedPkg.status === 'IN_PROCESS' || !patientName.trim()}
-            className="flex items-center space-x-2 px-5 py-2.5 text-xs font-bold bg-cyan-500 hover:bg-cyan-400 disabled:opacity-40 disabled:cursor-not-allowed text-slate-950 rounded-xl shadow-lg shadow-cyan-950/50 transition active:scale-98"
+            className="flex items-center space-x-2 px-5 py-2.5 text-xs font-bold bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed text-white rounded-xl shadow-md transition active:scale-98"
           >
             <CheckCircle2 className="w-4 h-4" />
             <span>Confirmar Abertura & Vincular (2s)</span>

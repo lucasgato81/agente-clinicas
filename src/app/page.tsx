@@ -574,7 +574,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
+    <div className="min-h-screen bg-[#F4F8F6] text-slate-800 flex flex-col">
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
@@ -610,35 +610,35 @@ export default function HomePage() {
         {activeTab === 'dashboard' && (
           <div className="space-y-6 animate-in fade-in duration-150">
             {/* Banner de Boas-Vindas */}
-            <div className="relative bg-gradient-to-r from-slate-900 via-slate-900 to-cyan-950 border border-slate-800 rounded-2xl p-6 overflow-hidden shadow-xl">
-              <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-cyan-500/10 via-transparent to-transparent pointer-events-none" />
+            <div className="relative bg-white border border-[#E2ECE6] rounded-2xl p-6 overflow-hidden shadow-xs">
+              <div className="absolute right-0 top-0 bottom-0 w-1/3 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-teal-500/10 via-transparent to-transparent pointer-events-none" />
 
               <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div>
                   <div className="flex items-center space-x-2 mb-1.5">
                     <span
-                      className={`text-xs font-semibold px-2 py-0.5 rounded-full border ${
+                      className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${
                         clinic.sanitaryLicense
-                          ? 'bg-emerald-950 text-emerald-400 border-emerald-800'
-                          : 'bg-amber-950 text-amber-400 border-amber-800'
+                          ? 'bg-[#DCFCE7] text-emerald-800 border-emerald-300'
+                          : 'bg-amber-50 text-amber-800 border-amber-300'
                       }`}
                     >
                       {clinic.sanitaryLicense ? 'ALVARÁ SANITÁRIO ATIVO' : 'ALVARÁ PENDENTE DE INFORMAR'}
                     </span>
-                    <span className="text-xs text-slate-400">
+                    <span className="text-xs text-slate-500">
                       | {clinic.sanitaryLicense ? `Licença: ${clinic.sanitaryLicense}` : 'Sem licença cadastrada'}
                     </span>
                   </div>
-                  <h2 className="text-xl md:text-2xl font-bold text-white">
+                  <h2 className="text-xl md:text-2xl font-bold text-slate-900">
                     Olá, {currentUser.name}
                   </h2>
-                  <p className="text-xs text-slate-400 mt-1 max-w-2xl">
+                  <p className="text-xs text-slate-600 mt-1 max-w-2xl">
                     {clinic.technicalResponsibleName ? (
                       <>
-                        Responsável Técnico: <strong>{clinic.technicalResponsibleName} (CRO-{clinic.technicalResponsibleCroState} {clinic.technicalResponsibleCro})</strong>.
+                        Responsável Técnico: <strong className="text-slate-800">{clinic.technicalResponsibleName} (CRO-{clinic.technicalResponsibleCroState} {clinic.technicalResponsibleCro})</strong>.
                       </>
                     ) : (
-                      <span className="text-amber-400 font-semibold">
+                      <span className="text-amber-700 font-semibold">
                         Atenção: O Responsável Técnico (RT) ainda não foi cadastrado. Clique no checklist acima para regularizar.
                       </span>
                     )}
@@ -648,16 +648,16 @@ export default function HomePage() {
                 <div className="flex flex-wrap gap-2.5">
                   <button
                     onClick={() => setIsNewCycleOpen(true)}
-                    className="flex items-center space-x-1.5 px-3.5 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-semibold rounded-xl text-xs shadow-lg shadow-cyan-500/20 transition"
+                    className="flex items-center space-x-1.5 px-3.5 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-semibold rounded-xl text-xs shadow-sm transition"
                   >
                     <Plus className="w-4 h-4" />
                     <span>Novo Ciclo CME</span>
                   </button>
                   <button
                     onClick={() => setIsScannerOpen(true)}
-                    className="flex items-center space-x-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 font-semibold rounded-xl text-xs transition"
+                    className="flex items-center space-x-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-[#E2ECE6] font-semibold rounded-xl text-xs shadow-xs transition"
                   >
-                    <Camera className="w-4 h-4 text-cyan-400" />
+                    <Camera className="w-4 h-4 text-teal-600" />
                     <span>Escanear na Cadeira</span>
                   </button>
                 </div>
@@ -668,64 +668,64 @@ export default function HomePage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div
                 onClick={() => setActiveTab('cme')}
-                className="bg-slate-900 border border-slate-800/80 hover:border-cyan-500/50 p-4 rounded-xl cursor-pointer transition shadow-sm group"
+                className="bg-white border border-[#E2ECE6] hover:border-teal-500/50 p-4 rounded-xl cursor-pointer transition shadow-xs group"
               >
-                <div className="flex items-center justify-between text-slate-400 mb-2">
+                <div className="flex items-center justify-between text-slate-500 mb-2">
                   <span className="text-xs font-medium">Ciclos de Autoclave</span>
-                  <Sparkles className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition" />
+                  <Sparkles className="w-4 h-4 text-teal-600 group-hover:scale-110 transition" />
                 </div>
-                <div className="text-2xl font-bold text-white">
+                <div className="text-2xl font-bold text-slate-900">
                   {activeBatchesToday} {activeBatchesToday === 1 ? 'Lote Ativo' : 'Lotes Ativos'} Hoje
                 </div>
-                <div className="text-[11px] text-cyan-300 flex items-center space-x-1 mt-1 font-medium">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                  <span>Total de Kits Prontos em Estoque: {sterilePackagesCount} pacotes</span>
+                <div className="text-[11px] text-teal-700 flex items-center space-x-1 mt-1 font-medium">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                  <span>Total de Kits Prontos: {sterilePackagesCount} pacotes</span>
                 </div>
               </div>
 
               <div
                 onClick={() => setActiveTab('equipments')}
-                className="bg-slate-900 border border-slate-800/80 hover:border-amber-500/50 p-4 rounded-xl cursor-pointer transition shadow-sm group"
+                className="bg-white border border-[#E2ECE6] hover:border-amber-500/50 p-4 rounded-xl cursor-pointer transition shadow-xs group"
               >
-                <div className="flex items-center justify-between text-slate-400 mb-2">
+                <div className="flex items-center justify-between text-slate-500 mb-2">
                   <span className="text-xs font-medium">Equipamentos Críticos</span>
-                  <Wrench className="w-4 h-4 text-amber-400 group-hover:scale-110 transition" />
+                  <Wrench className="w-4 h-4 text-amber-600 group-hover:scale-110 transition" />
                 </div>
-                <div className="text-2xl font-bold text-white">{equipments.length} monitorados</div>
-                <div className="text-[11px] text-amber-400 flex items-center space-x-1 mt-1">
-                  <Clock className="w-3 h-3" />
+                <div className="text-2xl font-bold text-slate-900">{equipments.length} monitorados</div>
+                <div className="text-[11px] text-amber-700 flex items-center space-x-1 mt-1 font-medium">
+                  <Clock className="w-3 h-3 text-amber-600" />
                   <span>{equipments.length === 0 ? 'Nenhuma autoclave cadastrada' : `${warningEquipments} em atenção`}</span>
                 </div>
               </div>
 
               <div
                 onClick={() => setActiveTab('pops')}
-                className="bg-slate-900 border border-slate-800/80 hover:border-cyan-500/50 p-4 rounded-xl cursor-pointer transition shadow-sm group"
+                className="bg-white border border-[#E2ECE6] hover:border-teal-500/50 p-4 rounded-xl cursor-pointer transition shadow-xs group"
               >
-                <div className="flex items-center justify-between text-slate-400 mb-2">
+                <div className="flex items-center justify-between text-slate-500 mb-2">
                   <span className="text-xs font-medium">POPs RDC 1002</span>
-                  <FileText className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition" />
+                  <FileText className="w-4 h-4 text-teal-600 group-hover:scale-110 transition" />
                 </div>
-                <div className="text-2xl font-bold text-white">
+                <div className="text-2xl font-bold text-slate-900">
                   {pops.filter((p) => p.signaturesCount > 0).length} / 8 Assinados
                 </div>
-                <div className="text-[11px] text-emerald-400 flex items-center space-x-1 mt-1">
-                  <CheckCircle2 className="w-3 h-3" />
+                <div className="text-[11px] text-emerald-700 flex items-center space-x-1 mt-1 font-medium">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-600" />
                   <span>Biblioteca modelo pré-carregada</span>
                 </div>
               </div>
 
               <div
                 onClick={() => setActiveTab('team')}
-                className="bg-slate-900 border border-slate-800/80 hover:border-indigo-500/50 p-4 rounded-xl cursor-pointer transition shadow-sm group"
+                className="bg-white border border-[#E2ECE6] hover:border-teal-500/50 p-4 rounded-xl cursor-pointer transition shadow-xs group"
               >
-                <div className="flex items-center justify-between text-slate-400 mb-2">
+                <div className="flex items-center justify-between text-slate-500 mb-2">
                   <span className="text-xs font-medium">Equipe da Clínica</span>
-                  <Users className="w-4 h-4 text-indigo-400 group-hover:scale-110 transition" />
+                  <Users className="w-4 h-4 text-teal-700 group-hover:scale-110 transition" />
                 </div>
-                <div className="text-2xl font-bold text-white">{teamMembers.length} Colaboradores</div>
-                <div className="text-[11px] text-indigo-300 flex items-center space-x-1 mt-1">
-                  <UserCheck className="w-3 h-3" />
+                <div className="text-2xl font-bold text-slate-900">{teamMembers.length} Colaboradores</div>
+                <div className="text-[11px] text-teal-800 flex items-center space-x-1 mt-1 font-medium">
+                  <UserCheck className="w-3 h-3 text-teal-600" />
                   <span>
                     {teamMembers.some((m) => m.role === 'DENTAL_ASSISTANT')
                       ? 'ASB/TSB habilitada'
@@ -737,17 +737,17 @@ export default function HomePage() {
 
             {/* Seções Inferiores: Pacotes Recentes e Checklist Matinal */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="lg:col-span-2 bg-white border border-[#E2ECE6] rounded-2xl p-5 shadow-xs space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <Sparkles className="w-4 h-4 text-cyan-400" />
-                    <h3 className="font-semibold text-sm text-slate-100">
+                    <Sparkles className="w-4 h-4 text-teal-600" />
+                    <h3 className="font-semibold text-sm text-slate-900">
                       Rastreabilidade Recente de Instrumentais
                     </h3>
                   </div>
                   <button
                     onClick={() => setActiveTab('cme')}
-                    className="text-xs text-cyan-400 hover:text-cyan-300 font-medium flex items-center space-x-0.5"
+                    className="text-xs text-teal-700 hover:text-teal-800 font-semibold flex items-center space-x-0.5"
                   >
                     <span>Ver todos no CME</span>
                     <ChevronRight className="w-3.5 h-3.5" />
@@ -755,13 +755,13 @@ export default function HomePage() {
                 </div>
 
                 {packages.length === 0 ? (
-                  <div className="p-8 text-center bg-slate-950 border border-dashed border-slate-800 rounded-xl space-y-2">
-                    <p className="text-xs text-slate-400">
+                  <div className="p-8 text-center bg-[#F8FAF9] border border-dashed border-[#E2ECE6] rounded-xl space-y-2">
+                    <p className="text-xs text-slate-500">
                       Nenhum ciclo de esterilização registrado ainda nesta nova clínica.
                     </p>
                     <button
                       onClick={() => setIsNewCycleOpen(true)}
-                      className="px-3 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg text-xs transition"
+                      className="px-3 py-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold rounded-lg text-xs shadow-sm transition"
                     >
                       Registrar 1º Ciclo de Autoclave
                     </button>
@@ -771,20 +771,20 @@ export default function HomePage() {
                     {packages.slice(0, 4).map((pkg) => (
                       <div
                         key={pkg.id}
-                        className="bg-slate-950/60 border border-slate-800/80 rounded-xl p-3 flex items-center justify-between hover:border-slate-700 transition"
+                        className="bg-[#F8FAF9] border border-[#E2ECE6] rounded-xl p-3 flex items-center justify-between hover:border-teal-300 hover:bg-teal-50/30 transition shadow-2xs"
                       >
                         <div className="flex items-center space-x-3">
-                          <div className="w-9 h-9 rounded-lg bg-cyan-950/80 border border-cyan-800 flex items-center justify-center text-cyan-400">
+                          <div className="w-9 h-9 rounded-lg bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-700">
                             <QrCode className="w-4 h-4" />
                           </div>
                           <div>
                             <div className="flex items-center space-x-2">
-                              <span className="font-mono text-[10px] font-black text-cyan-400 bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">
+                              <span className="font-mono text-[10px] font-black text-teal-800 bg-white px-1.5 py-0.5 rounded border border-[#E2ECE6]">
                                 {pkg.shortCode}
                               </span>
-                              <span className="text-xs font-semibold text-slate-100">{pkg.description}</span>
+                              <span className="text-xs font-semibold text-slate-900">{pkg.description}</span>
                             </div>
-                            <div className="text-[11px] text-slate-400 flex items-center space-x-2 mt-0.5">
+                            <div className="text-[11px] text-slate-500 flex items-center space-x-2 mt-0.5">
                               <span>Lote: {pkg.batchCode}</span>
                               <span>• Val: {pkg.expiresAt}</span>
                             </div>
@@ -792,12 +792,12 @@ export default function HomePage() {
                         </div>
 
                         <div className="flex items-center space-x-2">
-                          <span className="px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800 text-[10px] font-semibold">
+                          <span className="px-2 py-0.5 rounded-full bg-[#DCFCE7] text-emerald-800 border border-emerald-300 text-[10px] font-semibold">
                             Estéril
                           </span>
                           <button
                             onClick={() => setSelectedLabelPkg(pkg)}
-                            className="p-1.5 text-slate-400 hover:text-cyan-400 hover:bg-slate-800 rounded-lg transition"
+                            className="p-1.5 text-slate-500 hover:text-teal-700 hover:bg-white rounded-lg transition border border-transparent hover:border-[#E2ECE6]"
                           >
                             <Printer className="w-4 h-4" />
                           </button>
@@ -808,15 +808,15 @@ export default function HomePage() {
                 )}
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
+              <div className="bg-white border border-[#E2ECE6] rounded-2xl p-5 shadow-xs space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <ShieldCheck className="w-4 h-4 text-emerald-400" />
-                    <h3 className="font-semibold text-sm text-slate-100">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                    <h3 className="font-semibold text-sm text-slate-900">
                       Checklist Matinal Interativo
                     </h3>
                   </div>
-                  <span className="text-[10px] text-cyan-400 font-mono bg-cyan-950 px-2 py-0.5 rounded border border-cyan-800">
+                  <span className="text-[10px] text-teal-800 font-mono font-bold bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
                     RDC 1002
                   </span>
                 </div>
@@ -827,8 +827,8 @@ export default function HomePage() {
                       key={item.id}
                       className={`p-3 rounded-xl border transition ${
                         item.completed
-                          ? 'bg-slate-950/80 border-emerald-800/60 text-slate-300'
-                          : 'bg-slate-950 border-slate-800 text-slate-200 hover:border-slate-700'
+                          ? 'bg-emerald-50/50 border-emerald-200 text-slate-600'
+                          : 'bg-[#F8FAF9] border-[#E2ECE6] text-slate-700 hover:border-teal-300'
                       }`}
                     >
                       <div className="flex items-start justify-between gap-2">
@@ -839,19 +839,19 @@ export default function HomePage() {
                               onClick={() => handleToggleChecklist(item.id)}
                               className={`w-5 h-5 rounded-md flex items-center justify-center transition shrink-0 ${
                                 item.completed
-                                  ? 'bg-emerald-600 text-white shadow-sm'
-                                  : 'border-2 border-slate-600 hover:border-cyan-400'
+                                  ? 'bg-emerald-600 text-white shadow-xs'
+                                  : 'border-2 border-slate-300 hover:border-teal-600 bg-white'
                               }`}
                             >
                               {item.completed && <Check className="w-3.5 h-3.5" />}
                             </button>
-                            <span className={`font-semibold text-[11px] ${item.completed ? 'line-through text-slate-400' : 'text-slate-100'}`}>
+                            <span className={`font-semibold text-[11px] ${item.completed ? 'line-through text-slate-400' : 'text-slate-900'}`}>
                               {item.title}
                             </span>
                           </div>
-                          <p className="text-[10px] text-slate-400 pl-7">{item.normativeRef}</p>
+                          <p className="text-[10px] text-slate-500 pl-7">{item.normativeRef}</p>
                           {item.completed && item.completedAt && (
-                            <p className="text-[9.5px] text-emerald-400 pl-7 font-mono">
+                            <p className="text-[9.5px] text-emerald-700 pl-7 font-mono font-medium">
                               ✓ Realizado em {item.completedAt} por {item.operatorName}
                             </p>
                           )}
@@ -862,7 +862,7 @@ export default function HomePage() {
 
                   <button
                     onClick={() => setIsDossierOpen(true)}
-                    className="w-full py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 rounded-xl font-semibold text-xs flex items-center justify-center space-x-1.5 transition"
+                    className="w-full py-2 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded-xl font-semibold text-xs flex items-center justify-center space-x-1.5 transition shadow-2xs"
                   >
                     <FileText className="w-3.5 h-3.5" />
                     <span>Visualizar Dossiê Fiscal Consolidado</span>
@@ -878,13 +878,13 @@ export default function HomePage() {
         {/* ============================================================== */}
         {activeTab === 'cme' && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white border border-[#E2ECE6] p-5 rounded-2xl shadow-xs">
               <div>
-                <h2 className="text-lg font-bold text-white flex items-center space-x-2">
-                  <Sparkles className="w-5 h-5 text-cyan-400" />
+                <h2 className="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                  <Sparkles className="w-5 h-5 text-teal-600" />
                   <span>Central de Material e Esterilização (CME)</span>
                 </h2>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-500 mt-0.5">
                   Fluxo em 2 etapas: Passo 1 (Iniciar Carga & Identificar) → Passo 2 (Conferir Parâmetros & Liberar). Identificação por caneta ou impressão opcional.
                 </p>
               </div>
@@ -892,14 +892,14 @@ export default function HomePage() {
               <div className="flex items-center space-x-2.5">
                 <button
                   onClick={() => setIsScannerOpen(true)}
-                  className="flex items-center space-x-1.5 px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold transition"
+                  className="flex items-center space-x-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-[#E2ECE6] rounded-xl text-xs font-semibold shadow-xs transition"
                 >
-                  <Camera className="w-4 h-4 text-cyan-400" />
+                  <Camera className="w-4 h-4 text-teal-600" />
                   <span>Scanner PWA</span>
                 </button>
                 <button
                   onClick={() => setIsNewCycleOpen(true)}
-                  className="flex items-center space-x-1.5 px-3.5 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-semibold rounded-xl text-xs shadow-md transition"
+                  className="flex items-center space-x-1.5 px-3.5 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-semibold rounded-xl text-xs shadow-sm transition"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Passo 1: Iniciar Nova Carga</span>
@@ -909,14 +909,14 @@ export default function HomePage() {
 
             {/* Alerta de Cargas em Processamento (Passo 2 Pendente) */}
             {batches.some((b) => b.status === 'PROCESSING') && (
-              <div className="bg-gradient-to-r from-amber-950/60 via-slate-900 to-slate-900 border border-amber-500/50 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
+              <div className="bg-amber-50 border border-amber-300 rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
                 <div className="flex items-center space-x-3">
-                  <span className="w-3 h-3 rounded-full bg-amber-400 animate-ping shrink-0" />
+                  <span className="w-3 h-3 rounded-full bg-amber-500 animate-ping shrink-0" />
                   <div>
-                    <h4 className="font-bold text-amber-300 text-xs sm:text-sm">
+                    <h4 className="font-bold text-amber-900 text-xs sm:text-sm">
                       {batches.filter((b) => b.status === 'PROCESSING').length} Carga(s) em Andamento na Autoclave
                     </h4>
-                    <p className="text-[11px] text-slate-300">
+                    <p className="text-[11px] text-amber-800">
                       Quando a autoclave apitar e esfriar, clique em <strong>Concluir & Liberar Lote</strong> para registrar os parâmetros físicos observados e a foto do Integrador Classe 5.
                     </p>
                   </div>
@@ -928,7 +928,7 @@ export default function HomePage() {
                       <button
                         key={procBatch.id}
                         onClick={() => setFinalizingBatch(procBatch)}
-                        className="px-3.5 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs shadow transition flex items-center space-x-1.5 shrink-0"
+                        className="px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl text-xs shadow-sm transition flex items-center space-x-1.5 shrink-0"
                       >
                         <CheckCircle2 className="w-4 h-4" />
                         <span>Concluir {procBatch.shortCode}</span>
@@ -939,30 +939,32 @@ export default function HomePage() {
             )}
 
             {batches.length === 0 ? (
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-10 text-center space-y-3">
-                <Sparkles className="w-10 h-10 text-cyan-400 mx-auto" />
-                <h3 className="font-bold text-slate-200 text-sm">Nenhum ciclo cadastrado no Livro Digital de CME</h3>
-                <p className="text-xs text-slate-400 max-w-md mx-auto">
+              <div className="bg-white border border-[#E2ECE6] rounded-2xl p-10 text-center space-y-3 shadow-xs">
+                <Sparkles className="w-10 h-10 text-teal-600 mx-auto" />
+                <h3 className="font-bold text-slate-800 text-sm">Nenhum ciclo cadastrado no Livro Digital de CME</h3>
+                <p className="text-xs text-slate-500 max-w-md mx-auto">
                   A sua CME está pronta para operar. Inicie a primeira carga para gerar o lote exclusivo com as iniciais da sua clínica e código para caneta ou impressão opcional.
                 </p>
                 <button
                   onClick={() => setIsNewCycleOpen(true)}
-                  className="px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl text-xs shadow transition"
+                  className="px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold rounded-xl text-xs shadow-sm transition"
                 >
                   Passo 1: Iniciar Primeira Carga
                 </button>
               </div>
             ) : (
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-sm">
-                <div className="px-5 py-3.5 border-b border-slate-800 flex items-center justify-between">
-                  <h3 className="font-semibold text-sm text-slate-100">
+              <div className="bg-white border border-[#E2ECE6] rounded-2xl overflow-hidden shadow-xs">
+                <div className="px-5 py-3.5 border-b border-[#E2ECE6] bg-white flex items-center justify-between">
+                  <h3 className="font-semibold text-sm text-slate-900">
                     Livro Digital de Ciclos de Autoclave ({batches.length})
                   </h3>
-                  <span className="text-[11px] text-slate-400">RDC 1002/2025 & RDC 15/2012</span>
+                  <span className="text-[11px] text-teal-800 font-bold bg-teal-50 px-2 py-0.5 rounded border border-teal-200">
+                    RDC 1002/2025 & RDC 15/2012
+                  </span>
                 </div>
                 <div className="overflow-x-auto">
                   <table className="w-full text-xs text-left">
-                    <thead className="bg-slate-950 text-slate-400 uppercase text-[10px] font-bold">
+                    <thead className="bg-[#F8FAF9] text-slate-600 uppercase text-[10px] font-bold border-b border-[#E2ECE6]">
                       <tr>
                         <th className="p-3">Identificador & Lote</th>
                         <th className="p-3">Equipamento</th>
@@ -975,31 +977,31 @@ export default function HomePage() {
                         <th className="p-3">Status / Ação</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-800/60">
+                    <tbody className="divide-y divide-[#E2ECE6]">
                       {batches.map((b) => (
-                        <tr key={b.id} className="hover:bg-slate-800/30 transition">
+                        <tr key={b.id} className="odd:bg-white even:bg-[#F8FAF9]/50 hover:bg-teal-50/40 transition">
                           <td className="p-3">
-                            <span className="font-mono font-bold text-cyan-400 block">{b.shortCode}</span>
+                            <span className="font-mono font-bold text-teal-800 block">{b.shortCode}</span>
                             <span className="text-[10px] text-slate-500 font-mono">{b.batchCode}</span>
                           </td>
-                          <td className="p-3 text-slate-300">{b.autoclaveName}</td>
-                          <td className="p-3 text-slate-300">{b.operatorName}</td>
-                          <td className="p-3 text-slate-400">{b.startedAt}</td>
+                          <td className="p-3 text-slate-700">{b.autoclaveName}</td>
+                          <td className="p-3 text-slate-700">{b.operatorName}</td>
+                          <td className="p-3 text-slate-500">{b.startedAt}</td>
                           <td className="p-3">
                             {b.status === 'PROCESSING' ? (
-                              <span className="text-amber-400 font-medium flex items-center space-x-1">
-                                <Clock className="w-3 h-3 animate-spin" />
+                              <span className="text-amber-700 font-medium flex items-center space-x-1">
+                                <Clock className="w-3 h-3 animate-spin text-amber-600" />
                                 <span>Autoclave em Curso...</span>
                               </span>
                             ) : (
-                              <span className="text-slate-300">
+                              <span className="text-slate-700">
                                 {b.temperatureC}°C / {b.pressureBar} bar ({b.cycleTimeMin}m)
                               </span>
                             )}
                           </td>
                           <td className="p-3">
                             {b.status === 'PROCESSING' ? (
-                              <span className="text-slate-500 italic text-[11px]">Pendente Pós-Ciclo</span>
+                              <span className="text-slate-400 italic text-[11px]">Pendente Pós-Ciclo</span>
                             ) : b.chemicalClass5Ok ? (
                               <button
                                 type="button"
@@ -1015,31 +1017,31 @@ export default function HomePage() {
                                     });
                                   }
                                 }}
-                                className="text-emerald-400 hover:text-emerald-300 font-semibold underline flex items-center space-x-1"
+                                className="text-teal-700 hover:text-teal-900 font-semibold underline flex items-center space-x-1"
                               >
                                 <span>Classe 5 OK</span>
                               </button>
                             ) : (
-                              <span className="text-red-400 font-bold">Falha</span>
+                              <span className="text-rose-600 font-bold">Falha</span>
                             )}
                           </td>
-                          <td className="p-3">{b.hasBiological ? 'Negativo' : 'N/A'}</td>
-                          <td className="p-3 font-semibold">{b.packagesCount} kits</td>
+                          <td className="p-3 text-slate-700">{b.hasBiological ? 'Negativo' : 'N/A'}</td>
+                          <td className="p-3 font-semibold text-slate-800">{b.packagesCount} kits</td>
                           <td className="p-3">
                             {b.status === 'PROCESSING' ? (
                               <button
                                 onClick={() => setFinalizingBatch(b)}
-                                className="px-2.5 py-1 bg-amber-500 hover:bg-amber-400 text-slate-950 text-[10px] font-bold rounded-lg transition shadow flex items-center space-x-1"
+                                className="px-2.5 py-1 bg-amber-600 hover:bg-amber-700 text-white text-[10px] font-bold rounded-lg transition shadow-xs flex items-center space-x-1"
                               >
                                 <CheckCircle2 className="w-3 h-3" />
                                 <span>Liberar (Passo 2)</span>
                               </button>
                             ) : b.status === 'APPROVED' ? (
-                              <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 text-[10px] font-bold border border-emerald-800">
+                              <span className="px-2 py-0.5 rounded bg-[#DCFCE7] text-emerald-800 text-[10px] font-bold border border-emerald-300">
                                 APROVADO
                               </span>
                             ) : (
-                              <span className="px-2 py-0.5 rounded bg-red-950 text-red-300 text-[10px] font-bold border border-red-800">
+                              <span className="px-2 py-0.5 rounded bg-rose-50 text-rose-800 text-[10px] font-bold border border-rose-200">
                                 REPROVADO
                               </span>
                             )}
@@ -1091,13 +1093,13 @@ export default function HomePage() {
         {/* ============================================================== */}
         {activeTab === 'equipments' && (
           <div className="space-y-6 animate-in fade-in duration-150">
-            <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="bg-white border border-[#E2ECE6] p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
               <div>
-                <h2 className="text-lg font-bold text-white flex items-center space-x-2">
-                  <Wrench className="w-5 h-5 text-amber-400" />
+                <h2 className="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                  <Wrench className="w-5 h-5 text-amber-600" />
                   <span>Gestão de Equipamentos, NR-13 e Laudos Técnicos</span>
                 </h2>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-500 mt-0.5">
                   Conformidade com a Norma NR-13 (Compressores), RDC 1002 (Termopares de Autoclave) e Radioproteção (Físico Médico).
                 </p>
               </div>
@@ -1108,7 +1110,7 @@ export default function HomePage() {
                     setEditingEquipment(null);
                     setIsEquipmentModalOpen(true);
                   }}
-                  className="flex items-center space-x-1.5 px-3.5 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl text-xs shadow transition cursor-pointer"
+                  className="flex items-center space-x-1.5 px-3.5 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold rounded-xl text-xs shadow-sm transition cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
                   <span>+ Cadastrar Equipamento / Autoclave</span>
@@ -1117,10 +1119,10 @@ export default function HomePage() {
             </div>
 
             {equipments.length === 0 ? (
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl p-10 text-center space-y-3">
-                <AlertCircle className="w-10 h-10 text-amber-400 mx-auto" />
-                <h3 className="font-bold text-slate-200 text-sm">Nenhum equipamento cadastrado ainda</h3>
-                <p className="text-xs text-slate-400 max-w-md mx-auto">
+              <div className="bg-white border border-[#E2ECE6] rounded-2xl p-10 text-center space-y-3 shadow-xs">
+                <AlertCircle className="w-10 h-10 text-amber-500 mx-auto" />
+                <h3 className="font-bold text-slate-800 text-sm">Nenhum equipamento cadastrado ainda</h3>
+                <p className="text-xs text-slate-500 max-w-md mx-auto">
                   A RDC 1002/2025 exige o inventário e guarda de laudos de autoclaves, compressores e raios-X.
                 </p>
                 <button
@@ -1128,7 +1130,7 @@ export default function HomePage() {
                     setEditingEquipment(null);
                     setIsEquipmentModalOpen(true);
                   }}
-                  className="inline-flex items-center space-x-1.5 px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl text-xs transition"
+                  className="inline-flex items-center space-x-1.5 px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold rounded-xl text-xs shadow-sm transition"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Cadastrar Primeiro Equipamento</span>
@@ -1139,16 +1141,16 @@ export default function HomePage() {
                 {equipments.map((eq) => (
                   <div
                     key={eq.id}
-                    className="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4 hover:border-slate-700 transition"
+                    className="bg-white border border-[#E2ECE6] rounded-2xl p-5 space-y-4 hover:border-teal-300 shadow-xs transition"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-teal-700">
                           {eq.category}
                         </span>
-                        <h3 className="text-sm font-bold text-slate-100 truncate">{eq.name}</h3>
-                        <p className="text-xs text-slate-400">
-                          {eq.brand} {eq.model} • Local: <span className="text-slate-300">{eq.locationRoom}</span>
+                        <h3 className="text-sm font-bold text-slate-900 truncate">{eq.name}</h3>
+                        <p className="text-xs text-slate-500">
+                          {eq.brand} {eq.model} • Local: <span className="text-slate-700 font-medium">{eq.locationRoom}</span>
                         </p>
                       </div>
 
@@ -1156,10 +1158,10 @@ export default function HomePage() {
                         <span
                           className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
                             eq.status === 'OK'
-                              ? 'bg-emerald-950 text-emerald-300 border-emerald-800'
+                              ? 'bg-[#DCFCE7] text-emerald-800 border-emerald-300'
                               : eq.status === 'WARNING'
-                              ? 'bg-amber-950 text-amber-300 border-amber-800'
-                              : 'bg-rose-950 text-rose-300 border-rose-800'
+                              ? 'bg-amber-50 text-amber-800 border-amber-300'
+                              : 'bg-rose-50 text-rose-800 border-rose-300'
                           }`}
                         >
                           {eq.status === 'OK' ? 'CONFORME' : eq.status === 'WARNING' ? 'ALERTA' : 'VENCIDO'}
@@ -1170,45 +1172,45 @@ export default function HomePage() {
                             setIsEquipmentModalOpen(true);
                           }}
                           title="Editar Equipamento"
-                          className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition"
+                          className="p-1.5 rounded-lg bg-white border border-[#E2ECE6] hover:bg-slate-50 text-slate-600 hover:text-slate-900 transition shadow-2xs"
                         >
                           <Edit2 className="w-3.5 h-3.5" />
                         </button>
                         <button
                           onClick={() => handleDeleteEquipment(eq.id)}
                           title="Excluir Equipamento"
-                          className="p-1.5 rounded-lg bg-slate-800 hover:bg-rose-900/40 text-slate-400 hover:text-rose-300 transition"
+                          className="p-1.5 rounded-lg bg-white border border-[#E2ECE6] hover:bg-rose-50 text-slate-400 hover:text-rose-600 transition shadow-2xs"
                         >
                           <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 text-xs bg-slate-950 p-3 rounded-xl border border-slate-800 text-slate-300">
+                    <div className="grid grid-cols-2 gap-2 text-xs bg-[#F8FAF9] p-3 rounded-xl border border-[#E2ECE6] text-slate-700">
                       <div>
                         <span className="text-[10px] text-slate-500 block">Número de Série</span>
-                        <span className="font-mono text-[11px] text-cyan-300">{eq.serialNumber || 'N/A'}</span>
+                        <span className="font-mono text-[11px] text-teal-800 font-bold">{eq.serialNumber || 'N/A'}</span>
                       </div>
                       <div>
                         <span className="text-[10px] text-slate-500 block">Próxima Manutenção</span>
-                        <span className="font-semibold text-slate-100">{eq.nextMaintenance}</span>
+                        <span className="font-semibold text-slate-900">{eq.nextMaintenance}</span>
                       </div>
                       {eq.thermalQualificationDate && (
-                        <div className="col-span-2 pt-1 border-t border-slate-900 flex items-center justify-between text-[11px]">
-                          <span className="text-slate-400">Qualificação Térmica (RDC 1002):</span>
-                          <span className="text-emerald-400 font-medium">{eq.thermalQualificationDate}</span>
+                        <div className="col-span-2 pt-1 border-t border-[#E2ECE6] flex items-center justify-between text-[11px]">
+                          <span className="text-slate-500">Qualificação Térmica (RDC 1002):</span>
+                          <span className="text-emerald-700 font-bold">{eq.thermalQualificationDate}</span>
                         </div>
                       )}
                       {eq.nr13HydrostaticTestDate && (
-                        <div className="col-span-2 pt-1 border-t border-slate-900 flex items-center justify-between text-[11px]">
-                          <span className="text-slate-400">Teste Hidrostático (NR-13):</span>
-                          <span className="text-emerald-400 font-medium">{eq.nr13HydrostaticTestDate}</span>
+                        <div className="col-span-2 pt-1 border-t border-[#E2ECE6] flex items-center justify-between text-[11px]">
+                          <span className="text-slate-500">Teste Hidrostático (NR-13):</span>
+                          <span className="text-emerald-700 font-bold">{eq.nr13HydrostaticTestDate}</span>
                         </div>
                       )}
                       {eq.radiationSurveyDate && (
-                        <div className="col-span-2 pt-1 border-t border-slate-900 flex items-center justify-between text-[11px]">
-                          <span className="text-slate-400">Levantamento Radiométrico:</span>
-                          <span className="text-emerald-400 font-medium">{eq.radiationSurveyDate}</span>
+                        <div className="col-span-2 pt-1 border-t border-[#E2ECE6] flex items-center justify-between text-[11px]">
+                          <span className="text-slate-500">Levantamento Radiométrico:</span>
+                          <span className="text-emerald-700 font-bold">{eq.radiationSurveyDate}</span>
                         </div>
                       )}
                     </div>
@@ -1216,14 +1218,14 @@ export default function HomePage() {
                     <div className="flex items-center justify-between pt-1 text-xs">
                       <button
                         onClick={() => handleWhatsAppTechnician(eq)}
-                        className="text-[11px] text-emerald-400 hover:text-emerald-300 flex items-center space-x-1"
+                        className="text-[11px] text-teal-700 hover:text-teal-900 font-medium flex items-center space-x-1"
                       >
                         <MessageCircle className="w-3.5 h-3.5" />
                         <span>Chamar Técnico</span>
                       </button>
                       <button
                         onClick={() => setMaintenanceEquip(eq)}
-                        className="text-[11px] text-cyan-400 hover:text-cyan-300 font-semibold flex items-center space-x-1"
+                        className="text-[11px] text-teal-800 hover:text-teal-950 font-bold flex items-center space-x-1"
                       >
                         <Wrench className="w-3.5 h-3.5" />
                         <span>Registrar Manutenção</span>
@@ -1286,20 +1288,20 @@ export default function HomePage() {
         {activeTab === 'team' && (
           <div className="space-y-6 animate-in fade-in duration-150">
             {/* Cabeçalho */}
-            <div className="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="bg-white border border-[#E2ECE6] p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs">
               <div>
-                <h2 className="text-lg font-bold text-white flex items-center space-x-2">
-                  <Building2 className="w-5 h-5 text-cyan-400" />
+                <h2 className="text-lg font-bold text-slate-900 flex items-center space-x-2">
+                  <Building2 className="w-5 h-5 text-teal-600" />
                   <span>Gestão da Clínica, Responsável Técnico e Equipe</span>
                 </h2>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-500 mt-0.5">
                   Preencha os campos obrigatórios abaixo para regularizar o cadastro da clínica na Vigilância Sanitária (RDC 1002/2025).
                 </p>
               </div>
 
               <button
                 onClick={() => setIsNewMemberOpen(true)}
-                className="flex items-center space-x-1.5 px-3.5 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl text-xs shadow-md transition"
+                className="flex items-center space-x-1.5 px-3.5 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold rounded-xl text-xs shadow-sm transition"
               >
                 <UserPlus className="w-4 h-4" />
                 <span>+ Adicionar Colaborador (ASB/TSB)</span>
@@ -1307,15 +1309,15 @@ export default function HomePage() {
             </div>
 
             {/* SEÇÃO 1: DADOS SANITÁRIOS DA CLÍNICA */}
-            <form onSubmit={handleSaveClinic} className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-5">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <form onSubmit={handleSaveClinic} className="bg-white border border-[#E2ECE6] rounded-2xl p-6 space-y-5 shadow-xs">
+              <div className="flex items-center justify-between border-b border-[#E2ECE6] pb-3">
                 <div className="flex items-center space-x-2">
-                  <FileBadge className="w-5 h-5 text-cyan-400" />
-                  <h3 className="font-bold text-sm text-slate-100">1. Dados Cadastrais e Licença Sanitária</h3>
+                  <FileBadge className="w-5 h-5 text-teal-600" />
+                  <h3 className="font-bold text-sm text-slate-900">1. Dados Cadastrais e Licença Sanitária</h3>
                 </div>
                 {saveSuccess && (
-                  <span className="text-xs text-emerald-400 font-semibold flex items-center space-x-1 bg-emerald-950/80 px-2 py-1 rounded border border-emerald-800">
-                    <Check className="w-3.5 h-3.5" />
+                  <span className="text-xs text-emerald-800 font-semibold flex items-center space-x-1 bg-[#DCFCE7] px-2.5 py-1 rounded-full border border-emerald-300">
+                    <Check className="w-3.5 h-3.5 text-emerald-600" />
                     <span>Dados salvos com sucesso!</span>
                   </span>
                 )}
@@ -1323,103 +1325,103 @@ export default function HomePage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
                 <div>
-                  <label className="text-[11px] font-medium text-slate-400 flex items-center justify-between mb-1">
+                  <label className="text-[11px] font-medium text-slate-600 flex items-center justify-between mb-1">
                     <span>Razão Social *</span>
-                    {!clinic.legalName && <span className="text-[10px] text-amber-400 font-bold">FALTA PREENCHER</span>}
+                    {!clinic.legalName && <span className="text-[10px] text-amber-700 font-bold">FALTA PREENCHER</span>}
                   </label>
                   <input
                     type="text"
                     value={clinic.legalName}
                     onChange={(e) => setClinic({ ...clinic, legalName: e.target.value })}
                     placeholder="Ex: Odonto Prime Serviços Odontológicos Ltda"
-                    className={`w-full bg-slate-950 border rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500 ${
-                      !clinic.legalName ? 'border-amber-500/60 bg-amber-950/10' : 'border-slate-700'
+                    className={`w-full bg-white border rounded-lg px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 ${
+                      !clinic.legalName ? 'border-amber-400 bg-amber-50/30' : 'border-[#E2ECE6]'
                     }`}
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-medium text-slate-400 block mb-1">Nome Fantasia *</label>
+                  <label className="text-[11px] font-medium text-slate-600 block mb-1">Nome Fantasia *</label>
                   <input
                     type="text"
                     value={clinic.name}
                     onChange={(e) => setClinic({ ...clinic, name: e.target.value })}
                     placeholder="Ex: Clínica Odonto Prime"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-lg px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600"
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-medium text-slate-400 flex items-center justify-between mb-1">
+                  <label className="text-[11px] font-medium text-slate-600 flex items-center justify-between mb-1">
                     <span>CNPJ *</span>
-                    {!clinic.cnpj && <span className="text-[10px] text-amber-400 font-bold">FALTA PREENCHER</span>}
+                    {!clinic.cnpj && <span className="text-[10px] text-amber-700 font-bold">FALTA PREENCHER</span>}
                   </label>
                   <input
                     type="text"
                     value={clinic.cnpj}
                     onChange={(e) => setClinic({ ...clinic, cnpj: e.target.value })}
                     placeholder="00.000.000/0001-00"
-                    className={`w-full bg-slate-950 border rounded-lg px-3 py-1.5 text-xs text-slate-100 font-mono focus:outline-none focus:border-cyan-500 ${
-                      !clinic.cnpj ? 'border-amber-500/60 bg-amber-950/10' : 'border-slate-700'
+                    className={`w-full bg-white border rounded-lg px-3 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 ${
+                      !clinic.cnpj ? 'border-amber-400 bg-amber-50/30' : 'border-[#E2ECE6]'
                     }`}
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-medium text-slate-400 flex items-center justify-between mb-1">
+                  <label className="text-[11px] font-medium text-slate-600 flex items-center justify-between mb-1">
                     <span>Inscrição CRO-PJ *</span>
-                    {!clinic.croRegistration && <span className="text-[10px] text-amber-400 font-bold">FALTA PREENCHER</span>}
+                    {!clinic.croRegistration && <span className="text-[10px] text-amber-700 font-bold">FALTA PREENCHER</span>}
                   </label>
                   <input
                     type="text"
                     value={clinic.croRegistration}
                     onChange={(e) => setClinic({ ...clinic, croRegistration: e.target.value })}
                     placeholder="Ex: SP-CL-12345"
-                    className={`w-full bg-slate-950 border rounded-lg px-3 py-1.5 text-xs text-slate-100 font-mono focus:outline-none focus:border-cyan-500 ${
-                      !clinic.croRegistration ? 'border-amber-500/60 bg-amber-950/10' : 'border-slate-700'
+                    className={`w-full bg-white border rounded-lg px-3 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 ${
+                      !clinic.croRegistration ? 'border-amber-400 bg-amber-50/30' : 'border-[#E2ECE6]'
                     }`}
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-medium text-slate-400 flex items-center justify-between mb-1">
+                  <label className="text-[11px] font-medium text-slate-600 flex items-center justify-between mb-1">
                     <span>Nº do Alvará Sanitário (VISA) *</span>
-                    {!clinic.sanitaryLicense && <span className="text-[10px] text-amber-400 font-bold">FALTA PREENCHER</span>}
+                    {!clinic.sanitaryLicense && <span className="text-[10px] text-amber-700 font-bold">FALTA PREENCHER</span>}
                   </label>
                   <input
                     type="text"
                     value={clinic.sanitaryLicense}
                     onChange={(e) => setClinic({ ...clinic, sanitaryLicense: e.target.value })}
                     placeholder="Ex: VISA-SP 2026/12345-A"
-                    className={`w-full bg-slate-950 border rounded-lg px-3 py-1.5 text-xs text-slate-100 font-mono focus:outline-none focus:border-cyan-500 ${
-                      !clinic.sanitaryLicense ? 'border-amber-500/60 bg-amber-950/10' : 'border-slate-700'
+                    className={`w-full bg-white border rounded-lg px-3 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 ${
+                      !clinic.sanitaryLicense ? 'border-amber-400 bg-amber-50/30' : 'border-[#E2ECE6]'
                     }`}
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-medium text-slate-400 flex items-center justify-between mb-1">
+                  <label className="text-[11px] font-medium text-slate-600 flex items-center justify-between mb-1">
                     <span>Vencimento do Alvará *</span>
-                    {!clinic.licenseExpiry && <span className="text-[10px] text-amber-400 font-bold">FALTA PREENCHER</span>}
+                    {!clinic.licenseExpiry && <span className="text-[10px] text-amber-700 font-bold">FALTA PREENCHER</span>}
                   </label>
                   <input
                     type="date"
                     value={clinic.licenseExpiry}
                     onChange={(e) => setClinic({ ...clinic, licenseExpiry: e.target.value })}
-                    className={`w-full bg-slate-950 border rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500 ${
-                      !clinic.licenseExpiry ? 'border-amber-500/60 bg-amber-950/10' : 'border-slate-700'
+                    className={`w-full bg-white border rounded-lg px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 ${
+                      !clinic.licenseExpiry ? 'border-amber-400 bg-amber-50/30' : 'border-[#E2ECE6]'
                     }`}
                     required
                   />
                 </div>
 
                 <div>
-                  <label className="text-[11px] font-medium text-slate-400 block mb-1">
+                  <label className="text-[11px] font-medium text-slate-600 block mb-1">
                     Quantidade de Consultórios / Cadeiras *
                   </label>
                   <input
@@ -1435,10 +1437,10 @@ export default function HomePage() {
                         nspRequired: count >= 2,
                       });
                     }}
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 font-bold focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-lg px-3 py-1.5 text-xs text-slate-900 font-bold focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600"
                     required
                   />
-                  <span className="text-[10px] text-cyan-400 block mt-1">
+                  <span className="text-[10px] text-teal-800 block mt-1 font-medium">
                     {clinic.chairsCount >= 2
                       ? '● Com 2+ consultórios: Núcleo de Segurança do Paciente (NSP) é OBRIGATÓRIO (RDC 1002).'
                       : '● Consultório único: Isento de constituição formal de NSP.'}
@@ -1446,21 +1448,21 @@ export default function HomePage() {
                 </div>
 
                 <div className="sm:col-span-2">
-                  <label className="text-[11px] font-medium text-slate-400 block mb-1">Endereço Completo</label>
+                  <label className="text-[11px] font-medium text-slate-600 block mb-1">Endereço Completo</label>
                   <input
                     type="text"
                     value={clinic.address || ''}
                     onChange={(e) => setClinic({ ...clinic, address: e.target.value })}
                     placeholder="Rua/Av, Número, Bairro, Cidade - UF"
-                    className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-lg px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end pt-2 border-t border-slate-800">
+              <div className="flex justify-end pt-2 border-t border-[#E2ECE6]">
                 <button
                   type="submit"
-                  className="flex items-center space-x-1.5 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-xs font-semibold shadow transition"
+                  className="flex items-center space-x-1.5 px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white rounded-lg text-xs font-semibold shadow-sm transition"
                 >
                   <Save className="w-3.5 h-3.5" />
                   <span>Salvar Dados Sanitários da Clínica</span>
@@ -1469,15 +1471,15 @@ export default function HomePage() {
             </form>
 
             {/* SEÇÃO 2: RESPONSÁVEL TÉCNICO (RT) */}
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-              <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div className="bg-white border border-[#E2ECE6] rounded-2xl p-6 space-y-4 shadow-xs">
+              <div className="flex items-center justify-between border-b border-[#E2ECE6] pb-3">
                 <div className="flex items-center space-x-2">
-                  <Stethoscope className="w-5 h-5 text-cyan-400" />
+                  <Stethoscope className="w-5 h-5 text-teal-600" />
                   <div>
-                    <h3 className="font-bold text-sm text-slate-100">
+                    <h3 className="font-bold text-sm text-slate-900">
                       2. Responsável Técnico (RT) Habilitado perante o CRO e Vigilância
                     </h3>
-                    <p className="text-[11px] text-slate-400">
+                    <p className="text-[11px] text-slate-500">
                       Cirurgião-Dentista legalmente investido como RT segundo a Lei 4.324/64 e RDC 1002/2025
                     </p>
                   </div>
@@ -1486,8 +1488,8 @@ export default function HomePage() {
                 <span
                   className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${
                     clinic.technicalResponsibleName && clinic.technicalResponsibleCro
-                      ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'
-                      : 'bg-amber-950 text-amber-300 border border-amber-800'
+                      ? 'bg-[#DCFCE7] text-emerald-800 border border-emerald-300'
+                      : 'bg-amber-50 text-amber-800 border border-amber-300'
                   }`}
                 >
                   {clinic.technicalResponsibleName && clinic.technicalResponsibleCro
@@ -1496,25 +1498,25 @@ export default function HomePage() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs bg-slate-950 p-4 rounded-xl border border-slate-800">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs bg-[#F8FAF9] p-4 rounded-xl border border-[#E2ECE6]">
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1">Nome Completo do Cirurgião-Dentista RT *</label>
+                  <label className="text-[10px] text-slate-600 block mb-1">Nome Completo do Cirurgião-Dentista RT *</label>
                   <input
                     type="text"
                     value={clinic.technicalResponsibleName || ''}
                     onChange={(e) => setClinic({ ...clinic, technicalResponsibleName: e.target.value })}
                     placeholder="Ex: Dr. Roberto Guimarães"
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-lg px-2.5 py-1 text-xs text-slate-900 focus:outline-none focus:border-teal-600"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1">Número de Registro no CRO *</label>
+                  <label className="text-[10px] text-slate-600 block mb-1">Número de Registro no CRO *</label>
                   <div className="flex space-x-1">
                     <select
                       value={clinic.technicalResponsibleCroState || 'SP'}
                       onChange={(e) => setClinic({ ...clinic, technicalResponsibleCroState: e.target.value })}
-                      className="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-slate-100"
+                      className="bg-white border border-[#E2ECE6] rounded-lg px-2 py-1 text-xs text-slate-900"
                     >
                       <option value="SP">SP</option>
                       <option value="RJ">RJ</option>
@@ -1529,51 +1531,51 @@ export default function HomePage() {
                       value={clinic.technicalResponsibleCro || ''}
                       onChange={(e) => setClinic({ ...clinic, technicalResponsibleCro: e.target.value })}
                       placeholder="123.456"
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-slate-100 font-mono focus:outline-none focus:border-cyan-500"
+                      className="w-full bg-white border border-[#E2ECE6] rounded-lg px-2 py-1 text-xs text-slate-900 font-mono focus:outline-none focus:border-teal-600"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1">E-mail Profissional do RT</label>
+                  <label className="text-[10px] text-slate-600 block mb-1">E-mail Profissional do RT</label>
                   <input
                     type="email"
                     value={clinic.technicalResponsibleEmail || ''}
                     onChange={(e) => setClinic({ ...clinic, technicalResponsibleEmail: e.target.value })}
                     placeholder="rt@clinica.com.br"
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-lg px-2.5 py-1 text-xs text-slate-900 focus:outline-none focus:border-teal-600"
                   />
                 </div>
 
                 <div>
-                  <label className="text-[10px] text-slate-400 block mb-1">Telefone / WhatsApp do RT</label>
+                  <label className="text-[10px] text-slate-600 block mb-1">Telefone / WhatsApp do RT</label>
                   <input
                     type="text"
                     value={clinic.technicalResponsiblePhone || ''}
                     onChange={(e) => setClinic({ ...clinic, technicalResponsiblePhone: e.target.value })}
                     placeholder="(11) 99999-8888"
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-lg px-2.5 py-1 text-xs text-slate-900 focus:outline-none focus:border-teal-600"
                   />
                 </div>
               </div>
             </div>
 
             {/* SEÇÃO 3: QUADRO DE COLABORADORES */}
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+            <div className="bg-white border border-[#E2ECE6] rounded-2xl p-6 space-y-4 shadow-xs">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#E2ECE6] pb-3">
                 <div>
-                  <h3 className="font-bold text-sm text-slate-100 flex items-center space-x-2">
-                    <Users className="w-5 h-5 text-indigo-400" />
+                  <h3 className="font-bold text-sm text-slate-900 flex items-center space-x-2">
+                    <Users className="w-5 h-5 text-teal-700" />
                     <span>3. Quadro de Colaboradores e Acessos ao Sistema ({teamMembers.length})</span>
                   </h3>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-500">
                     Cadastre ao menos 1 ASB ou TSB para cumprir a RDC 1002 na operação da CME.
                   </p>
                 </div>
 
                 <button
                   onClick={() => setIsNewMemberOpen(true)}
-                  className="flex items-center space-x-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-slate-700 rounded-lg text-xs font-semibold transition"
+                  className="flex items-center space-x-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 text-teal-800 border border-[#E2ECE6] rounded-lg text-xs font-semibold shadow-2xs transition"
                 >
                   <UserPlus className="w-3.5 h-3.5" />
                   <span>Novo Colaborador</span>
@@ -1584,11 +1586,11 @@ export default function HomePage() {
                 {teamMembers.map((member) => (
                   <div
                     key={member.id}
-                    className="bg-slate-950/70 border border-slate-800 rounded-xl p-4 space-y-3 hover:border-slate-700 transition"
+                    className="bg-white border border-[#E2ECE6] rounded-xl p-4 space-y-3 hover:border-teal-400 shadow-2xs transition"
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex items-center space-x-2.5">
-                        <div className="w-9 h-9 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center font-bold text-cyan-400 text-xs">
+                        <div className="w-9 h-9 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center font-bold text-teal-800 text-xs">
                           {member.name
                             .split(' ')
                             .map((n) => n[0])
@@ -1596,38 +1598,38 @@ export default function HomePage() {
                             .join('')}
                         </div>
                         <div>
-                          <h4 className="font-bold text-slate-100 text-xs">{member.name}</h4>
-                          <span className="text-[11px] text-cyan-400 font-medium block">
+                          <h4 className="font-bold text-slate-900 text-xs">{member.name}</h4>
+                          <span className="text-[11px] text-teal-700 font-medium block">
                             {member.roleName}
                           </span>
                         </div>
                       </div>
 
-                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">
+                      <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-[#DCFCE7] text-emerald-800 border border-emerald-300">
                         {member.active ? 'ATIVO' : 'INATIVO'}
                       </span>
                     </div>
 
-                    <div className="space-y-1 text-[11px] text-slate-400 bg-slate-900/50 p-2.5 rounded-lg border border-slate-800/80">
+                    <div className="space-y-1 text-[11px] text-slate-600 bg-[#F8FAF9] p-2.5 rounded-lg border border-[#E2ECE6]">
                       {member.councilNumber && (
                         <div className="flex justify-between">
-                          <span>Registro Conselho:</span>
-                          <span className="font-mono text-slate-200">
+                          <span className="text-slate-500">Registro Conselho:</span>
+                          <span className="font-mono text-slate-800 font-semibold">
                             {member.councilState} {member.councilNumber}
                           </span>
                         </div>
                       )}
                       <div className="flex justify-between">
-                        <span>CPF:</span>
-                        <span className="font-mono text-slate-300">{member.cpf}</span>
+                        <span className="text-slate-500">CPF:</span>
+                        <span className="font-mono text-slate-800">{member.cpf}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span>E-mail:</span>
-                        <span className="text-slate-300 truncate max-w-[160px]">{member.email}</span>
+                        <span className="text-slate-500">E-mail:</span>
+                        <span className="text-slate-800 truncate max-w-[160px]">{member.email}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span>WhatsApp:</span>
-                        <span className="text-slate-300">{member.phone}</span>
+                        <span className="text-slate-500">WhatsApp:</span>
+                        <span className="text-slate-800 font-medium">{member.phone}</span>
                       </div>
                     </div>
                   </div>

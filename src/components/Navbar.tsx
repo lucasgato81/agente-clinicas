@@ -82,40 +82,43 @@ export const Navbar: React.FC<NavbarProps> = ({
     .join('');
 
   return (
-    <header className="bg-slate-900 border-b border-slate-800 text-white sticky top-0 z-40 shadow-md">
+    <header className="bg-white/95 backdrop-blur-md border-b border-[#E2ECE6] text-slate-800 sticky top-0 z-40 shadow-xs">
+      {/* Linha de acabamento superior hospitalar sutil */}
+      <div className="h-1 bg-gradient-to-r from-teal-500 via-emerald-500 to-teal-600 w-full" />
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo & Marca */}
+          {/* Logo & Marca - Identidade Grau Cirúrgico */}
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/30">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-teal-600 to-emerald-500 flex items-center justify-center shadow-md shadow-teal-700/20">
               <ShieldCheck className="w-6 h-6 text-white" />
             </div>
             <div>
               <div className="flex items-center space-x-2">
-                <span className="font-bold text-lg tracking-tight bg-gradient-to-r from-white via-cyan-100 to-cyan-400 bg-clip-text text-transparent">
+                <span className="font-black text-lg tracking-tight text-slate-900">
                   OdontoShield
                 </span>
-                <span className="text-[10px] uppercase font-semibold bg-cyan-950 text-cyan-300 border border-cyan-800/80 px-1.5 py-0.5 rounded">
+                <span className="text-[10px] uppercase font-bold bg-teal-50 text-teal-800 border border-teal-300 px-2 py-0.5 rounded-full shadow-2xs">
                   RDC 1002/2025
                 </span>
               </div>
-              <div className="flex items-center text-xs text-slate-400 space-x-1">
-                <Building2 className="w-3 h-3 text-slate-500" />
-                <span className="truncate max-w-[200px]">{clinic?.name || 'Clínica Odontológica'}</span>
+              <div className="flex items-center text-xs text-slate-500 space-x-1">
+                <Building2 className="w-3 h-3 text-teal-600" />
+                <span className="truncate max-w-[200px] font-medium">{clinic?.name || 'Clínica Odontológica'}</span>
               </div>
             </div>
           </div>
 
-          {/* Botão de Dossiê Fiscal VISA, Plano SaaS & Usuário Ativo */}
+          {/* Botões de Ação do SaaS & Usuário Ativo */}
           <div className="hidden md:flex items-center space-x-2">
             {onOpenSubscription && (
               <button
                 type="button"
                 onClick={onOpenSubscription}
-                className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-800 text-cyan-300 text-xs font-semibold shadow-sm transition"
+                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-teal-50 hover:bg-teal-100 border border-teal-200 text-teal-800 text-xs font-semibold shadow-2xs transition cursor-pointer"
                 title="Gerenciar Plano SaaS e Faturamento"
               >
-                <CreditCard className="w-3.5 h-3.5 text-cyan-400" />
+                <CreditCard className="w-3.5 h-3.5 text-teal-600" />
                 <span>{clinic?.planName || 'Plano Pro'} ({clinic?.trialDaysLeft || 14}d)</span>
               </button>
             )}
@@ -123,10 +126,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             <Link
               href="/lp"
               target="_blank"
-              className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-medium transition"
+              className="flex items-center space-x-1 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium transition cursor-pointer"
               title="Visualizar a Landing Page pública de divulgação do OdontoShield"
             >
-              <Globe className="w-3.5 h-3.5 text-cyan-400" />
+              <Globe className="w-3.5 h-3.5 text-teal-600" />
               <span>Ver LP</span>
             </Link>
 
@@ -134,10 +137,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 type="button"
                 onClick={onOpenNewTenant}
-                className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-medium transition"
+                className="flex items-center space-x-1 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium transition cursor-pointer"
                 title="Cadastrar nova unidade / clínica no SaaS"
               >
-                <PlusCircle className="w-3.5 h-3.5 text-cyan-400" />
+                <PlusCircle className="w-3.5 h-3.5 text-teal-600" />
                 <span>Nova Clínica</span>
               </button>
             )}
@@ -146,10 +149,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 type="button"
                 onClick={onOpenFranchise}
-                className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-medium transition"
+                className="flex items-center space-x-1 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium transition cursor-pointer"
                 title="Painel Corporativo Multi-unidades / Franquias"
               >
-                <Building className="w-3.5 h-3.5 text-cyan-400" />
+                <Building className="w-3.5 h-3.5 text-teal-600" />
                 <span>Redes</span>
               </button>
             )}
@@ -158,10 +161,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 type="button"
                 onClick={onOpenEhr}
-                className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-medium transition"
+                className="flex items-center space-x-1 px-2.5 py-1.5 rounded-xl bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium transition cursor-pointer"
                 title="Sincronizar Prontuários (Clinicorp, Simples Dental)"
               >
-                <Database className="w-3.5 h-3.5 text-cyan-400" />
+                <Database className="w-3.5 h-3.5 text-teal-600" />
                 <span>Prontuários</span>
               </button>
             )}
@@ -170,17 +173,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               <button
                 type="button"
                 onClick={onOpenWhatsAppAutomations}
-                className="flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700/80 text-emerald-300 text-xs font-semibold rounded-lg shadow-sm transition"
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 text-emerald-800 text-xs font-semibold rounded-xl shadow-2xs transition cursor-pointer"
                 title="Configurar disparos automáticos no WhatsApp"
               >
-                <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+                <MessageSquare className="w-3.5 h-3.5 text-emerald-600" />
                 <span>WhatsApp</span>
               </button>
             )}
 
             <button
               onClick={onOpenDossier}
-              className="flex items-center space-x-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold rounded-lg shadow-sm shadow-emerald-900/50 transition-all border border-emerald-400/30"
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-500 hover:to-emerald-500 text-white text-xs font-bold rounded-xl shadow-sm shadow-teal-800/20 transition-all cursor-pointer"
             >
               <FileText className="w-4 h-4" />
               <span>Dossiê VISA</span>
@@ -189,19 +192,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Perfil do Usuário com alternância rápida */}
             <div
               onClick={onSwitchUser}
-              className="flex items-center space-x-2 pl-3 border-l border-slate-800 text-xs cursor-pointer group"
-              title="Clique para alternar perfil de teste (RT vs ASB)"
+              className="flex items-center space-x-2 pl-3 border-l border-[#E2ECE6] text-xs cursor-pointer group"
+              title="Clique para alternar perfil de operador (RT vs ASB)"
             >
-              <div className="w-8 h-8 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center text-cyan-400 font-bold group-hover:border-cyan-500 transition">
+              <div className="w-8 h-8 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-800 font-bold group-hover:border-teal-500 transition shadow-2xs">
                 {userInitials}
               </div>
               <div className="text-left">
-                <div className="font-semibold text-slate-200 group-hover:text-cyan-300 transition flex items-center space-x-1">
+                <div className="font-bold text-slate-800 group-hover:text-teal-700 transition flex items-center space-x-1">
                   <span>{currentUser?.name || 'Usuário'}</span>
-                  <span className="text-[10px] text-slate-500 font-normal">(Alternar)</span>
+                  <span className="text-[10px] text-slate-400 font-normal">(Trocar)</span>
                 </div>
-                <div className="text-[11px] text-cyan-400 flex items-center space-x-1">
-                  <UserCheck className="w-3 h-3" />
+                <div className="text-[11px] text-teal-700 flex items-center space-x-1 font-medium">
+                  <UserCheck className="w-3 h-3 text-teal-600" />
                   <span>
                     {currentUser?.roleName || 'Colaborador'}{' '}
                     {currentUser?.croNumber ? `(${currentUser.croState} ${currentUser.croNumber})` : ''}
@@ -212,13 +215,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Abas de Navegação com Barra de Rolagem Horizontal Visível no Desktop */}
-        <div className="relative group/nav border-t border-slate-800/60">
+        {/* Abas de Navegação com Barra de Rolagem Horizontal */}
+        <div className="relative group/nav border-t border-[#E2ECE6]">
           {/* Botão de Rolagem Esquerda (Computador) */}
           <button
             type="button"
             onClick={() => scrollNav('left')}
-            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-7 h-7 items-center justify-center bg-slate-900/90 hover:bg-slate-800 text-cyan-400 border border-slate-700/80 rounded-full shadow-lg backdrop-blur-sm transition opacity-0 group-hover/nav:opacity-100 cursor-pointer"
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-7 h-7 items-center justify-center bg-white/95 hover:bg-slate-50 text-teal-700 border border-[#E2ECE6] rounded-full shadow-md backdrop-blur-sm transition opacity-0 group-hover/nav:opacity-100 cursor-pointer"
             title="Rolar abas para a esquerda"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -231,7 +234,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 e.currentTarget.scrollLeft += e.deltaY;
               }
             }}
-            className="flex space-x-1 overflow-x-auto pt-2 pb-2.5 px-1 desktop-horizontal-scrollbar scroll-smooth"
+            className="flex space-x-1 overflow-x-auto pt-2 pb-2 px-1 desktop-horizontal-scrollbar scroll-smooth"
           >
             {navItems.map((item) => {
               const Icon = item.icon;
@@ -240,13 +243,13 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`flex items-center space-x-2 px-3.5 py-2 text-xs font-medium rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                  className={`flex items-center space-x-2 px-3.5 py-2 text-xs font-medium rounded-xl transition-all whitespace-nowrap shrink-0 cursor-pointer ${
                     isActive
-                      ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30'
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                      ? 'bg-teal-50 text-teal-900 border border-teal-300 font-bold shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/70 border border-transparent'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-teal-700' : 'text-slate-500'}`} />
                   <span>{item.label}</span>
                 </button>
               );
@@ -257,7 +260,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={() => scrollNav('right')}
-            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-7 h-7 items-center justify-center bg-slate-900/90 hover:bg-slate-800 text-cyan-400 border border-slate-700/80 rounded-full shadow-lg backdrop-blur-sm transition opacity-0 group-hover/nav:opacity-100 cursor-pointer"
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-7 h-7 items-center justify-center bg-white/95 hover:bg-slate-50 text-teal-700 border border-[#E2ECE6] rounded-full shadow-md backdrop-blur-sm transition opacity-0 group-hover/nav:opacity-100 cursor-pointer"
             title="Rolar abas para a direita"
           >
             <ChevronRight className="w-4 h-4" />

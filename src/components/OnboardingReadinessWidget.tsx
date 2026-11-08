@@ -65,20 +65,20 @@ export const OnboardingReadinessWidget: React.FC<OnboardingReadinessWidgetProps>
       lawRef: 'Exigência Fiscal e Sanitária',
     },
     {
+      id: 'license',
+      title: 'Número e Validade do Alvará Sanitário (VISA)',
+      description: 'Licença sanitária municipal/estadual de funcionamento.',
+      completed: hasSanitaryLicense,
+      tab: 'team',
+      lawRef: 'RDC 1002/2025 Art. 6º',
+    },
+    {
       id: 'croPj',
       title: 'Inscrição no CRO da Pessoa Jurídica (CRO-PJ)',
       description: 'Registro do consultório ou clínica no Conselho Regional de Odontologia.',
       completed: hasCroPj,
       tab: 'team',
       lawRef: 'Lei 4.324/64 & RDC 1002',
-    },
-    {
-      id: 'sanitaryLicense',
-      title: 'Número e Validade do Alvará Sanitário (VISA)',
-      description: 'Licença sanitária municipal/estadual de funcionamento.',
-      completed: hasSanitaryLicense,
-      tab: 'team',
-      lawRef: 'RDC 1002/2025 Art. 6º',
     },
     {
       id: 'rt',
@@ -128,19 +128,19 @@ export const OnboardingReadinessWidget: React.FC<OnboardingReadinessWidgetProps>
   const pendingCriteria = criteria.filter((c) => !c.completed);
 
   return (
-    <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+    <div className="bg-white border border-[#E2ECE6] rounded-2xl p-5 shadow-xs space-y-4">
       {/* Barra de Troca de Modo (Novo Usuário vs Clínica Completa) */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-slate-950 p-3 rounded-xl border border-slate-800">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#F4F8F6] p-3 rounded-xl border border-[#E2ECE6]">
         <div className="flex items-center space-x-2">
-          <span className="w-2.5 h-2.5 rounded-full bg-cyan-400 animate-ping" />
-          <span className="text-xs font-bold text-slate-200">
+          <span className="w-2.5 h-2.5 rounded-full bg-teal-600 animate-ping" />
+          <span className="text-xs font-bold text-slate-800">
             Ambiente Atual: {isNewClinicMode ? 'Novo Usuário (Primeiro Acesso)' : 'Clínica Demo Completa'}
           </span>
         </div>
 
         <button
           onClick={onToggleClinicMode}
-          className="px-3 py-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 rounded-lg text-xs font-semibold transition"
+          className="px-3 py-1.5 bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 rounded-lg text-xs font-bold transition shadow-2xs"
         >
           {isNewClinicMode
             ? 'Carregar Dados da Clínica Demo (Ver 100% Preenchido)'
@@ -153,15 +153,15 @@ export const OnboardingReadinessWidget: React.FC<OnboardingReadinessWidgetProps>
         <div>
           <div className="flex items-center space-x-2">
             {percentage === 100 ? (
-              <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+              <CheckCircle2 className="w-5 h-5 text-emerald-600" />
             ) : (
-              <ShieldAlert className="w-5 h-5 text-amber-400" />
+              <ShieldAlert className="w-5 h-5 text-amber-600" />
             )}
-            <h3 className="font-bold text-sm text-slate-100">
+            <h3 className="font-bold text-sm text-slate-900">
               Auditoria de Prontidão Regulatória (RDC 1002/2025)
             </h3>
           </div>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-600 mt-0.5">
             {percentage === 100
               ? 'Todos os requisitos essenciais de funcionamento sanitário foram preenchidos com sucesso!'
               : `Constam ${pendingCriteria.length} campos obrigatórios pendentes de preenchimento para a clínica estar regular perante a Vigilância Sanitária.`}
@@ -173,15 +173,15 @@ export const OnboardingReadinessWidget: React.FC<OnboardingReadinessWidgetProps>
             <span
               className={`text-2xl font-black ${
                 percentage === 100
-                  ? 'text-emerald-400'
+                  ? 'text-emerald-600'
                   : percentage >= 50
-                  ? 'text-cyan-400'
-                  : 'text-amber-400'
+                  ? 'text-teal-700'
+                  : 'text-amber-600'
               }`}
             >
               {percentage}%
             </span>
-            <span className="text-[10px] text-slate-400 block uppercase font-bold">
+            <span className="text-[10px] text-slate-500 block uppercase font-bold">
               {completedCount} de {totalCount} Concluídos
             </span>
           </div>
@@ -189,13 +189,13 @@ export const OnboardingReadinessWidget: React.FC<OnboardingReadinessWidgetProps>
       </div>
 
       {/* Barra de Progresso Visual */}
-      <div className="w-full bg-slate-950 rounded-full h-2.5 overflow-hidden border border-slate-800">
+      <div className="w-full bg-[#E2ECE6] rounded-full h-2.5 overflow-hidden">
         <div
           className={`h-full transition-all duration-500 rounded-full ${
             percentage === 100
-              ? 'bg-gradient-to-r from-emerald-500 to-teal-400'
+              ? 'bg-gradient-to-r from-teal-500 to-emerald-500'
               : percentage >= 50
-              ? 'bg-gradient-to-r from-cyan-500 to-blue-500'
+              ? 'bg-gradient-to-r from-teal-500 to-teal-700'
               : 'bg-gradient-to-r from-amber-500 to-orange-500'
           }`}
           style={{ width: `${percentage}%` }}
@@ -204,10 +204,10 @@ export const OnboardingReadinessWidget: React.FC<OnboardingReadinessWidgetProps>
 
       {/* Lista de Campos Faltantes (Quando pendente) */}
       {pendingCriteria.length > 0 && (
-        <div className="space-y-2 pt-2 border-t border-slate-800/80">
+        <div className="space-y-2 pt-2 border-t border-[#E2ECE6]">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-amber-300 flex items-center space-x-1.5">
-              <AlertTriangle className="w-4 h-4 text-amber-400" />
+            <span className="text-xs font-bold text-amber-800 flex items-center space-x-1.5">
+              <AlertTriangle className="w-4 h-4 text-amber-600" />
               <span>Campos Obrigatórios que Faltam Preencher ({pendingCriteria.length}):</span>
             </span>
           </div>
@@ -216,20 +216,20 @@ export const OnboardingReadinessWidget: React.FC<OnboardingReadinessWidgetProps>
             {pendingCriteria.map((item) => (
               <div
                 key={item.id}
-                className="bg-slate-950/80 border border-amber-900/40 hover:border-amber-700/60 p-3 rounded-xl flex items-start justify-between gap-2 transition"
+                className="bg-amber-50/40 border border-amber-200/80 hover:border-amber-300 p-3.5 rounded-xl flex items-start justify-between gap-2 transition"
               >
                 <div className="space-y-0.5">
                   <div className="flex items-center space-x-1.5">
-                    <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
-                    <span className="font-bold text-slate-200 text-xs">{item.title}</span>
+                    <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
+                    <span className="font-bold text-slate-900 text-xs">{item.title}</span>
                   </div>
-                  <p className="text-[11px] text-slate-400 leading-tight">{item.description}</p>
-                  <span className="text-[9px] font-mono text-cyan-400 block">{item.lawRef}</span>
+                  <p className="text-[11px] text-slate-600 leading-tight">{item.description}</p>
+                  <span className="text-[10px] font-mono text-teal-700 font-medium block pt-0.5">{item.lawRef}</span>
                 </div>
 
                 <button
                   onClick={() => onNavigateTab(item.tab)}
-                  className="px-2.5 py-1 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg text-[10px] shrink-0 transition flex items-center space-x-1 shadow"
+                  className="px-2.5 py-1 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-lg text-[10px] shrink-0 transition flex items-center space-x-1 shadow-2xs cursor-pointer"
                 >
                   <span>Preencher</span>
                   <ArrowRight className="w-3 h-3" />
@@ -242,16 +242,16 @@ export const OnboardingReadinessWidget: React.FC<OnboardingReadinessWidgetProps>
 
       {/* Indicador de Sucesso quando 100% */}
       {percentage === 100 && (
-        <div className="bg-emerald-950/40 border border-emerald-800/60 p-3.5 rounded-xl flex items-center justify-between text-xs text-emerald-200">
+        <div className="bg-emerald-50 border border-emerald-200 p-3.5 rounded-xl flex items-center justify-between text-xs text-emerald-900">
           <div className="flex items-center space-x-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-            <span>
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span className="font-medium">
               Parabéns! Sua clínica está 100% pronta para fiscalizações sanitárias e emissão do Dossiê RDC 1002.
             </span>
           </div>
           <button
             onClick={() => onNavigateTab('cme')}
-            className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-semibold text-xs transition shrink-0"
+            className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg font-bold text-xs transition shrink-0 shadow-2xs cursor-pointer"
           >
             Iniciar Operação da CME
           </button>

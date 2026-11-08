@@ -1766,7 +1766,7 @@ export default function HomePage() {
 
       {isLoginModalOpen && (
         <LoginModal
-          teamMembers={teamMembers.length > 0 ? teamMembers : MOCK_TEAM_MEMBERS}
+          teamMembers={MOCK_TEAM_MEMBERS}
           currentUser={currentUser}
           isOpen={isLoginModalOpen}
           onClose={() => setIsLoginModalOpen(false)}

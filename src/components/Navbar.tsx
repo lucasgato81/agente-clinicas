@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useRef } from 'react';
 import {
   ShieldCheck,
   Stethoscope,
@@ -12,6 +12,8 @@ import {
   UserCheck,
   Users,
   QrCode,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 import { ClinicTenant, UserProfile } from '@/lib/types';
 import { CURRENT_CLINIC, CURRENT_USER } from '@/lib/mockData';
@@ -33,6 +35,18 @@ export const Navbar: React.FC<NavbarProps> = ({
   currentUser = CURRENT_USER,
   onSwitchUser,
 }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  const scrollNav = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 260;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   const navItems = [
     { id: 'dashboard', label: 'Painel Geral', icon: ShieldCheck },
     { id: 'cme', label: 'CME & Esterilização', icon: Sparkles },
@@ -111,26 +125,56 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Abas de Navegação */}
-        <div className="flex space-x-1 overflow-x-auto py-1 scrollbar-none border-t border-slate-800/60">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`flex items-center space-x-2 px-3.5 py-2 text-xs font-medium rounded-lg transition-colors whitespace-nowrap ${
-                  isActive
-                    ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
-                }`}
-              >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
+        {/* Abas de Navegação com Barra de Rolagem Horizontal Visível no Desktop */}
+        <div className="relative group/nav border-t border-slate-800/60">
+          {/* Botão de Rolagem Esquerda (Computador) */}
+          <button
+            type="button"
+            onClick={() => scrollNav('left')}
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 z-20 w-7 h-7 items-center justify-center bg-slate-900/90 hover:bg-slate-800 text-cyan-400 border border-slate-700/80 rounded-full shadow-lg backdrop-blur-sm transition opacity-0 group-hover/nav:opacity-100 cursor-pointer"
+            title="Rolar abas para a esquerda"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+
+          <div
+            ref={scrollContainerRef}
+            onWheel={(e) => {
+              if (e.deltaY !== 0 && typeof window !== 'undefined' && window.innerWidth >= 768) {
+                e.currentTarget.scrollLeft += e.deltaY;
+              }
+            }}
+            className="flex space-x-1 overflow-x-auto pt-2 pb-2.5 px-1 desktop-horizontal-scrollbar scroll-smooth"
+          >
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => setActiveTab(item.id)}
+                  className={`flex items-center space-x-2 px-3.5 py-2 text-xs font-medium rounded-lg transition-colors whitespace-nowrap shrink-0 cursor-pointer ${
+                    isActive
+                      ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/30'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                  }`}
+                >
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-cyan-400' : 'text-slate-400'}`} />
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Botão de Rolagem Direita (Computador) */}
+          <button
+            type="button"
+            onClick={() => scrollNav('right')}
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 z-20 w-7 h-7 items-center justify-center bg-slate-900/90 hover:bg-slate-800 text-cyan-400 border border-slate-700/80 rounded-full shadow-lg backdrop-blur-sm transition opacity-0 group-hover/nav:opacity-100 cursor-pointer"
+            title="Rolar abas para a direita"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
         </div>
       </div>
     </header>

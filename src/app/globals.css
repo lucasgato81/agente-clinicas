@@ -12,6 +12,40 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Barra de rolagem horizontal visível apenas para computadores/desktop */
+@media (min-width: 768px) {
+  .desktop-horizontal-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #06b6d4 rgba(15, 23, 42, 0.9);
+  }
+  .desktop-horizontal-scrollbar::-webkit-scrollbar {
+    height: 7px;
+    display: block !important;
+  }
+  .desktop-horizontal-scrollbar::-webkit-scrollbar-track {
+    background: #0f172a;
+    border-radius: 9999px;
+  }
+  .desktop-horizontal-scrollbar::-webkit-scrollbar-thumb {
+    background: #06b6d4;
+    border-radius: 9999px;
+    border: 1px solid #0891b2;
+  }
+  .desktop-horizontal-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #22d3ee;
+  }
+}
+
+@media (max-width: 767px) {
+  .desktop-horizontal-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .desktop-horizontal-scrollbar::-webkit-scrollbar {
+    display: none !important;
+  }
+}
+
 @media print {
   body {
     background: white !important;

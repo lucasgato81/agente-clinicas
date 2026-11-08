@@ -1,0 +1,265 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  CLINIC_ADMIN
+  TECHNICAL_RESPONSIBLE
+  DENTIST
+  DENTAL_ASSISTANT
+  AUDITOR_READONLY
+}
+
+enum CriticalityLevel {
+  CRITICAL
+  SEMI_CRITICAL
+  NON_CRITICAL
+}
+
+enum CycleResult {
+  APPROVED
+  REJECTED
+  PENDING_BIOLOGICAL_TEST
+}
+
+enum PackageStatus {
+  STERILIZED
+  USED
+  EXPIRED
+  DISCARDED
+}
+
+enum MaintenanceType {
+  PREVENTIVE
+  CORRECTIVE
+  CALIBRATION
+  RADIOMETRIC_REPORT
+}
+
+enum IncidentSeverity {
+  NEAR_MISS
+  NO_HARM
+  MILD_HARM
+  MODERATE_HARM
+  SEVERE_HARM
+}
+
+model Tenant {
+  id              String         @id @default(uuid())
+  name            String
+  legalName       String
+  cnpj            String         @unique
+  sanitaryLicense String?
+  licenseExpiry   DateTime?
+  chairsCount     Int            @default(1)
+  croRegistration String
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  users           User[]
+  equipments      Equipment[]
+  autoclaves      Autoclave[]
+  cmeBatches      CmeBatch[]
+  pops            PopDocument[]
+  incidents       SafetyIncident[]
+  patients        PatientTrace[]
+  auditTokens     AuditAccessPass[]
+}
+
+model User {
+  id           String         @id @default(uuid())
+  tenantId     String
+  tenant       Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  email        String         @unique
+  name         String
+  role         Role           @default(DENTAL_ASSISTANT)
+  croNumber    String?
+  croState     String?
+  active       Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  cmeBatchesCreated CmeBatch[]    @relation("BatchOperator")
+  popSignatures     PopSignature[]
+  kitUsages         KitUsageLog[]
+  reportedIncidents SafetyIncident[]
+}
+
+model Autoclave {
+  id              String      @id @default(uuid())
+  tenantId        String
+  tenant          Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  brand           String
+  model           String
+  serialNumber    String
+  chamberVolumeL  Float
+  lastValidation  DateTime?
+  validationDue   DateTime?
+  active          Boolean     @default(true)
+
+  cycles          CmeBatch[]
+}
+
+model CmeBatch {
+  id               String           @id @default(uuid())
+  tenantId         String
+  tenant           Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  autoclaveId      String
+  autoclave        Autoclave        @relation(fields: [autoclaveId], references: [id])
+  operatorId       String
+  operator         User             @relation("BatchOperator", fields: [operatorId], references: [id])
+  batchCode        String
+  cycleNumber      Int
+  startedAt        DateTime
+  endedAt          DateTime?
+  temperatureC     Float
+  pressureBar      Float
+  cycleTimeMin     Int
+  physicalOk       Boolean          @default(true)
+  chemicalClass5Ok Boolean          @default(true)
+  hasBiological    Boolean          @default(false)
+  bioResultOk      Boolean?
+  bioReadAt        DateTime?
+  result           CycleResult      @default(APPROVED)
+  rejectionReason  String?
+  createdAt        DateTime         @default(now())
+
+  packages         SterilePackage[]
+}
+
+model SterilePackage {
+  id              String           @id @default(uuid())
+  batchId         String
+  batch           CmeBatch         @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  qrCodeToken     String           @unique
+  packageType     String
+  criticality     CriticalityLevel @default(CRITICAL)
+  description     String
+  packagedAt      DateTime         @default(now())
+  expiresAt       DateTime
+  status          PackageStatus    @default(STERILIZED)
+
+  usageLog        KitUsageLog?
+}
+
+model PatientTrace {
+  id              String         @id @default(uuid())
+  tenantId        String
+  tenant          Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name            String
+  recordNumber    String?
+  cpf             String?
+  createdAt       DateTime       @default(now())
+
+  usages          KitUsageLog[]
+}
+
+model KitUsageLog {
+  id              String         @id @default(uuid())
+  packageId       String         @unique
+  package         SterilePackage @relation(fields: [packageId], references: [id])
+  patientId       String?
+  patient         PatientTrace?  @relation(fields: [patientId], references: [id])
+  dentistId       String
+  dentist         User           @relation(fields: [dentistId], references: [id])
+  chairIdentifier String?
+  usedAt          DateTime       @default(now())
+  externalErpRef  String?
+}
+
+model Equipment {
+  id              String         @id @default(uuid())
+  tenantId        String
+  tenant          Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  name            String
+  category        String
+  brand           String
+  model           String
+  serialNumber    String
+  locationRoom    String
+  acquisitionDate DateTime?
+  maintenanceIntervalDays Int
+  lastMaintenance DateTime?
+  nextMaintenance DateTime
+  active          Boolean        @default(true)
+
+  logs            MaintenanceLog[]
+}
+
+model MaintenanceLog {
+  id              String         @id @default(uuid())
+  equipmentId     String
+  equipment       Equipment      @relation(fields: [equipmentId], references: [id], onDelete: Cascade)
+  type            MaintenanceType
+  performedAt     DateTime
+  technicianName  String
+  serviceCompany  String
+  notes           String
+  documentUrl     String?
+  cost            Float?
+  createdAt       DateTime       @default(now())
+}
+
+model PopDocument {
+  id              String         @id @default(uuid())
+  tenantId        String
+  tenant          Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  code            String
+  title           String
+  category        String
+  version         Int            @default(1)
+  contentMarkdown String
+  approvedByRtId  String?
+  approvalDate    DateTime?
+  reviewDue       DateTime
+  isTemplate      Boolean        @default(false)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+
+  signatures      PopSignature[]
+}
+
+model PopSignature {
+  id              String         @id @default(uuid())
+  popId           String
+  pop             PopDocument    @relation(fields: [popId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  signedAt        DateTime       @default(now())
+  ipAddress       String?
+  userAgent       String?
+}
+
+model SafetyIncident {
+  id              String           @id @default(uuid())
+  tenantId        String
+  tenant          Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  reportedById    String?
+  reportedBy      User?            @relation(fields: [reportedById], references: [id])
+  isAnonymous     Boolean          @default(false)
+  severity        IncidentSeverity
+  category        String
+  description     String
+  rootCauseAnalysis String?
+  preventiveAction  String?
+  notivisaNotified Boolean         @default(false)
+  notivisaProtocol String?
+  occurredAt      DateTime
+  createdAt       DateTime         @default(now())
+}
+
+model AuditAccessPass {
+  id              String         @id @default(uuid())
+  tenantId        String
+  tenant          Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  accessToken     String         @unique
+  expiresAt       DateTime
+  auditorOrg      String
+  active          Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+}

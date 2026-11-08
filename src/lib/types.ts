@@ -18,6 +18,12 @@ export interface ClinicTenant {
   technicalResponsibleCroState?: string;
   technicalResponsibleEmail?: string;
   technicalResponsiblePhone?: string;
+  planId?: 'SOLO' | 'PRO' | 'ENTERPRISE';
+  planName?: string;
+  subscriptionStatus?: 'TRIAL' | 'ACTIVE' | 'PAST_DUE' | 'CANCELLED';
+  trialDaysLeft?: number;
+  monthlyFee?: number;
+  isMultiUnit?: boolean;
 }
 
 export interface UserProfile {

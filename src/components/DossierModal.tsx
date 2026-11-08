@@ -1,16 +1,49 @@
 'use client';
 
-import React from 'react';
-import { X, Printer, ShieldCheck, CheckCircle2, AlertTriangle, FileText, QrCode, Building2, Stethoscope, Clock } from 'lucide-react';
-import { CURRENT_CLINIC, CURRENT_USER, MOCK_AUTOCLAVES, MOCK_CME_BATCHES, MOCK_EQUIPMENTS, MOCK_POPS, MOCK_INCIDENTS } from '@/lib/mockData';
+import React, { useState } from 'react';
+import {
+  X,
+  Printer,
+  ShieldCheck,
+  CheckCircle2,
+  AlertTriangle,
+  FileText,
+  QrCode,
+  Building2,
+  Stethoscope,
+  Clock,
+  Sparkles,
+  Lock,
+  FileBadge,
+} from 'lucide-react';
+import {
+  CURRENT_CLINIC,
+  CURRENT_USER,
+  MOCK_AUTOCLAVES,
+  MOCK_CME_BATCHES,
+  MOCK_EQUIPMENTS,
+  MOCK_POPS,
+  MOCK_INCIDENTS,
+} from '@/lib/mockData';
 
 interface DossierModalProps {
   onClose: () => void;
 }
 
 export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
+  const [isSignedGovBr, setIsSignedGovBr] = useState<boolean>(true);
+  const [isSigning, setIsSigning] = useState<boolean>(false);
+
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleSignGovBr = () => {
+    setIsSigning(true);
+    setTimeout(() => {
+      setIsSigning(false);
+      setIsSignedGovBr(true);
+    }, 1000);
   };
 
   const currentDate = new Date().toLocaleDateString('pt-BR', {
@@ -21,7 +54,7 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="bg-white text-slate-900 border border-slate-200 rounded-2xl max-w-4xl w-full my-8 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
+      <div className="bg-white text-slate-900 border border-slate-200 rounded-3xl max-w-4xl w-full my-8 shadow-2xl overflow-hidden flex flex-col max-h-[92vh]">
         {/* Barra Superior / Ações */}
         <div className="bg-slate-900 text-white px-6 py-3.5 flex items-center justify-between border-b border-slate-800 shrink-0">
           <div className="flex items-center space-x-2">
@@ -29,9 +62,21 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
             <span className="font-semibold text-sm">Dossiê Sanitário Consolidado - RDC 1002/2025 Anvisa</span>
           </div>
           <div className="flex items-center space-x-2">
+            {!isSignedGovBr && (
+              <button
+                type="button"
+                onClick={handleSignGovBr}
+                disabled={isSigning}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-xs font-semibold shadow-sm transition disabled:opacity-50"
+              >
+                <FileBadge className="w-4 h-4" />
+                <span>{isSigning ? 'Assinando...' : 'Assinar com Gov.br'}</span>
+              </button>
+            )}
+
             <button
               onClick={handlePrint}
-              className="flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition"
+              className="flex items-center space-x-1.5 px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-semibold shadow-sm transition"
             >
               <Printer className="w-4 h-4" />
               <span>Imprimir / Salvar PDF</span>
@@ -56,101 +101,90 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
               <h1 className="text-xl font-black text-slate-900">{CURRENT_CLINIC.legalName}</h1>
               <p className="text-xs text-slate-600">Nome Fantasia: {CURRENT_CLINIC.name}</p>
               <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600 mt-2">
-                <span><strong>CNPJ:</strong> {CURRENT_CLINIC.cnpj}</span>
-                <span><strong>Alvará Sanitário:</strong> {CURRENT_CLINIC.sanitaryLicense}</span>
-                <span><strong>Inscrição CRO-PJ:</strong> {CURRENT_CLINIC.croRegistration}</span>
-                <span><strong>Consultórios Ativos:</strong> {CURRENT_CLINIC.chairsCount}</span>
+                <span>
+                  <strong>CNPJ:</strong> {CURRENT_CLINIC.cnpj}
+                </span>
+                <span>
+                  <strong>Alvará Sanitário:</strong> {CURRENT_CLINIC.sanitaryLicense}
+                </span>
+                <span>
+                  <strong>Inscrição CRO-PJ:</strong> {CURRENT_CLINIC.croRegistration}
+                </span>
+                <span>
+                  <strong>Consultórios Ativos:</strong> {CURRENT_CLINIC.chairsCount}
+                </span>
               </div>
             </div>
 
             <div className="text-right text-xs text-slate-500 bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
-              <span className="font-mono text-[10px] block text-slate-400">AUTENTICAÇÃO SHA-256</span>
+              <span className="font-mono text-[10px] block text-slate-400">HASH CRIPTOGRÁFICO SHA-256</span>
               <span className="font-mono font-bold text-slate-800 text-[11px]">8f92a1...44c1002</span>
               <span className="block mt-1 text-emerald-700 font-semibold text-[11px]">Auditado em: {currentDate}</span>
             </div>
           </div>
 
-          {/* Enquadramento RDC 1002 */}
-          <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 rounded-full bg-emerald-600 text-white flex items-center justify-center font-bold">
-                ✓
-              </div>
-              <div>
-                <h4 className="font-bold text-emerald-950 text-sm">Status Sanitário: Conforme com a RDC 1002/2025</h4>
-                <p className="text-xs text-emerald-800">
-                  Responsável Técnico habilitado, Núcleo de Segurança do Paciente instituído, CME classe I com rastreabilidade digital e 100% dos POPs assinados.
-                </p>
-              </div>
+          {/* 1. Indicadores Chave de Prontidão Sanitária */}
+          <div className="grid grid-cols-4 gap-3">
+            <div className="bg-white border border-slate-200 p-3.5 rounded-xl shadow-sm">
+              <span className="text-[10px] text-slate-500 uppercase font-semibold">Índice de Conformidade</span>
+              <div className="text-2xl font-black text-emerald-600 mt-0.5">100%</div>
+              <span className="text-[10px] text-slate-500">RDC 1002/2025 Plena</span>
             </div>
-            <div className="text-right">
-              <span className="text-2xl font-black text-emerald-700">100%</span>
-              <span className="text-[10px] block text-emerald-900 font-bold uppercase">Índice Geral de Conformidade</span>
+            <div className="bg-white border border-slate-200 p-3.5 rounded-xl shadow-sm">
+              <span className="text-[10px] text-slate-500 uppercase font-semibold">Ciclos Esterilização</span>
+              <div className="text-2xl font-black text-slate-900 mt-0.5">{MOCK_CME_BATCHES.length} Lotes</div>
+              <span className="text-[10px] text-emerald-700 font-medium">Biológicos Aprovados</span>
             </div>
-          </div>
-
-          {/* 1. Responsabilidade Técnica & NSP */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-3">
-            <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2 border-b border-slate-100 pb-2">
-              <Stethoscope className="w-4 h-4 text-cyan-700" />
-              <span>1. Responsabilidade Técnica & Núcleo de Segurança do Paciente (NSP)</span>
-            </h3>
-            <div className="grid grid-cols-2 gap-4 text-xs">
-              <div>
-                <p className="text-slate-500">Responsável Técnico (RT):</p>
-                <p className="font-bold text-slate-800">{CURRENT_USER.name} - CRO-{CURRENT_USER.croState} {CURRENT_USER.croNumber}</p>
-                <p className="text-slate-500 mt-1">E-mail de Contato RT:</p>
-                <p className="font-medium text-slate-800">{CURRENT_USER.email}</p>
-              </div>
-              <div>
-                <p className="text-slate-500">Exigência do NSP (Artigo RDC 1002):</p>
-                <p className="font-bold text-emerald-700">Obrigatório e Constituído (Clínica com {CURRENT_CLINIC.chairsCount} consultórios)</p>
-                <p className="text-slate-500 mt-1">Plano de Segurança do Paciente:</p>
-                <p className="font-medium text-slate-800">Vigente (Aprovado em Jan/2026 com revisão anual)</p>
-              </div>
+            <div className="bg-white border border-slate-200 p-3.5 rounded-xl shadow-sm">
+              <span className="text-[10px] text-slate-500 uppercase font-semibold">POPs Homologados</span>
+              <div className="text-2xl font-black text-slate-900 mt-0.5">{MOCK_POPS.length}/8 POPs</div>
+              <span className="text-[10px] text-emerald-700 font-medium">100% Equipe Ciente</span>
+            </div>
+            <div className="bg-white border border-slate-200 p-3.5 rounded-xl shadow-sm">
+              <span className="text-[10px] text-slate-500 uppercase font-semibold">Parque de Equipamentos</span>
+              <div className="text-2xl font-black text-slate-900 mt-0.5">{MOCK_EQUIPMENTS.length} Ativos</div>
+              <span className="text-[10px] text-emerald-700 font-medium">Manutenções em Dia</span>
             </div>
           </div>
 
-          {/* 2. Livro de Registro da CME */}
+          {/* 2. Histórico de Esterilização */}
           <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-3">
             <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2 border-b border-slate-100 pb-2">
-              <ShieldCheck className="w-4 h-4 text-cyan-700" />
-              <span>2. Extrato Digital da Central de Material e Esterilização (CME)</span>
+              <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+              <span>2. Monitoramento de Cargas da CME & Indicadores Biológicos</span>
             </h3>
-            <p className="text-xs text-slate-500">
-              Registros auditáveis dos últimos ciclos de autoclave com monitoramento físico, químico classe 5 e biológico:
-            </p>
-
-            <table className="w-full text-xs text-left">
-              <thead className="bg-slate-100 text-slate-700 uppercase text-[10px] font-bold">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-slate-50 text-slate-600 border-b border-slate-200">
                 <tr>
-                  <th className="p-2">Lote</th>
-                  <th className="p-2">Equipamento</th>
-                  <th className="p-2">Data/Hora</th>
-                  <th className="p-2">Temp / Pressão</th>
-                  <th className="p-2">Classe 5</th>
-                  <th className="p-2">Biológico</th>
-                  <th className="p-2">Status</th>
+                  <th className="py-2 px-3">Lote</th>
+                  <th className="py-2 px-3">Autoclave</th>
+                  <th className="py-2 px-3">Data / Hora</th>
+                  <th className="py-2 px-3">Parâmetros</th>
+                  <th className="py-2 px-3">Químico Cl. 5</th>
+                  <th className="py-2 px-3">Biológico</th>
+                  <th className="py-2 px-3">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {MOCK_CME_BATCHES.map((batch) => (
-                  <tr key={batch.id}>
-                    <td className="p-2 font-mono font-bold text-cyan-900">{batch.batchCode}</td>
-                    <td className="p-2">{batch.autoclaveName}</td>
-                    <td className="p-2">{batch.startedAt}</td>
-                    <td className="p-2">{batch.temperatureC}°C / {batch.pressureBar} bar</td>
-                    <td className="p-2 text-emerald-700 font-bold">Aprovado</td>
-                    <td className="p-2 font-medium">
+                  <tr key={batch.id} className="hover:bg-slate-50/50">
+                    <td className="py-2 px-3 font-mono font-bold text-slate-900">{batch.batchCode}</td>
+                    <td className="py-2 px-3">{batch.autoclaveName}</td>
+                    <td className="py-2 px-3 text-slate-600">{batch.startedAt}</td>
+                    <td className="py-2 px-3">{batch.temperatureC}°C / {batch.pressureBar} bar</td>
+                    <td className="py-2 px-3">
+                      <span className="text-emerald-700 font-bold">Virado (Aprovado)</span>
+                    </td>
+                    <td className="py-2 px-3">
                       {batch.hasBiological ? (
-                        <span className="text-emerald-700 font-bold">Negativo (Aprovado)</span>
+                        <span className="text-emerald-700 font-bold">Negativo (24h)</span>
                       ) : (
-                        <span className="text-slate-400">N/A neste ciclo</span>
+                        <span className="text-slate-400">Não aplicável</span>
                       )}
                     </td>
-                    <td className="p-2">
-                      <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 font-bold rounded text-[10px]">
-                        APROVADO
+                    <td className="py-2 px-3">
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 text-emerald-800">
+                        LIBERADO
                       </span>
                     </td>
                   </tr>
@@ -159,33 +193,32 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
             </table>
           </div>
 
-          {/* 3. Equipamentos Críticos e Laudos */}
+          {/* 3. Manutenções de Equipamentos e Laudos */}
           <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-3">
             <h3 className="font-bold text-slate-900 text-sm flex items-center space-x-2 border-b border-slate-100 pb-2">
-              <FileText className="w-4 h-4 text-cyan-700" />
-              <span>3. Gestão de Equipamentos, Tecnologias e Manutenções</span>
+              <Clock className="w-4 h-4 text-cyan-700" />
+              <span>3. Equipamentos Críticos, Laudos NR-13 e Levantamento Radiométrico</span>
             </h3>
-
-            <table className="w-full text-xs text-left">
-              <thead className="bg-slate-100 text-slate-700 uppercase text-[10px] font-bold">
+            <table className="w-full text-left text-xs">
+              <thead className="bg-slate-50 text-slate-600 border-b border-slate-200">
                 <tr>
-                  <th className="p-2">Equipamento</th>
-                  <th className="p-2">Localização</th>
-                  <th className="p-2">Nº Série</th>
-                  <th className="p-2">Última Manutenção</th>
-                  <th className="p-2">Próxima</th>
-                  <th className="p-2">Laudo Técnico</th>
+                  <th className="py-2 px-3">Equipamento</th>
+                  <th className="py-2 px-3">Marca / Modelo</th>
+                  <th className="py-2 px-3">Nº Série</th>
+                  <th className="py-2 px-3">Última Revisão</th>
+                  <th className="py-2 px-3">Próxima Revisão</th>
+                  <th className="py-2 px-3">Laudo Técnico</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {MOCK_EQUIPMENTS.map((eq) => (
                   <tr key={eq.id}>
-                    <td className="p-2 font-semibold text-slate-800">{eq.name}</td>
-                    <td className="p-2 text-slate-600">{eq.locationRoom}</td>
-                    <td className="p-2 font-mono text-[11px]">{eq.serialNumber}</td>
-                    <td className="p-2">{eq.lastMaintenance}</td>
-                    <td className="p-2 font-medium">{eq.nextMaintenance}</td>
-                    <td className="p-2">
+                    <td className="py-2 px-3 font-semibold text-slate-900">{eq.name}</td>
+                    <td className="py-2 px-3">{eq.brand} - {eq.model}</td>
+                    <td className="py-2 px-3 font-mono text-slate-600">{eq.serialNumber}</td>
+                    <td className="py-2 px-3">{eq.lastMaintenance}</td>
+                    <td className="py-2 px-3 font-semibold text-emerald-700">{eq.nextMaintenance}</td>
+                    <td className="py-2 px-3">
                       {eq.hasLaudo ? (
                         <span className="text-emerald-700 font-bold">Anexado & Válido</span>
                       ) : (
@@ -220,18 +253,41 @@ export const DossierModal: React.FC<DossierModalProps> = ({ onClose }) => {
             </div>
           </div>
 
-          {/* Assinatura do RT */}
-          <div className="pt-6 border-t border-slate-300 flex justify-between items-end">
-            <div className="text-[11px] text-slate-500">
-              <p>Documento emitido eletronicamente via <strong>OdontoShield</strong>.</p>
-              <p>Validação da autenticidade em conformidade com as diretrizes da Anvisa e CFO.</p>
+          {/* Assinatura Digital Gov.br / ICP-Brasil com Carimbo do Tempo */}
+          <div className="pt-6 border-t border-slate-300 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
+            <div className="text-[11px] text-slate-500 max-w-sm">
+              <p>Documento emitido eletronicamente via <strong>OdontoShield SaaS</strong>.</p>
+              <p>Conforme MP 2.200-2/2001 e Decreto 10.543/2020 (Validade Jurídica Integral).</p>
             </div>
-            <div className="text-center">
-              <div className="w-56 border-b border-slate-900 pb-1 mb-1">
-                <span className="font-script text-lg text-slate-900">Dr. Rodrigo Mendes</span>
+
+            {/* Selo Gov.br */}
+            <div className="border-2 border-blue-600/70 rounded-2xl p-3 bg-blue-50/50 text-xs min-w-[280px]">
+              <div className="flex items-center space-x-2 mb-1.5 border-b border-blue-200 pb-1">
+                <div className="w-5 h-5 rounded-md bg-blue-700 flex items-center justify-center text-white font-black text-[10px]">
+                  gov
+                </div>
+                <div>
+                  <span className="font-bold text-blue-950 text-[10px] block leading-none">
+                    DOCUMENTO ASSINADO DIGITALMENTE
+                  </span>
+                  <span className="text-[8px] text-blue-800 font-mono">Assinatura Eletrônica Avançada Gov.br</span>
+                </div>
               </div>
-              <p className="text-xs font-bold text-slate-900">{CURRENT_USER.name}</p>
-              <p className="text-[10px] text-slate-600">Responsável Técnico - CRO-SP {CURRENT_USER.croNumber}</p>
+
+              <div className="text-[10px] space-y-0.5 text-slate-800">
+                <p>
+                  Assinado por: <strong>{CURRENT_USER.name}</strong>
+                </p>
+                <p>
+                  Cargo: Responsável Técnico • CRO-SP {CURRENT_USER.croNumber}
+                </p>
+                <p className="text-slate-500 font-mono text-[9px]">
+                  Data/Hora: {currentDate} às 10:45 (Horário de Brasília)
+                </p>
+                <p className="text-slate-500 font-mono text-[8px] truncate">
+                  Hash SHA-256: 7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069
+                </p>
+              </div>
             </div>
           </div>
         </div>

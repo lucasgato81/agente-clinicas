@@ -60,6 +60,10 @@ import { TraceabilityModule } from '@/components/TraceabilityModule';
 import { PopsModule } from '@/components/PopsModule';
 import { LoginModal } from '@/components/LoginModal';
 import { WhatsAppAutomationsModal } from '@/components/WhatsAppAutomationsModal';
+import { SaaSSubscriptionModal } from '@/components/SaaSSubscriptionModal';
+import { NewTenantOnboardingModal } from '@/components/NewTenantOnboardingModal';
+import { EnterpriseFranchiseModal } from '@/components/EnterpriseFranchiseModal';
+import { EhrIntegrationModal } from '@/components/EhrIntegrationModal';
 import {
   CURRENT_CLINIC,
   CURRENT_USER,
@@ -134,6 +138,10 @@ export default function HomePage() {
   const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isWhatsAppOpen, setIsWhatsAppOpen] = useState<boolean>(false);
+  const [isSubscriptionOpen, setIsSubscriptionOpen] = useState<boolean>(false);
+  const [isNewTenantOpen, setIsNewTenantOpen] = useState<boolean>(false);
+  const [isFranchiseOpen, setIsFranchiseOpen] = useState<boolean>(false);
+  const [isEhrOpen, setIsEhrOpen] = useState<boolean>(false);
 
   // Sincronização em tempo real (PostgreSQL / Nuvem Render) e Restauração de Sessão
   useEffect(() => {
@@ -572,6 +580,10 @@ export default function HomePage() {
         setActiveTab={setActiveTab}
         onOpenDossier={() => setIsDossierOpen(true)}
         onOpenWhatsAppAutomations={() => setIsWhatsAppOpen(true)}
+        onOpenSubscription={() => setIsSubscriptionOpen(true)}
+        onOpenNewTenant={() => setIsNewTenantOpen(true)}
+        onOpenFranchise={() => setIsFranchiseOpen(true)}
+        onOpenEhr={() => setIsEhrOpen(true)}
         clinic={clinic}
         currentUser={currentUser}
         onSwitchUser={handleSwitchUser}
@@ -1649,6 +1661,45 @@ export default function HomePage() {
           packages={packages}
           equipments={equipments}
           pops={pops}
+        />
+      )}
+
+      {isSubscriptionOpen && (
+        <SaaSSubscriptionModal
+          isOpen={isSubscriptionOpen}
+          onClose={() => setIsSubscriptionOpen(false)}
+          clinic={clinic}
+          onPlanUpdated={(updated) => setClinic(updated)}
+        />
+      )}
+
+      {isNewTenantOpen && (
+        <NewTenantOnboardingModal
+          isOpen={isNewTenantOpen}
+          onClose={() => setIsNewTenantOpen(false)}
+          onTenantCreated={(newClinic) => {
+            setClinic(newClinic);
+            setIsNewClinicMode(false);
+          }}
+        />
+      )}
+
+      {isFranchiseOpen && (
+        <EnterpriseFranchiseModal
+          isOpen={isFranchiseOpen}
+          onClose={() => setIsFranchiseOpen(false)}
+          currentClinic={clinic}
+          onSwitchClinic={(switchedClinic) => setClinic(switchedClinic)}
+        />
+      )}
+
+      {isEhrOpen && (
+        <EhrIntegrationModal
+          isOpen={isEhrOpen}
+          onClose={() => setIsEhrOpen(false)}
+          onPatientsSynced={(syncedNames) => {
+            console.log('Pacientes sincronizados:', syncedNames);
+          }}
         />
       )}
 

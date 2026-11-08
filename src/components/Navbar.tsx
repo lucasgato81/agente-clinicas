@@ -15,6 +15,10 @@ import {
   ChevronLeft,
   ChevronRight,
   MessageSquare,
+  CreditCard,
+  Database,
+  Building,
+  PlusCircle,
 } from 'lucide-react';
 import { ClinicTenant, UserProfile } from '@/lib/types';
 import { CURRENT_CLINIC, CURRENT_USER } from '@/lib/mockData';
@@ -24,6 +28,10 @@ interface NavbarProps {
   setActiveTab: (tab: string) => void;
   onOpenDossier: () => void;
   onOpenWhatsAppAutomations?: () => void;
+  onOpenSubscription?: () => void;
+  onOpenNewTenant?: () => void;
+  onOpenFranchise?: () => void;
+  onOpenEhr?: () => void;
   clinic?: ClinicTenant;
   currentUser?: UserProfile;
   onSwitchUser?: () => void;
@@ -34,6 +42,10 @@ export const Navbar: React.FC<NavbarProps> = ({
   setActiveTab,
   onOpenDossier,
   onOpenWhatsAppAutomations,
+  onOpenSubscription,
+  onOpenNewTenant,
+  onOpenFranchise,
+  onOpenEhr,
   clinic = CURRENT_CLINIC,
   currentUser = CURRENT_USER,
   onSwitchUser,
@@ -92,8 +104,56 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Botão de Dossiê Fiscal VISA & Usuário Ativo */}
-          <div className="hidden md:flex items-center space-x-2.5">
+          {/* Botão de Dossiê Fiscal VISA, Plano SaaS & Usuário Ativo */}
+          <div className="hidden md:flex items-center space-x-2">
+            {onOpenSubscription && (
+              <button
+                type="button"
+                onClick={onOpenSubscription}
+                className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-lg bg-cyan-950/80 hover:bg-cyan-900 border border-cyan-800 text-cyan-300 text-xs font-semibold shadow-sm transition"
+                title="Gerenciar Plano SaaS e Faturamento"
+              >
+                <CreditCard className="w-3.5 h-3.5 text-cyan-400" />
+                <span>{clinic?.planName || 'Plano Pro'} ({clinic?.trialDaysLeft || 14}d)</span>
+              </button>
+            )}
+
+            {onOpenNewTenant && (
+              <button
+                type="button"
+                onClick={onOpenNewTenant}
+                className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-medium transition"
+                title="Cadastrar nova unidade / clínica no SaaS"
+              >
+                <PlusCircle className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Nova Clínica</span>
+              </button>
+            )}
+
+            {onOpenFranchise && (
+              <button
+                type="button"
+                onClick={onOpenFranchise}
+                className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-medium transition"
+                title="Painel Corporativo Multi-unidades / Franquias"
+              >
+                <Building className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Redes</span>
+              </button>
+            )}
+
+            {onOpenEhr && (
+              <button
+                type="button"
+                onClick={onOpenEhr}
+                className="flex items-center space-x-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white text-xs font-medium transition"
+                title="Sincronizar Prontuários (Clinicorp, Simples Dental)"
+              >
+                <Database className="w-3.5 h-3.5 text-cyan-400" />
+                <span>Prontuários</span>
+              </button>
+            )}
+
             {onOpenWhatsAppAutomations && (
               <button
                 type="button"
@@ -102,16 +162,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                 title="Configurar disparos automáticos no WhatsApp"
               >
                 <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Alertas WhatsApp</span>
+                <span>WhatsApp</span>
               </button>
             )}
 
             <button
               onClick={onOpenDossier}
-              className="flex items-center space-x-2 px-3.5 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold rounded-lg shadow-sm shadow-emerald-900/50 transition-all border border-emerald-400/30"
+              className="flex items-center space-x-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold rounded-lg shadow-sm shadow-emerald-900/50 transition-all border border-emerald-400/30"
             >
               <FileText className="w-4 h-4" />
-              <span>Dossiê Fiscal VISA (1 Clique)</span>
+              <span>Dossiê VISA</span>
             </button>
 
             {/* Perfil do Usuário com alternância rápida */}

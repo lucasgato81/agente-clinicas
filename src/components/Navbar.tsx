@@ -14,6 +14,7 @@ import {
   QrCode,
   ChevronLeft,
   ChevronRight,
+  MessageSquare,
 } from 'lucide-react';
 import { ClinicTenant, UserProfile } from '@/lib/types';
 import { CURRENT_CLINIC, CURRENT_USER } from '@/lib/mockData';
@@ -22,6 +23,7 @@ interface NavbarProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   onOpenDossier: () => void;
+  onOpenWhatsAppAutomations?: () => void;
   clinic?: ClinicTenant;
   currentUser?: UserProfile;
   onSwitchUser?: () => void;
@@ -31,6 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   setActiveTab,
   onOpenDossier,
+  onOpenWhatsAppAutomations,
   clinic = CURRENT_CLINIC,
   currentUser = CURRENT_USER,
   onSwitchUser,
@@ -90,7 +93,19 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Botão de Dossiê Fiscal VISA & Usuário Ativo */}
-          <div className="hidden md:flex items-center space-x-3">
+          <div className="hidden md:flex items-center space-x-2.5">
+            {onOpenWhatsAppAutomations && (
+              <button
+                type="button"
+                onClick={onOpenWhatsAppAutomations}
+                className="flex items-center space-x-1.5 px-3 py-1.5 bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700/80 text-emerald-300 text-xs font-semibold rounded-lg shadow-sm transition"
+                title="Configurar disparos automáticos no WhatsApp"
+              >
+                <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+                <span>Alertas WhatsApp</span>
+              </button>
+            )}
+
             <button
               onClick={onOpenDossier}
               className="flex items-center space-x-2 px-3.5 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold rounded-lg shadow-sm shadow-emerald-900/50 transition-all border border-emerald-400/30"

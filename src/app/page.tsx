@@ -59,6 +59,7 @@ import { PatientSafetyCenter } from '@/components/PatientSafetyCenter';
 import { TraceabilityModule } from '@/components/TraceabilityModule';
 import { PopsModule } from '@/components/PopsModule';
 import { LoginModal } from '@/components/LoginModal';
+import { WhatsAppAutomationsModal } from '@/components/WhatsAppAutomationsModal';
 import {
   CURRENT_CLINIC,
   CURRENT_USER,
@@ -132,6 +133,7 @@ export default function HomePage() {
   const [finalizingBatch, setFinalizingBatch] = useState<CmeBatchItem | null>(null);
   const [saveSuccess, setSaveSuccess] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+  const [isWhatsAppOpen, setIsWhatsAppOpen] = useState<boolean>(false);
 
   // Sincronização em tempo real (PostgreSQL / Nuvem Render) e Restauração de Sessão
   useEffect(() => {
@@ -569,6 +571,7 @@ export default function HomePage() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenDossier={() => setIsDossierOpen(true)}
+        onOpenWhatsAppAutomations={() => setIsWhatsAppOpen(true)}
         clinic={clinic}
         currentUser={currentUser}
         onSwitchUser={handleSwitchUser}
@@ -1635,6 +1638,17 @@ export default function HomePage() {
           packages={packages}
           onClose={() => setIsScannerOpen(false)}
           onPackageConsumed={handlePackageConsumed}
+        />
+      )}
+
+      {isWhatsAppOpen && (
+        <WhatsAppAutomationsModal
+          isOpen={isWhatsAppOpen}
+          onClose={() => setIsWhatsAppOpen(false)}
+          clinic={clinic}
+          packages={packages}
+          equipments={equipments}
+          pops={pops}
         />
       )}
 

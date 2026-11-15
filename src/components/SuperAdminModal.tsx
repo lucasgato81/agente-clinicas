@@ -59,6 +59,10 @@ interface AdminData {
     type: string;
     provider: string;
   };
+  stripe?: {
+    isConfigured: boolean;
+    webhookUrl: string;
+  };
   metrics: {
     totalTenants: number;
     trialCount: number;
@@ -92,7 +96,7 @@ export const SuperAdminModal: React.FC<SuperAdminModalProps> = ({
   const [loggedInUser, setLoggedInUser] = useState<{ name: string; email: string } | null>(null);
 
   // Estados do Painel
-  const [activeTab, setActiveTab] = useState<'tenants' | 'metrics' | 'activity' | 'database_setup'>('tenants');
+  const [activeTab, setActiveTab] = useState<'tenants' | 'metrics' | 'activity' | 'database_setup' | 'stripe'>('tenants');
   const [loading, setLoading] = useState<boolean>(false);
   const [data, setData] = useState<AdminData | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -691,6 +695,23 @@ export const SuperAdminModal: React.FC<SuperAdminModalProps> = ({
                 <Database className="w-4 h-4" />
                 <span>Status da Nuvem (PostgreSQL)</span>
               </button>
+
+              <button
+                onClick={() => setActiveTab('stripe')}
+                className={`py-3 text-xs font-bold border-b-2 flex items-center space-x-2 transition cursor-pointer whitespace-nowrap ${
+                  activeTab === 'stripe'
+                    ? 'border-teal-600 text-teal-800'
+                    : 'border-transparent text-slate-500 hover:text-slate-800'
+                }`}
+              >
+                <CreditCard className="w-4 h-4" />
+                <span>Integração Stripe (Pagamentos)</span>
+                {data?.stripe?.isConfigured ? (
+                  <span className="w-2 h-2 rounded-full bg-emerald-500" />
+                ) : (
+                  <span className="w-2 h-2 rounded-full bg-amber-500" />
+                )}
+              </button>
             </div>
 
             {/* Conteúdo Dinâmico das Abas */}
@@ -946,6 +967,172 @@ export const SuperAdminModal: React.FC<SuperAdminModalProps> = ({
                     <p className="text-slate-600">
                       O painel de SuperAdmin está protegido por criptografia SHA-256 com salt. Somente o usuário master cadastrado pode acessar as métricas de faturamento e os dados dos clientes.
                     </p>
+                  </div>
+                </div>
+              )}
+
+              {/* ABA 4: INTEGRAÇÃO STRIPE (PAGAMENTOS & FATURAMENTO RECORRENTE) */}
+              {activeTab === 'stripe' && (
+                <div className="space-y-6 max-w-3xl mx-auto">
+                  {/* Banner de Status */}
+                  {data?.stripe?.isConfigured ? (
+                    <div className="p-5 rounded-2xl bg-emerald-50 border border-emerald-200">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0" />
+                        <div>
+                          <h4 className="font-bold text-slate-900 text-sm">
+                            Stripe Conectado e Operacional
+                          </h4>
+                          <span className="text-xs text-emerald-800 font-semibold">
+                            Sua conta Stripe está vinculada. Os pagamentos de assinaturas caem direto na sua conta bancária!
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="p-5 rounded-2xl bg-amber-50 border border-amber-200">
+                      <div className="flex items-center space-x-3 mb-2">
+                        <CreditCard className="w-6 h-6 text-amber-600 shrink-0" />
+                        <div>
+                          <h4 className="font-bold text-slate-900 text-sm">
+                            Vincular sua Conta Stripe ao OdontoShield
+                          </h4>
+                          <span className="text-xs text-amber-800 font-semibold">
+                            Siga os 3 passos simples abaixo para receber os pagamentos de cartão de crédito e PIX direto na sua conta do Stripe.
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Passo a Passo de Conexão */}
+                  <div className="space-y-4">
+                    {/* Passo 1 */}
+                    <div className="p-4 rounded-2xl bg-white border border-[#E2ECE6] space-y-2">
+                      <div className="flex items-center justify-between text-xs font-bold text-teal-800">
+                        <div className="flex items-center space-x-2">
+                          <span className="w-5 h-5 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center text-[11px]">
+                            1
+                          </span>
+                          <span>Obter sua Chave Secreta no Stripe</span>
+                        </div>
+                        <a
+                          href="https://dashboard.stripe.com/apikeys"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-teal-700 hover:text-teal-900 underline flex items-center space-x-1 text-[11px]"
+                        >
+                          <span>Abrir Stripe API Keys</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
+                      <p className="text-xs text-slate-600 pl-7">
+                        Acesse seu painel do Stripe em <strong>Desenvolvedores ➔ Chaves de API</strong> e revele a sua <strong>Chave Secreta (Secret Key)</strong> que começa com <code>sk_live_...</code> (ou <code>sk_test_...</code> para testes).
+                      </p>
+                    </div>
+
+                    {/* Passo 2 */}
+                    <div className="p-4 rounded-2xl bg-white border border-[#E2ECE6] space-y-2">
+                      <div className="flex items-center space-x-2 text-xs font-bold text-teal-800">
+                        <span className="w-5 h-5 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center text-[11px]">
+                          2
+                        </span>
+                        <span>Adicionar a variável no Render</span>
+                      </div>
+                      <p className="text-xs text-slate-600 pl-7 mb-2">
+                        No seu painel do Render (no serviço <strong>agente-clinicas</strong> ➔ <strong>Environment</strong>), adicione a variável:
+                      </p>
+
+                      <div className="pl-7">
+                        <div className="p-3 rounded-xl bg-slate-900 text-white flex items-center justify-between text-xs font-mono">
+                          <div>
+                            <span className="text-slate-400">KEY: </span>
+                            <span className="text-teal-400 font-bold">STRIPE_SECRET_KEY</span>
+                          </div>
+                          <button
+                            onClick={() => handleCopy('STRIPE_SECRET_KEY', 'stripe_key')}
+                            className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] font-sans flex items-center space-x-1 cursor-pointer"
+                          >
+                            {copiedKey === 'stripe_key' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                            <span>Copiar Nome</span>
+                          </button>
+                        </div>
+                        <p className="text-[11px] text-slate-500 mt-1">
+                          No campo <strong>VALUE</strong>, cole a sua chave <code>sk_live_...</code> (ou <code>sk_test_...</code>) do Stripe.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Passo 3 */}
+                    <div className="p-4 rounded-2xl bg-white border border-[#E2ECE6] space-y-2">
+                      <div className="flex items-center justify-between text-xs font-bold text-teal-800">
+                        <div className="flex items-center space-x-2">
+                          <span className="w-5 h-5 rounded-full bg-teal-100 text-teal-800 flex items-center justify-center text-[11px]">
+                            3
+                          </span>
+                          <span>Cadastrar o Webhook no Stripe (Ativação Automática)</span>
+                        </div>
+                        <a
+                          href="https://dashboard.stripe.com/webhooks"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-teal-700 hover:text-teal-900 underline flex items-center space-x-1 text-[11px]"
+                        >
+                          <span>Abrir Stripe Webhooks</span>
+                          <ExternalLink className="w-3 h-3" />
+                        </a>
+                      </div>
+                      <p className="text-xs text-slate-600 pl-7 mb-2">
+                        No Stripe, clique em <strong>Adicionar Endpoint</strong> e cole o link abaixo para o OdontoShield ativar as clínicas automaticamente após o pagamento:
+                      </p>
+
+                      <div className="pl-7">
+                        <div className="p-3 rounded-xl bg-slate-900 text-white flex items-center justify-between text-xs font-mono">
+                          <span className="text-teal-300 truncate max-w-md">
+                            https://agente-clinicas.onrender.com/api/stripe/webhook
+                          </span>
+                          <button
+                            onClick={() =>
+                              handleCopy(
+                                'https://agente-clinicas.onrender.com/api/stripe/webhook',
+                                'webhook_url'
+                              )
+                            }
+                            className="px-2 py-1 rounded bg-slate-800 hover:bg-slate-700 text-[11px] font-sans flex items-center space-x-1 cursor-pointer shrink-0"
+                          >
+                            {copiedKey === 'webhook_url' ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+                            <span>Copiar URL</span>
+                          </button>
+                        </div>
+                        <p className="text-[11px] text-slate-500 mt-1">
+                          Eventos para marcar no Stripe: <code>checkout.session.completed</code> e <code>customer.subscription.updated</code>.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Planos e Faturamento do SaaS */}
+                  <div className="p-5 rounded-2xl bg-white border border-[#E2ECE6] space-y-3">
+                    <h4 className="text-xs font-bold text-slate-900">
+                      Tabela de Preços e Planos Configurados no Stripe:
+                    </h4>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                      <div className="p-3 rounded-xl bg-[#F8FAF9] border border-[#E2ECE6]">
+                        <div className="font-bold text-slate-900">Consultório Solo</div>
+                        <div className="text-lg font-black text-teal-700 mt-0.5">R$ 79/mês</div>
+                        <div className="text-[10px] text-slate-500">ou R$ 63/mês no anual</div>
+                      </div>
+                      <div className="p-3 rounded-xl bg-teal-50 border border-teal-200">
+                        <div className="font-bold text-teal-950">Clínica Pro (Mais Escolhido)</div>
+                        <div className="text-lg font-black text-teal-800 mt-0.5">R$ 149/mês</div>
+                        <div className="text-[10px] text-teal-700">ou R$ 119/mês no anual</div>
+                      </div>
+                      <div className="p-3 rounded-xl bg-[#F8FAF9] border border-[#E2ECE6]">
+                        <div className="font-bold text-slate-900">Redes & Franquias</div>
+                        <div className="text-lg font-black text-teal-700 mt-0.5">R$ 299/mês</div>
+                        <div className="text-[10px] text-slate-500">ou R$ 239/mês no anual</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               )}

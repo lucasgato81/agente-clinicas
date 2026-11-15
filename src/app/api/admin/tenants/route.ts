@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { query, isDatabaseConfigured, initDatabase } from '@/lib/db';
+import { isStripeConfigured } from '@/lib/stripe';
 import { CURRENT_CLINIC, MOCK_TEAM_MEMBERS, MOCK_CME_BATCHES } from '@/lib/mockData';
 import { ClinicTenant } from '@/lib/types';
 
@@ -159,6 +160,10 @@ export async function GET() {
         isConfigured: dbConfigured,
         type: dbConfigured ? 'POSTGRESQL_CLOUD' : 'SERVER_MEMORY_DEMO',
         provider: dbConfigured ? 'Render / Cloud Postgres' : 'Memória Local',
+      },
+      stripe: {
+        isConfigured: isStripeConfigured(),
+        webhookUrl: 'https://agente-clinicas.onrender.com/api/stripe/webhook',
       },
       metrics: {
         totalTenants,

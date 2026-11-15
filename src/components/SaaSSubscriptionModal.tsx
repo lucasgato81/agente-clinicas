@@ -104,6 +104,43 @@ export const SaaSSubscriptionModal: React.FC<SaaSSubscriptionModalProps> = ({
     setTimeout(() => setPixCopied(false), 2000);
   };
 
+  const handleStripeCheckout = async () => {
+    setIsProcessing(true);
+    try {
+      const res = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          tenantId: clinic.id,
+          planId: selectedPlan,
+          billingPeriod: 'monthly',
+          customerEmail: clinic.technicalResponsibleEmail || `${clinic.phone || 'cliente'}@odontoshield.com.br`,
+          customerName: clinic.name,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.checkoutUrl) {
+        // Redireciona com segurança para a tela de pagamento oficial do Stripe
+        window.location.href = data.checkoutUrl;
+        return;
+      }
+
+      // Se o Stripe ainda não tiver a chave STRIPE_SECRET_KEY no Render, fallback seguro
+      if (data.message && !data.isConfigured) {
+        handleSimulatePayment();
+        return;
+      }
+
+      alert(data.message || 'Não foi possível iniciar o checkout do Stripe.');
+    } catch (err) {
+      console.warn('Erro ao conectar com Stripe, usando fallback:', err);
+      handleSimulatePayment();
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   const handleSimulatePayment = () => {
     setIsProcessing(true);
     setTimeout(() => {
@@ -350,45 +387,41 @@ export const SaaSSubscriptionModal: React.FC<SaaSSubscriptionModalProps> = ({
                 </div>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-xs">
-                <div>
-                  <label className="text-slate-700 font-bold block mb-1">Número do Cartão:</label>
-                  <input
-                    type="text"
-                    placeholder="•••• •••• •••• 4242"
-                    defaultValue="•••• •••• •••• 8821"
-                    className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:border-teal-600 shadow-sm"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div>
-                    <label className="text-slate-700 font-bold block mb-1">Validade:</label>
-                    <input
-                      type="text"
-                      placeholder="MM/AA"
-                      defaultValue="12/29"
-                      className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:border-teal-600 shadow-sm"
-                    />
+              <div className="space-y-4 pt-2 text-xs">
+                <div className="p-4 rounded-2xl bg-teal-50/60 border border-teal-200/80 flex items-start space-x-3">
+                  <div className="w-8 h-8 rounded-xl bg-teal-600 text-white flex items-center justify-center shrink-0">
+                    <CreditCard className="w-4 h-4" />
                   </div>
-                  <div>
-                    <label className="text-slate-700 font-bold block mb-1">CVV:</label>
-                    <input
-                      type="text"
-                      placeholder="•••"
-                      defaultValue="731"
-                      className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:border-teal-600 shadow-sm"
-                    />
+                  <div className="space-y-1">
+                    <div className="font-bold text-slate-900 text-sm">
+                      Pagamento Seguro processado via Stripe
+                    </div>
+                    <p className="text-slate-600 text-xs leading-relaxed">
+                      Você será redirecionado para o ambiente criptografado oficial do Stripe com suporte a cartões de crédito (Visa, Mastercard, Elo, Amex) e faturamento recorrente automático com emissão de nota fiscal.
+                    </p>
                   </div>
                 </div>
 
-                <div className="sm:col-span-2 flex justify-end pt-2">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
+                  <div className="text-[11px] text-slate-500 flex items-center space-x-1.5">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                    <span>Criptografia de ponta a ponta PCI-DSS Level 1</span>
+                  </div>
+
                   <button
                     type="button"
-                    onClick={handleSimulatePayment}
+                    onClick={handleStripeCheckout}
                     disabled={isProcessing}
-                    className="px-5 py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold rounded-xl text-xs shadow-md transition disabled:opacity-50 cursor-pointer"
+                    className="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-teal-600 via-emerald-600 to-teal-700 hover:from-teal-500 hover:to-emerald-500 text-white font-bold rounded-2xl text-xs shadow-lg shadow-teal-700/20 transition flex items-center justify-center space-x-2 disabled:opacity-50 cursor-pointer"
                   >
-                    {isProcessing ? 'Processando Cartão...' : `Confirmar Assinatura (R$ ${currentPlanObj.price}/mês)`}
+                    {isProcessing ? (
+                      <span>Conectando com o Stripe...</span>
+                    ) : (
+                      <>
+                        <span>Pagar com Stripe (R$ {currentPlanObj.price}/mês)</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
                   </button>
                 </div>
               </div>

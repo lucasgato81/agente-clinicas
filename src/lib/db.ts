@@ -1,8 +1,19 @@
 import { Pool } from 'pg';
 
 // Configuração do pool de conexões PostgreSQL
-// No Render, a variável DATABASE_URL é fornecida automaticamente
-const connectionString = process.env.DATABASE_URL;
+// Conexão nativa com o banco odontoshield-db no Render
+const RENDER_INTERNAL_DB = 'postgresql://odontoshield_user:r9sgeIST2xigATJ23tqUy5n6Vhb3DaPo@dpg-dbo7mdbrjlhs73al2qt0-a/odontoshield';
+const RENDER_EXTERNAL_DB = 'postgresql://odontoshield_user:r9sgeIST2xigATJ23tqUy5n6Vhb3DaPo@dpg-dbo7mdbrjlhs73al2qt0-a.oregon-postgres.render.com/odontoshield';
+
+// Detecta se a variável DATABASE_URL é uma URL válida ou aplica o banco odontoshield-db oficial do Render
+const rawEnvUrl = process.env.DATABASE_URL;
+const isValidEnvUrl = rawEnvUrl && (rawEnvUrl.startsWith('postgres://') || rawEnvUrl.startsWith('postgresql://'));
+
+const connectionString = isValidEnvUrl
+  ? rawEnvUrl
+  : (process.env.RENDER || process.env.NODE_ENV === 'production'
+      ? RENDER_INTERNAL_DB
+      : RENDER_EXTERNAL_DB);
 
 let pool: Pool | null = null;
 
@@ -13,7 +24,7 @@ if (connectionString) {
     ssl: connectionString.includes('localhost') ? false : { rejectUnauthorized: false },
     max: 10,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 5000,
+    connectionTimeoutMillis: 10000,
   });
 }
 

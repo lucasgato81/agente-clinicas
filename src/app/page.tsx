@@ -64,6 +64,7 @@ import { SaaSSubscriptionModal } from '@/components/SaaSSubscriptionModal';
 import { NewTenantOnboardingModal } from '@/components/NewTenantOnboardingModal';
 import { EnterpriseFranchiseModal } from '@/components/EnterpriseFranchiseModal';
 import { EhrIntegrationModal } from '@/components/EhrIntegrationModal';
+import { SuperAdminModal } from '@/components/SuperAdminModal';
 import {
   CURRENT_CLINIC,
   CURRENT_USER,
@@ -142,6 +143,7 @@ export default function HomePage() {
   const [isNewTenantOpen, setIsNewTenantOpen] = useState<boolean>(false);
   const [isFranchiseOpen, setIsFranchiseOpen] = useState<boolean>(false);
   const [isEhrOpen, setIsEhrOpen] = useState<boolean>(false);
+  const [isSuperAdminOpen, setIsSuperAdminOpen] = useState<boolean>(false);
 
   // Sincronização em tempo real (PostgreSQL / Nuvem Render) e Restauração de Sessão
   useEffect(() => {
@@ -584,6 +586,7 @@ export default function HomePage() {
         onOpenNewTenant={() => setIsNewTenantOpen(true)}
         onOpenFranchise={() => setIsFranchiseOpen(true)}
         onOpenEhr={() => setIsEhrOpen(true)}
+        onOpenSuperAdmin={() => setIsSuperAdminOpen(true)}
         clinic={clinic}
         currentUser={currentUser}
         onSwitchUser={handleSwitchUser}
@@ -1681,6 +1684,17 @@ export default function HomePage() {
           onClose={() => setIsNewTenantOpen(false)}
           onTenantCreated={(newClinic) => {
             setClinic(newClinic);
+            setIsNewClinicMode(false);
+          }}
+        />
+      )}
+
+      {isSuperAdminOpen && (
+        <SuperAdminModal
+          isOpen={isSuperAdminOpen}
+          onClose={() => setIsSuperAdminOpen(false)}
+          onSelectClinic={(selectedClinic) => {
+            setClinic(selectedClinic);
             setIsNewClinicMode(false);
           }}
         />

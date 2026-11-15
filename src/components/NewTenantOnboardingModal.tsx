@@ -111,6 +111,13 @@ export const NewTenantOnboardingModal: React.FC<NewTenantOnboardingModalProps> =
       monthlyFee: selectedPlan === 'SOLO' ? 79 : selectedPlan === 'PRO' ? 149 : 299,
     };
 
+    // Salvar imediatamente no backend / banco de dados da nuvem para o SuperAdmin monitorar
+    fetch('/api/admin/tenants', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ tenant: newClinicTenant }),
+    }).catch((err) => console.warn('[ONBOARDING SYNC ERROR]', err));
+
     setIsSuccess(true);
     setTimeout(() => {
       onTenantCreated(newClinicTenant);

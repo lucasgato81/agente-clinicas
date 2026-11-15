@@ -53,11 +53,34 @@ export async function initDatabase() {
         license_validity VARCHAR(30),
         cro_registration VARCHAR(50),
         cro_state VARCHAR(10),
+        chairs_count INT DEFAULT 2,
+        address TEXT,
+        phone VARCHAR(50),
+        email VARCHAR(255),
         technical_responsible_name VARCHAR(255),
         technical_responsible_cro VARCHAR(50),
         technical_responsible_cpf VARCHAR(30),
+        technical_responsible_phone VARCHAR(50),
+        technical_responsible_email VARCHAR(255),
+        plan_id VARCHAR(50) DEFAULT 'PRO',
+        plan_name VARCHAR(100) DEFAULT 'Clínica Pro',
+        subscription_status VARCHAR(50) DEFAULT 'TRIAL',
+        trial_days_left INT DEFAULT 14,
+        monthly_fee NUMERIC DEFAULT 149,
+        last_active_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+
+      CREATE TABLE IF NOT EXISTS superadmin_activity_log (
+        id VARCHAR(100) PRIMARY KEY,
+        tenant_id VARCHAR(100),
+        tenant_name VARCHAR(255),
+        user_name VARCHAR(255),
+        action_type VARCHAR(100) NOT NULL,
+        description TEXT NOT NULL,
+        metadata JSONB,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
       CREATE TABLE IF NOT EXISTS clinic_users (

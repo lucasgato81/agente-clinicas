@@ -21,6 +21,7 @@ import {
   Building,
   PlusCircle,
   Globe,
+  Crown,
 } from 'lucide-react';
 import { ClinicTenant, UserProfile } from '@/lib/types';
 import { CURRENT_CLINIC, CURRENT_USER } from '@/lib/mockData';
@@ -34,6 +35,7 @@ interface NavbarProps {
   onOpenNewTenant?: () => void;
   onOpenFranchise?: () => void;
   onOpenEhr?: () => void;
+  onOpenSuperAdmin?: () => void;
   clinic?: ClinicTenant;
   currentUser?: UserProfile;
   onSwitchUser?: () => void;
@@ -48,6 +50,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenNewTenant,
   onOpenFranchise,
   onOpenEhr,
+  onOpenSuperAdmin,
   clinic = CURRENT_CLINIC,
   currentUser = CURRENT_USER,
   onSwitchUser,
@@ -111,6 +114,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Botões de Ação do SaaS & Usuário Ativo */}
           <div className="hidden md:flex items-center space-x-2">
+            {onOpenSuperAdmin && (
+              <button
+                type="button"
+                onClick={onOpenSuperAdmin}
+                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 hover:from-slate-800 hover:to-teal-900 text-teal-300 text-xs font-bold border border-teal-500/30 shadow-xs transition cursor-pointer"
+                title="Painel Master SuperAdmin (Monitorar Clínicas e Testadores)"
+              >
+                <Crown className="w-3.5 h-3.5 text-amber-400" />
+                <span>SuperAdmin</span>
+              </button>
+            )}
+
             {onOpenSubscription && (
               <button
                 type="button"

@@ -289,6 +289,102 @@ export async function POST(request: Request) {
         break;
       }
 
+      case 'CREATE_TENANT': {
+        const newClinic = action.payload;
+        memoryState.clinic = newClinic;
+
+        if (isDatabaseConfigured()) {
+          try {
+            await query(
+              `INSERT INTO clinic_tenants (
+                id, name, legal_name, cnpj, sanitary_license, license_validity,
+                cro_registration, chairs_count, address, phone,
+                technical_responsible_name, technical_responsible_cro,
+                plan_id, plan_name, subscription_status, trial_days_left, monthly_fee
+              ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17)
+              ON CONFLICT (id) DO UPDATE SET
+                name = EXCLUDED.name,
+                legal_name = EXCLUDED.legal_name,
+                phone = EXCLUDED.phone,
+                updated_at = CURRENT_TIMESTAMP`,
+              [
+                newClinic.id,
+                newClinic.name,
+                newClinic.legalName || newClinic.name,
+                newClinic.cnpj || '',
+                newClinic.sanitaryLicense || '',
+                newClinic.licenseExpiry || '',
+                newClinic.croRegistration || '',
+                newClinic.chairsCount || 2,
+                newClinic.address || '',
+                newClinic.phone || '',
+                newClinic.technicalResponsibleName || '',
+                newClinic.technicalResponsibleCro || '',
+                newClinic.planId || 'PRO',
+                newClinic.planName || 'Clínica Pro',
+                newClinic.subscriptionStatus || 'TRIAL',
+                newClinic.trialDaysLeft || 14,
+                newClinic.monthlyFee || 149,
+              ]
+            );
+
+            await query(
+              `INSERT INTO superadmin_activity_log (
+                id, tenant_id, tenant_name, user_name, action_type, description
+              ) VALUES ($1,$2,$3,$4,$5,$6)`,
+              [
+                `log_${Date.now()}`,
+                newClinic.id,
+                newClinic.name,
+                newClinic.technicalResponsibleName || 'Responsável Técnico',
+                'NEW_TENANT_ONBOARDED',
+                `Nova clínica ${newClinic.name} (${newClinic.cnpj}) cadastrada com sucesso.`,
+              ]
+            );
+          } catch (dbErr) {
+            console.error('[SYNC POST CREATE_TENANT]', dbErr);
+          }
+        }
+        break;
+      }
+
+      case 'CREATE_MEMBER': {
+        const member = action.payload;
+        memoryState.teamMembers = [member, ...memoryState.teamMembers];
+
+        if (isDatabaseConfigured()) {
+          try {
+            await query(
+              `INSERT INTO clinic_users (
+                id, tenant_id, name, email, role, role_name, cpf,
+                council_number, council_state, phone, pin, active
+              ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+              ON CONFLICT (id) DO UPDATE SET
+                name = EXCLUDED.name,
+                role = EXCLUDED.role,
+                pin = EXCLUDED.pin`,
+              [
+                member.id,
+                'clinica_01',
+                member.name,
+                member.email,
+                member.role,
+                member.roleName,
+                member.cpf || '',
+                member.councilNumber || '',
+                member.councilState || '',
+                member.phone || '',
+                member.pin || '1234',
+                true,
+              ]
+            );
+          } catch (dbErr) {
+            console.error('[SYNC POST CREATE_MEMBER]', dbErr);
+          }
+        }
+        break;
+      }
+
       default:
         break;
     }

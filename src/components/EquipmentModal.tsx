@@ -136,24 +136,24 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="bg-slate-900 border border-slate-800 rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-150 max-h-[92vh] flex flex-col my-auto"
+        className="bg-white border border-[#E2ECE6] rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl animate-in fade-in zoom-in-95 duration-150 max-h-[92vh] flex flex-col my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Cabeçalho */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90 shrink-0">
-          <div className="flex items-center space-x-2.5">
-            <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center">
-              <Wrench className="w-4 h-4 text-cyan-400" />
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2ECE6] bg-[#F8FAF9] shrink-0">
+          <div className="flex items-center space-x-3">
+            <div className="w-9 h-9 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center shadow-sm">
+              <Wrench className="w-5 h-5 text-teal-700" />
             </div>
             <div>
-              <h3 className="font-semibold text-slate-100 text-sm">
+              <h3 className="font-bold text-slate-900 text-sm">
                 {isEditing ? 'Editar Equipamento / Autoclave' : 'Cadastrar Equipamento Odontológico'}
               </h3>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-slate-500 font-medium">
                 Rastreabilidade de laudos, testes e manutenções preventivas (RDC 1002 / NR-13)
               </p>
             </div>
@@ -161,7 +161,7 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition"
+            className="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -171,7 +171,7 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
         <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto flex-1 text-xs">
           {/* Categoria do Equipamento */}
           <div>
-            <label className="text-xs font-medium text-slate-300 block mb-1">
+            <label className="text-xs font-bold text-slate-800 block mb-1">
               Tipo / Categoria de Equipamento *
             </label>
             <select
@@ -196,7 +196,7 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
                   setLocationRoom('Consultório 01');
                 }
               }}
-              className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-cyan-500 font-semibold"
+              className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 font-bold shadow-sm"
             >
               <option value="AUTOCLAVE">Autoclave (Esterilização a Vapor - CME)</option>
               <option value="COMPRESSOR">Compressor de Ar (Vaso de Pressão - NR-13)</option>
@@ -209,7 +209,7 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
           {/* Nome e Localização */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-medium text-slate-300 block mb-1">
+              <label className="text-xs font-bold text-slate-800 block mb-1">
                 Nome de Identificação / Apelido *
               </label>
               <input
@@ -218,11 +218,11 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Ex: Autoclave 01 (CME Principal)"
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-slate-300 block mb-1">
+              <label className="text-xs font-bold text-slate-800 block mb-1">
                 Localização / Sala na Clínica *
               </label>
               <input
@@ -231,7 +231,7 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
                 value={locationRoom}
                 onChange={(e) => setLocationRoom(e.target.value)}
                 placeholder="Ex: CME, Consultório 1, Casa de Máquinas"
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
               />
             </div>
           </div>
@@ -239,7 +239,7 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
           {/* Marca, Modelo e Número de Série */}
           <div className="grid grid-cols-3 gap-3">
             <div>
-              <label className="text-xs font-medium text-slate-300 block mb-1">
+              <label className="text-xs font-bold text-slate-800 block mb-1">
                 Marca / Fabricante *
               </label>
               <input
@@ -248,11 +248,11 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
                 placeholder="Ex: Cristófoli, Gnatus"
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-slate-300 block mb-1">
+              <label className="text-xs font-bold text-slate-800 block mb-1">
                 Modelo / Litragem *
               </label>
               <input
@@ -261,11 +261,11 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
                 value={model}
                 onChange={(e) => setModel(e.target.value)}
                 placeholder="Ex: Vitale Class 21L"
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
               />
             </div>
             <div>
-              <label className="text-xs font-medium text-slate-300 block mb-1">
+              <label className="text-xs font-bold text-slate-800 block mb-1">
                 Número de Série *
               </label>
               <input
@@ -274,19 +274,19 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
                 value={serialNumber}
                 onChange={(e) => setSerialNumber(e.target.value)}
                 placeholder="Ex: CRIS-8841-B"
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-xs text-slate-100 font-mono focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 font-mono focus:outline-none focus:border-teal-600 shadow-sm"
               />
             </div>
           </div>
 
           {/* Manutenções Preventivas */}
-          <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-3.5 space-y-3">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-cyan-400 block">
+          <div className="bg-[#F8FAF9] border border-[#E2ECE6] rounded-2xl p-4 space-y-3">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-teal-800 block">
               Controle de Manutenção e Validação
             </span>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="text-[11px] text-slate-300 block mb-1">
+                <label className="text-[11px] font-bold text-slate-800 block mb-1">
                   Última Manutenção / Revisão *
                 </label>
                 <input
@@ -294,11 +294,11 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
                   required
                   value={lastMaintenance}
                   onChange={(e) => setLastMaintenance(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                 />
               </div>
               <div>
-                <label className="text-[11px] text-slate-300 block mb-1">
+                <label className="text-[11px] font-bold text-slate-800 block mb-1">
                   Próxima Manutenção Prevista *
                 </label>
                 <input
@@ -306,14 +306,14 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
                   required
                   value={nextMaintenance}
                   onChange={(e) => setNextMaintenance(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-3 pt-1">
               <div>
-                <label className="text-[11px] text-slate-300 block mb-1">
+                <label className="text-[11px] font-bold text-slate-800 block mb-1">
                   Técnico / Empresa Autorizada
                 </label>
                 <input
@@ -321,11 +321,11 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
                   value={technicianName}
                   onChange={(e) => setTechnicianName(e.target.value)}
                   placeholder="Ex: Cristófoli Assistência SP"
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                 />
               </div>
               <div>
-                <label className="text-[11px] text-slate-300 block mb-1">
+                <label className="text-[11px] font-bold text-slate-800 block mb-1">
                   WhatsApp do Técnico (para acionamento rápido)
                 </label>
                 <input
@@ -333,7 +333,7 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
                   value={technicianPhone}
                   onChange={(e) => setTechnicianPhone(e.target.value)}
                   placeholder="Ex: 5511999998888"
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                 />
               </div>
             </div>
@@ -341,21 +341,21 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
 
           {/* Campos Exclusivos por Categoria Normativa (RDC 1002 / NR-13) */}
           {category === 'AUTOCLAVE' && (
-            <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-3.5 space-y-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400 block">
+            <div className="bg-amber-50/50 border border-amber-200 rounded-2xl p-4 space-y-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-900 block">
                 Exigência RDC 1002: Qualificação Térmica da Autoclave
               </span>
               <div>
-                <label className="text-[11px] text-slate-300 block mb-1">
+                <label className="text-[11px] font-bold text-slate-800 block mb-1">
                   Data do Laudo de Qualificação Térmica (Termopares de Carga) *
                 </label>
                 <input
                   type="date"
                   value={thermalQualificationDate}
                   onChange={(e) => setThermalQualificationDate(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                 />
-                <span className="text-[10px] text-slate-500 mt-1 block">
+                <span className="text-[10px] text-slate-600 mt-1 block font-medium">
                   Atesta a distribuição de calor homogênea na câmara da autoclave.
                 </span>
               </div>
@@ -363,31 +363,31 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
           )}
 
           {category === 'COMPRESSOR' && (
-            <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-3.5 space-y-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400 block">
+            <div className="bg-amber-50/50 border border-amber-200 rounded-2xl p-4 space-y-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-900 block">
                 Exigência Norma NR-13: Vasos Sob Pressão
               </span>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[11px] text-slate-300 block mb-1">
+                  <label className="text-[11px] font-bold text-slate-800 block mb-1">
                     Data do Teste Hidrostático do Reservatório *
                   </label>
                   <input
                     type="date"
                     value={nr13HydrostaticTestDate}
                     onChange={(e) => setNr13HydrostaticTestDate(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] text-slate-300 block mb-1">
+                  <label className="text-[11px] font-bold text-slate-800 block mb-1">
                     Calibração da Válvula de Segurança *
                   </label>
                   <input
                     type="date"
                     value={nr13SafetyValveCalibration}
                     onChange={(e) => setNr13SafetyValveCalibration(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                   />
                 </div>
               </div>
@@ -395,55 +395,55 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
           )}
 
           {category === 'RAIO_X' && (
-            <div className="bg-slate-950/70 border border-slate-800 rounded-xl p-3.5 space-y-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400 block">
+            <div className="bg-amber-50/50 border border-amber-200 rounded-2xl p-4 space-y-2">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-amber-900 block">
                 Exigência Radioproteção: Físico Médico Responsável
               </span>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="text-[11px] text-slate-300 block mb-1">
+                  <label className="text-[11px] font-bold text-slate-800 block mb-1">
                     Levantamento Radiométrico *
                   </label>
                   <input
                     type="date"
                     value={radiationSurveyDate}
                     onChange={(e) => setRadiationSurveyDate(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] text-slate-300 block mb-1">
+                  <label className="text-[11px] font-bold text-slate-800 block mb-1">
                     Teste de Fuga de Cabeçote *
                   </label>
                   <input
                     type="date"
                     value={headLeakageTestDate}
                     onChange={(e) => setHeadLeakageTestDate(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                   />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3 pt-1">
                 <div>
-                  <label className="text-[11px] text-slate-300 block mb-1">
+                  <label className="text-[11px] font-bold text-slate-800 block mb-1">
                     Físico Médico Responsável
                   </label>
                   <input
                     type="text"
                     value={medicalPhysicistName}
                     onChange={(e) => setMedicalPhysicistName(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] text-slate-300 block mb-1">
+                  <label className="text-[11px] font-bold text-slate-800 block mb-1">
                     Registro Profissional (ABFM / CREA)
                   </label>
                   <input
                     type="text"
                     value={medicalPhysicistRegister}
                     onChange={(e) => setMedicalPhysicistRegister(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                   />
                 </div>
               </div>
@@ -451,7 +451,7 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
           )}
 
           {/* Rodapé de Ações */}
-          <div className="pt-3 border-t border-slate-800 flex items-center justify-between shrink-0">
+          <div className="pt-4 border-t border-[#E2ECE6] flex items-center justify-between shrink-0">
             {isEditing && onDelete ? (
               <button
                 type="button"
@@ -461,7 +461,7 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
                     onClose();
                   }
                 }}
-                className="px-3.5 py-2 bg-red-950/40 hover:bg-red-900/60 text-red-400 border border-red-800/40 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition"
+                className="px-3.5 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded-xl text-xs font-bold flex items-center space-x-1.5 transition"
               >
                 <Trash2 className="w-3.5 h-3.5" />
                 <span>Excluir</span>
@@ -470,17 +470,17 @@ export const EquipmentModal: React.FC<EquipmentModalProps> = ({
               <div />
             )}
 
-            <div className="flex items-center space-x-2">
+            <div className="flex items-center space-x-2.5">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition"
+                className="px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
-                className="px-5 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-500 hover:to-blue-500 text-white font-bold rounded-xl text-xs shadow-md transition flex items-center space-x-1.5"
+                className="px-5 py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold rounded-xl text-xs shadow-md shadow-teal-700/20 transition flex items-center space-x-2 cursor-pointer"
               >
                 <CheckCircle2 className="w-4 h-4" />
                 <span>{isEditing ? 'Salvar Alterações' : 'Salvar Equipamento'}</span>

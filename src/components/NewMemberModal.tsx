@@ -47,33 +47,35 @@ export const NewMemberModal: React.FC<NewMemberModalProps> = ({ onClose, onMembe
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl flex flex-col">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
+      <div className="bg-white border border-[#E2ECE6] rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl flex flex-col text-slate-900">
         {/* Cabeçalho */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/60">
-          <div className="flex items-center space-x-2">
-            <UserPlus className="w-5 h-5 text-cyan-400" />
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2ECE6] bg-white">
+          <div className="flex items-center space-x-2.5">
+            <div className="p-2 rounded-xl bg-teal-50 border border-teal-200 text-teal-700">
+              <UserPlus className="w-5 h-5" />
+            </div>
             <div>
-              <h3 className="font-semibold text-slate-100 text-sm">
+              <h3 className="font-bold text-slate-900 text-sm">
                 Cadastrar / Convidar Membro da Equipe
               </h3>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-slate-500">
                 Cadastro para acesso ao PWA da CME, assinatura de POPs e rastreabilidade
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-200 p-1 rounded-lg hover:bg-slate-800 transition"
+            className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Formulário */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs">
+        <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs bg-white">
           <div>
-            <label className="text-[11px] font-medium text-slate-300 block mb-1">
+            <label className="text-[11px] font-semibold text-slate-700 block mb-1">
               Nome Completo do Profissional *
             </label>
             <input
@@ -81,20 +83,20 @@ export const NewMemberModal: React.FC<NewMemberModalProps> = ({ onClose, onMembe
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="Ex: Ana Carolina Silva"
-              className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+              className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600"
               required
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="text-[11px] font-medium text-slate-300 block mb-1">
+              <label className="text-[11px] font-semibold text-slate-700 block mb-1">
                 Função / Papel no Sistema *
               </label>
               <select
                 value={role}
                 onChange={(e) => setRole(e.target.value as Role)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500 font-semibold text-cyan-300"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 font-semibold text-teal-800"
               >
                 <option value="DENTAL_ASSISTANT">Auxiliar em Saúde Bucal (ASB)</option>
                 <option value="DENTAL_ASSISTANT">Técnico em Saúde Bucal (TSB)</option>
@@ -105,7 +107,7 @@ export const NewMemberModal: React.FC<NewMemberModalProps> = ({ onClose, onMembe
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-slate-300 block mb-1">
+              <label className="text-[11px] font-semibold text-slate-700 block mb-1">
                 CPF (Para validade jurídica de POPs) *
               </label>
               <input
@@ -113,16 +115,16 @@ export const NewMemberModal: React.FC<NewMemberModalProps> = ({ onClose, onMembe
                 value={cpf}
                 onChange={(e) => setCpf(e.target.value)}
                 placeholder="000.000.000-00"
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600 font-mono"
                 required
               />
             </div>
           </div>
 
           {/* Registro de Conselho (CRO / ASB / TSB) */}
-          <div className="grid grid-cols-3 gap-2 bg-slate-950 p-3 rounded-xl border border-slate-800">
+          <div className="grid grid-cols-3 gap-2 bg-[#F8FAF9] p-3.5 rounded-2xl border border-[#E2ECE6]">
             <div className="col-span-2">
-              <label className="text-[10px] font-medium text-slate-400 block mb-1">
+              <label className="text-[10px] font-semibold text-slate-600 block mb-1">
                 Nº Registro no Conselho (CRO / ASB / TSB)
               </label>
               <input
@@ -130,15 +132,15 @@ export const NewMemberModal: React.FC<NewMemberModalProps> = ({ onClose, onMembe
                 value={councilNumber}
                 onChange={(e) => setCouncilNumber(e.target.value)}
                 placeholder="Ex: 102.450 ou 44.890"
-                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-slate-100 font-mono focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-2.5 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:border-teal-600"
               />
             </div>
             <div>
-              <label className="text-[10px] font-medium text-slate-400 block mb-1">UF Conselho</label>
+              <label className="text-[10px] font-semibold text-slate-600 block mb-1">UF Conselho</label>
               <select
                 value={councilState}
                 onChange={(e) => setCouncilState(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-2 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-teal-600"
               >
                 <option value="SP">SP</option>
                 <option value="RJ">RJ</option>
@@ -155,8 +157,8 @@ export const NewMemberModal: React.FC<NewMemberModalProps> = ({ onClose, onMembe
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="text-[11px] font-medium text-slate-300 flex items-center space-x-1 mb-1">
-                <Mail className="w-3.5 h-3.5 text-cyan-400" />
+              <label className="text-[11px] font-semibold text-slate-700 flex items-center space-x-1 mb-1">
+                <Mail className="w-3.5 h-3.5 text-teal-600" />
                 <span>E-mail para Acesso *</span>
               </label>
               <input
@@ -164,14 +166,14 @@ export const NewMemberModal: React.FC<NewMemberModalProps> = ({ onClose, onMembe
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="colaborador@clinica.com.br"
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600"
                 required
               />
             </div>
 
             <div>
-              <label className="text-[11px] font-medium text-slate-300 flex items-center space-x-1 mb-1">
-                <Phone className="w-3.5 h-3.5 text-cyan-400" />
+              <label className="text-[11px] font-semibold text-slate-700 flex items-center space-x-1 mb-1">
+                <Phone className="w-3.5 h-3.5 text-teal-600" />
                 <span>WhatsApp (Convite e Alertas) *</span>
               </label>
               <input
@@ -179,28 +181,28 @@ export const NewMemberModal: React.FC<NewMemberModalProps> = ({ onClose, onMembe
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="(11) 99999-8888"
-                className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-600 focus:ring-1 focus:ring-teal-600"
                 required
               />
             </div>
           </div>
 
-          <p className="text-[10px] text-slate-400 leading-relaxed bg-slate-950/60 p-2.5 rounded-lg border border-slate-800">
+          <p className="text-[10px] text-teal-900 leading-relaxed bg-teal-50/60 p-3 rounded-xl border border-teal-200">
             Ao salvar, o colaborador receberá permissões personalizadas para o seu perfil e constará formalmente no Quadro de Pessoal do Dossiê de Fiscalização da RDC 1002/2025.
           </p>
 
           {/* Rodapé */}
-          <div className="pt-2 flex justify-end space-x-2">
+          <div className="pt-2 flex justify-end space-x-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition"
+              className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl border border-[#E2ECE6] transition"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="flex items-center space-x-1.5 px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-lg text-xs shadow-md transition"
+              className="flex items-center space-x-1.5 px-5 py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold rounded-xl text-xs shadow-sm transition cursor-pointer"
             >
               <CheckCircle2 className="w-4 h-4" />
               <span>Concluir Cadastro & Liberar Acesso</span>

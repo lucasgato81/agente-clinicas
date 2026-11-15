@@ -114,27 +114,27 @@ export const EhrIntegrationModal: React.FC<EhrIntegrationModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-3 md:p-6 overflow-y-auto animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-3 md:p-6 overflow-y-auto animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full my-auto overflow-hidden shadow-2xl flex flex-col max-h-[95vh]"
+        className="bg-white border border-[#E2ECE6] rounded-3xl max-w-2xl w-full my-auto overflow-hidden shadow-2xl flex flex-col max-h-[95vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Cabeçalho */}
-        <div className="p-5 md:px-6 md:py-4 bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-800 flex items-center justify-between shrink-0">
+        <div className="p-5 md:px-6 md:py-4 bg-[#F8FAF9] border-b border-[#E2ECE6] flex items-center justify-between shrink-0">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-slate-950 shadow-md shadow-cyan-950/50">
+            <div className="w-10 h-10 rounded-2xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-700 shadow-sm">
               <Database className="w-5 h-5 font-black" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white tracking-tight flex items-center space-x-2">
+              <h3 className="text-base font-bold text-slate-900 tracking-tight flex items-center space-x-2">
                 <span>Integração com Prontuários Odontológicos</span>
-                <span className="text-cyan-400 text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800">
+                <span className="text-teal-800 text-[10px] font-mono font-bold px-2 py-0.5 rounded-full bg-teal-50 border border-teal-200">
                   Zero Digitação
                 </span>
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 font-medium">
                 Puxe os pacientes agendados no dia para vincular o QR Code do kit sem digitar nada
               </p>
             </div>
@@ -142,7 +142,7 @@ export const EhrIntegrationModal: React.FC<EhrIntegrationModalProps> = ({
 
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1.5 rounded-xl hover:bg-slate-800 transition"
+            className="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition"
           >
             <X className="w-4 h-4" />
           </button>
@@ -150,9 +150,9 @@ export const EhrIntegrationModal: React.FC<EhrIntegrationModalProps> = ({
 
         {/* Feedback de Sincronização */}
         {syncSuccess && (
-          <div className="mx-6 mt-4 p-3 bg-emerald-950 border border-emerald-600 rounded-2xl text-emerald-200 text-xs flex items-center space-x-2 animate-in slide-in-from-top-2 duration-150 shrink-0">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span className="font-semibold">
+          <div className="mx-6 mt-4 p-3.5 bg-emerald-50 border border-emerald-300 rounded-2xl text-emerald-900 text-xs flex items-center space-x-2 animate-in slide-in-from-top-2 duration-150 shrink-0 shadow-sm">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span className="font-bold">
               6 Pacientes da agenda de hoje importados com sucesso para o leitor de QR Code!
             </span>
           </div>
@@ -161,13 +161,13 @@ export const EhrIntegrationModal: React.FC<EhrIntegrationModalProps> = ({
         {/* Conteúdo Rolável */}
         <div className="p-5 md:p-6 space-y-5 overflow-y-auto flex-1">
           {/* Card de Ação Principal: Sincronizar Agenda do Dia */}
-          <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div className="bg-[#F8FAF9] border border-teal-200 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-sm">
             <div className="space-y-0.5">
-              <span className="text-[10px] text-cyan-400 font-bold uppercase tracking-wider block">
+              <span className="text-[10px] text-teal-800 font-bold uppercase tracking-wider block">
                 Sincronização em Tempo Real
               </span>
-              <h4 className="text-sm font-bold text-white">Agenda Cirúrgica & Consultas de Hoje</h4>
-              <p className="text-xs text-slate-400">
+              <h4 className="text-sm font-bold text-slate-900">Agenda Cirúrgica & Consultas de Hoje</h4>
+              <p className="text-xs text-slate-600">
                 Importa automaticamente os prontuários dos pacientes agendados para a clínica.
               </p>
             </div>
@@ -176,7 +176,7 @@ export const EhrIntegrationModal: React.FC<EhrIntegrationModalProps> = ({
               type="button"
               onClick={handleSyncPatients}
               disabled={isSyncing}
-              className="flex items-center space-x-2 px-4 py-2.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl text-xs shadow-md transition disabled:opacity-50 shrink-0"
+              className="flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold rounded-xl text-xs shadow-md shadow-teal-700/20 transition disabled:opacity-50 shrink-0 cursor-pointer"
             >
               <RefreshCw className={`w-4 h-4 ${isSyncing ? 'animate-spin' : ''}`} />
               <span>{isSyncing ? 'Sincronizando...' : 'Puxar Pacientes de Hoje'}</span>
@@ -185,7 +185,7 @@ export const EhrIntegrationModal: React.FC<EhrIntegrationModalProps> = ({
 
           {/* Conectores Disponíveis */}
           <div className="space-y-3">
-            <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
+            <span className="text-xs font-bold text-slate-800 uppercase tracking-wider block">
               Softwares de Gestão Odontológica Compatíveis:
             </span>
 
@@ -193,18 +193,18 @@ export const EhrIntegrationModal: React.FC<EhrIntegrationModalProps> = ({
               {softwares.map((s) => (
                 <div
                   key={s.id}
-                  className="bg-slate-950/60 border border-slate-800 rounded-2xl p-3.5 flex items-center justify-between transition hover:border-slate-700"
+                  className="bg-white border border-[#E2ECE6] rounded-2xl p-3.5 flex items-center justify-between transition hover:border-teal-300 shadow-sm"
                 >
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-center font-black text-xs text-cyan-400">
+                    <div className="w-10 h-10 rounded-xl bg-teal-50 border border-teal-200 flex items-center justify-center font-bold text-xs text-teal-800 shadow-sm">
                       {s.logoText.slice(0, 3)}
                     </div>
                     <div>
-                      <h4 className="text-xs font-bold text-white">{s.name}</h4>
-                      <div className="flex items-center space-x-2 text-[10px] text-slate-400 mt-0.5">
+                      <h4 className="text-xs font-bold text-slate-900">{s.name}</h4>
+                      <div className="flex items-center space-x-2 text-[10px] text-slate-500 mt-0.5 font-medium">
                         <span>Última sincronização: {s.lastSync}</span>
                         {s.status === 'CONNECTED' && (
-                          <span className="text-emerald-400 font-semibold">• Conectado</span>
+                          <span className="text-emerald-700 font-bold">• Conectado</span>
                         )}
                       </div>
                     </div>
@@ -213,10 +213,10 @@ export const EhrIntegrationModal: React.FC<EhrIntegrationModalProps> = ({
                   <button
                     type="button"
                     onClick={() => toggleConnect(s.id)}
-                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+                    className={`px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-sm ${
                       s.status === 'CONNECTED'
-                        ? 'bg-slate-800 hover:bg-red-950 hover:text-red-300 text-slate-300 border border-slate-700'
-                        : 'bg-cyan-500 hover:bg-cyan-400 text-slate-950'
+                        ? 'bg-white hover:bg-rose-50 text-slate-700 hover:text-rose-700 border border-[#E2ECE6] hover:border-rose-200'
+                        : 'bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white'
                     }`}
                   >
                     {s.status === 'CONNECTED' ? 'Desconectar' : 'Conectar API'}
@@ -227,29 +227,29 @@ export const EhrIntegrationModal: React.FC<EhrIntegrationModalProps> = ({
           </div>
 
           {/* Webhook REST / Chave de API */}
-          <div className="bg-slate-950/40 border border-slate-800/80 rounded-2xl p-4 space-y-2 text-xs">
+          <div className="bg-[#F8FAF9] border border-[#E2ECE6] rounded-2xl p-4 space-y-2 text-xs">
             <div className="flex items-center justify-between">
-              <span className="text-slate-300 font-bold flex items-center space-x-1.5">
-                <Link2 className="w-4 h-4 text-cyan-400" />
+              <span className="text-slate-800 font-bold flex items-center space-x-1.5">
+                <Link2 className="w-4 h-4 text-teal-600" />
                 <span>Chave de Integração API / Webhook (OdontoShield):</span>
               </span>
-              <span className="text-[10px] text-slate-500 font-mono">REST JSON</span>
+              <span className="text-[10px] text-slate-500 font-mono font-medium">REST JSON</span>
             </div>
             <input
               type="text"
               readOnly
               value={apiKeyInput}
-              className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-[11px] text-cyan-300 font-mono focus:outline-none select-all"
+              className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-[11px] text-teal-900 font-mono focus:outline-none select-all shadow-sm"
             />
-            <p className="text-[10px] text-slate-500">
+            <p className="text-[10px] text-slate-500 font-medium">
               Cole esta chave nas configurações de integração externa do seu software de prontuário para envio automático de eventos cirúrgicos.
             </p>
           </div>
         </div>
 
         {/* Rodapé */}
-        <div className="p-4 bg-slate-950 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 shrink-0">
-          <div className="flex items-center space-x-1.5 text-cyan-400">
+        <div className="p-4 bg-[#F8FAF9] border-t border-[#E2ECE6] flex items-center justify-between text-xs text-slate-600 shrink-0">
+          <div className="flex items-center space-x-1.5 text-teal-800 font-medium">
             <Lock className="w-3.5 h-3.5" />
             <span>Dados médicos e nomes de pacientes protegidos por criptografia e LGPD</span>
           </div>
@@ -257,7 +257,7 @@ export const EhrIntegrationModal: React.FC<EhrIntegrationModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl transition"
+            className="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-[#E2ECE6] font-bold rounded-xl transition shadow-sm"
           >
             Fechar
           </button>

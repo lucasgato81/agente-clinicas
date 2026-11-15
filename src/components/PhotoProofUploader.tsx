@@ -240,20 +240,20 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
       />
 
       {/* Cabeçalho do Painel de Comprovação */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-[#E2ECE6] pb-4">
         <div>
           <div className="flex items-center space-x-2">
-            <span className="p-1.5 bg-cyan-950/80 border border-cyan-800 text-cyan-400 rounded-lg">
+            <span className="p-1.5 bg-teal-50 border border-teal-200 text-teal-700 rounded-xl shadow-xs">
               <Camera className="w-4 h-4" />
             </span>
-            <h3 className="text-sm font-bold text-white flex items-center space-x-2">
+            <h3 className="text-sm font-bold text-slate-900 flex items-center space-x-2">
               <span>Comprovação Digital por Foto com Metadados Sanitários</span>
             </h3>
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800">
+            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200">
               RDC 1.002/2025 Art. 38/47
             </span>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-600 mt-1 font-medium">
             Registro fotográfico pericial de bancada com carimbo UTC-3,
             compressão leve automática e hash SHA-256 inviolável.
           </p>
@@ -263,11 +263,11 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
           type="button"
           onClick={handleTriggerCamera}
           disabled={isCompressing}
-          className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 rounded-xl text-xs font-bold shadow-lg shadow-cyan-950/40 transition shrink-0 active:scale-95 disabled:opacity-50"
+          className="flex items-center space-x-2 px-4 py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white rounded-xl text-xs font-bold shadow-md shadow-teal-700/20 transition shrink-0 active:scale-95 disabled:opacity-50 cursor-pointer"
         >
           {isCompressing ? (
             <>
-              <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
               <span>Processando Foto...</span>
             </>
           ) : (
@@ -295,25 +295,25 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
                 key={cfg.id}
                 type="button"
                 onClick={() => setSelectedConfigId(cfg.id)}
-                className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-semibold border transition ${
+                className={`flex items-center space-x-2 px-3 py-1.5 rounded-xl text-xs font-bold border transition ${
                   isSelected
-                    ? 'bg-cyan-950 border-cyan-500 text-cyan-200'
-                    : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:text-slate-200'
+                    ? 'bg-teal-50 border-teal-500 text-teal-900 shadow-xs'
+                    : 'bg-white border-[#E2ECE6] text-slate-600 hover:bg-slate-50'
                 }`}
               >
                 <span>{cfg.label}</span>
                 <span
-                  className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                  className={`text-[10px] px-1.5 py-0.2 rounded font-mono font-bold ${
                     count > 0
-                      ? 'bg-emerald-900/60 text-emerald-300 border border-emerald-800'
-                      : 'bg-slate-800 text-slate-400'
+                      ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                      : 'bg-slate-100 text-slate-600'
                   }`}
                 >
                   {count}
                 </span>
                 {cfg.confidential && (
                   <span title="Sigiloso LGPD">
-                    <Lock className="w-3 h-3 text-amber-400" />
+                    <Lock className="w-3 h-3 text-amber-600" />
                   </span>
                 )}
               </button>
@@ -324,28 +324,28 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
 
       {/* Metadados Operacionais Atuais do Carimbo */}
       {activeConfig && (
-        <div className="bg-slate-950/70 border border-slate-800/80 rounded-xl p-3.5 text-xs grid grid-cols-1 md:grid-cols-3 gap-3">
+        <div className="bg-[#F8FAF9] border border-[#E2ECE6] rounded-2xl p-4 text-xs grid grid-cols-1 md:grid-cols-3 gap-3 shadow-xs">
           <div>
-            <span className="text-[10px] text-slate-400 block font-semibold mb-1">
+            <span className="text-[10px] text-slate-600 block font-bold mb-1">
               Finalidade Sanitária / Frequência:
             </span>
-            <div className="text-slate-200 font-medium flex items-center space-x-1.5">
-              <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 shrink-0" />
+            <div className="text-slate-900 font-bold flex items-center space-x-1.5">
+              <span className="w-2 h-2 rounded-full bg-teal-600 shrink-0" />
               <span>{activeConfig.description}</span>
             </div>
-            <span className="text-[10px] text-cyan-400 font-mono mt-1 block">
+            <span className="text-[10px] text-teal-800 font-mono font-bold mt-1 block">
               Periodicidade: {activeConfig.frequency}
             </span>
           </div>
 
           <div>
-            <label className="text-[10px] text-slate-400 block font-semibold mb-1">
+            <label className="text-[10px] text-slate-600 block font-bold mb-1">
               Operador Responsável (Identificação Pericial):
             </label>
             <select
               value={selectedMemberId}
               onChange={(e) => setSelectedMemberId(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+              className="w-full bg-white border border-[#E2ECE6] rounded-xl px-2.5 py-1.5 text-xs text-slate-900 font-medium focus:outline-none focus:border-teal-600 shadow-sm"
             >
               {teamMembers.map((m) => (
                 <option key={m.id} value={m.id}>
@@ -356,7 +356,7 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
           </div>
 
           <div>
-            <label className="text-[10px] text-slate-400 block font-semibold mb-1">
+            <label className="text-[10px] text-slate-600 block font-bold mb-1">
               Vínculo Operacional (Ciclo / Lote / Ocorrência):
             </label>
             <input
@@ -364,7 +364,7 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
               value={cycleCode}
               onChange={(e) => setCycleCode(e.target.value)}
               placeholder="Ex: CICLO-142, LOTE-01..."
-              className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 font-mono focus:outline-none focus:border-cyan-500"
+              className="w-full bg-white border border-[#E2ECE6] rounded-xl px-2.5 py-1.5 text-xs text-slate-900 font-mono focus:outline-none focus:border-teal-600 shadow-sm"
             />
           </div>
         </div>
@@ -373,22 +373,22 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
       {/* Lista de Fotos Registradas para este Requisito */}
       <div className="space-y-3">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold text-slate-300 flex items-center space-x-1.5">
-            <FileCheck2 className="w-3.5 h-3.5 text-emerald-400" />
+          <span className="text-xs font-bold text-slate-800 flex items-center space-x-1.5">
+            <FileCheck2 className="w-3.5 h-3.5 text-teal-600" />
             <span>Evidências Vinculadas ({filteredEvidences.length})</span>
           </span>
-          <span className="text-[10px] text-slate-500">
+          <span className="text-[10px] text-slate-500 font-medium">
             Hash SHA-256 e compactação leve para auditoria sanitária
           </span>
         </div>
 
         {filteredEvidences.length === 0 ? (
-          <div className="border border-dashed border-slate-800 rounded-xl p-6 text-center bg-slate-950/40">
-            <Camera className="w-8 h-8 text-slate-600 mx-auto mb-2" />
-            <p className="text-xs font-semibold text-slate-300">
+          <div className="border border-dashed border-[#E2ECE6] rounded-2xl p-6 text-center bg-[#F8FAF9]">
+            <Camera className="w-8 h-8 text-slate-400 mx-auto mb-2" />
+            <p className="text-xs font-bold text-slate-800">
               Nenhuma evidência fotográfica registrada para este requisito
             </p>
-            <p className="text-[11px] text-slate-500 max-w-sm mx-auto mt-1">
+            <p className="text-[11px] text-slate-500 max-w-sm mx-auto mt-1 font-medium">
               Toque no botão &quot;Capturar Foto Comprobatória&quot; para abrir a câmera
               traseira do celular/tablet ou fazer upload da evidência de bancada.
             </p>
@@ -398,10 +398,10 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
             {filteredEvidences.map((evid) => (
               <div
                 key={evid.evidencia_id}
-                className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden flex flex-col justify-between hover:border-slate-700 transition group"
+                className="bg-white border border-[#E2ECE6] rounded-2xl overflow-hidden flex flex-col justify-between hover:border-teal-300 transition group shadow-sm"
               >
                 {/* Imagem com Overlay de Status */}
-                <div className="relative aspect-video bg-slate-900 overflow-hidden cursor-pointer" onClick={() => setZoomEvidence(evid)}>
+                <div className="relative aspect-video bg-slate-100 overflow-hidden cursor-pointer" onClick={() => setZoomEvidence(evid)}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={evid.foto_url}
@@ -409,13 +409,13 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                   />
                   <div className="absolute top-2 left-2 flex items-center space-x-1">
-                    <span className="bg-emerald-950/90 text-emerald-300 border border-emerald-700/80 text-[10px] font-bold px-2 py-0.5 rounded flex items-center space-x-1 backdrop-blur-sm">
-                      <CheckCircle2 className="w-3 h-3" />
+                    <span className="bg-emerald-50/90 text-emerald-800 border border-emerald-200 text-[10px] font-bold px-2 py-0.5 rounded-full flex items-center space-x-1 backdrop-blur-sm shadow-xs">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-600" />
                       <span>Evidência Anexada</span>
                     </span>
                     {evid.confidencial && (
-                      <span className="bg-amber-950/90 text-amber-300 border border-amber-700/80 text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center space-x-1 backdrop-blur-sm">
-                        <Lock className="w-2.5 h-2.5" />
+                      <span className="bg-amber-50/90 text-amber-800 border border-amber-200 text-[10px] font-bold px-1.5 py-0.5 rounded-full flex items-center space-x-1 backdrop-blur-sm shadow-xs">
+                        <Lock className="w-2.5 h-2.5 text-amber-600" />
                         <span>Sigilo LGPD</span>
                       </span>
                     )}
@@ -427,7 +427,7 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
                       e.stopPropagation();
                       setZoomEvidence(evid);
                     }}
-                    className="absolute bottom-2 right-2 p-1.5 rounded-lg bg-slate-950/80 hover:bg-slate-900 text-slate-200 border border-slate-700 text-xs backdrop-blur-sm transition"
+                    className="absolute bottom-2 right-2 p-1.5 rounded-xl bg-white/90 hover:bg-white text-slate-700 border border-[#E2ECE6] text-xs backdrop-blur-sm transition shadow-sm"
                     title="Visualizar em Tela Cheia"
                   >
                     <Maximize2 className="w-3.5 h-3.5" />
@@ -437,51 +437,51 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
                 {/* Metadados da Evidência */}
                 <div className="p-3 space-y-2 text-xs">
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-slate-200 line-clamp-1">
+                    <span className="font-bold text-slate-900 line-clamp-1">
                       {evid.titulo_evidencia || activeConfig?.label}
                     </span>
                     {evid.ciclo_id && (
-                      <span className="font-mono text-[10px] bg-slate-800 text-cyan-300 px-1.5 py-0.2 rounded border border-slate-700 shrink-0">
+                      <span className="font-mono text-[10px] bg-teal-50 text-teal-800 font-bold px-1.5 py-0.5 rounded-md border border-teal-200 shrink-0">
                         {evid.ciclo_id}
                       </span>
                     )}
                   </div>
 
-                  <div className="text-[10px] text-slate-400 space-y-1">
+                  <div className="text-[10px] text-slate-500 space-y-1 font-medium">
                     <div className="flex items-center justify-between">
                       <span>Operador:</span>
-                      <strong className="text-slate-300">
+                      <strong className="text-slate-800">
                         {evid.operador.nome} ({evid.operador.funcao})
                       </strong>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Carimbo Sanitário:</span>
-                      <span className="text-slate-300 font-mono">
+                      <span className="text-slate-800 font-mono">
                         {new Date(evid.timestamp).toLocaleString('pt-BR')}
                       </span>
                     </div>
                   </div>
 
                   {/* Hash SHA-256 Inviolável */}
-                  <div className="bg-slate-900/80 border border-slate-800 rounded px-2 py-1 flex items-center justify-between">
-                    <span className="font-mono text-[9px] text-slate-400 truncate max-w-[170px]">
+                  <div className="bg-[#F8FAF9] border border-[#E2ECE6] rounded-xl px-2 py-1 flex items-center justify-between">
+                    <span className="font-mono text-[9px] text-slate-500 truncate max-w-[170px]">
                       SHA-256: {evid.foto_hash_sha256}
                     </span>
                     <button
                       type="button"
                       onClick={() => handleCopyHash(evid.foto_hash_sha256)}
-                      className="text-[9px] text-cyan-400 hover:text-cyan-300 font-medium shrink-0 ml-1"
+                      className="text-[9px] text-teal-700 hover:text-teal-900 font-bold shrink-0 ml-1"
                     >
                       {copiedHash === evid.foto_hash_sha256 ? 'Copiado!' : 'Copiar'}
                     </button>
                   </div>
 
                   {/* Ações: Refazer ou Excluir */}
-                  <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between">
+                  <div className="pt-2 border-t border-[#E2ECE6] flex items-center justify-between">
                     <button
                       type="button"
                       onClick={handleTriggerCamera}
-                      className="text-[11px] text-cyan-400 hover:text-cyan-300 flex items-center space-x-1 font-semibold"
+                      className="text-[11px] text-teal-700 hover:text-teal-900 flex items-center space-x-1 font-bold"
                     >
                       <RotateCcw className="w-3 h-3" />
                       <span>Refazer Foto</span>
@@ -491,7 +491,7 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
                       <button
                         type="button"
                         onClick={() => onDeleteEvidence(evid.evidencia_id)}
-                        className="text-[11px] text-red-400 hover:text-red-300 flex items-center space-x-1"
+                        className="text-[11px] text-rose-600 hover:text-rose-800 flex items-center space-x-1 font-bold"
                         title="Excluir Evidência"
                       >
                         <Trash2 className="w-3 h-3" />
@@ -508,15 +508,15 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
 
       {/* Modal Lightbox de Zoom em Tela Cheia */}
       {zoomEvidence && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-in fade-in duration-200">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
-            <div className="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+          <div className="bg-white border border-[#E2ECE6] rounded-3xl max-w-3xl w-full overflow-hidden shadow-2xl flex flex-col max-h-[90vh]">
+            <div className="p-4 border-b border-[#E2ECE6] flex items-center justify-between bg-[#F8FAF9]">
               <div>
-                <h4 className="text-sm font-bold text-white flex items-center space-x-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <h4 className="text-sm font-bold text-slate-900 flex items-center space-x-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                   <span>{zoomEvidence.titulo_evidencia || 'Registro Fotográfico Pericial'}</span>
                 </h4>
-                <p className="text-[11px] text-slate-400 font-mono mt-0.5">
+                <p className="text-[11px] text-slate-500 font-mono font-medium mt-0.5">
                   Ref: {zoomEvidence.pop_codigo} | {zoomEvidence.ciclo_id || 'Rotina'} | {new Date(zoomEvidence.timestamp).toLocaleString('pt-BR')}
                 </p>
               </div>
@@ -524,45 +524,45 @@ export const PhotoProofUploader: React.FC<PhotoProofUploaderProps> = ({
               <button
                 type="button"
                 onClick={() => setZoomEvidence(null)}
-                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
+                className="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 transition"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <div className="p-4 overflow-y-auto flex-1 flex flex-col items-center justify-center bg-black/40">
+            <div className="p-4 overflow-y-auto flex-1 flex flex-col items-center justify-center bg-slate-50">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={zoomEvidence.foto_url}
                 alt="Evidência Ampliada"
-                className="max-h-[60vh] object-contain rounded-xl border border-slate-800 shadow-xl"
+                className="max-h-[60vh] object-contain rounded-2xl border border-[#E2ECE6] shadow-md"
               />
             </div>
 
-            <div className="p-4 border-t border-slate-800 bg-slate-950 text-xs space-y-2">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-300">
+            <div className="p-4 border-t border-[#E2ECE6] bg-[#F8FAF9] text-xs space-y-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-700 font-medium">
                 <div>
-                  <span className="text-[10px] text-slate-500 block">Operador Responsável:</span>
-                  <strong>{zoomEvidence.operador.nome}</strong> ({zoomEvidence.operador.funcao})
+                  <span className="text-[10px] text-slate-500 block font-bold">Operador Responsável:</span>
+                  <strong className="text-slate-900">{zoomEvidence.operador.nome}</strong> ({zoomEvidence.operador.funcao})
                   {zoomEvidence.operador.cro && ` - CRO ${zoomEvidence.operador.cro}`}
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-500 block">Status de Conformidade:</span>
-                  <span className="text-emerald-400 font-bold flex items-center space-x-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span className="text-[10px] text-slate-500 block font-bold">Status de Conformidade:</span>
+                  <span className="text-emerald-700 font-bold flex items-center space-x-1">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                     <span>Conforme RDC nº 1.002/2025</span>
                   </span>
                 </div>
               </div>
 
-              <div className="bg-slate-900 border border-slate-800 rounded p-2 flex items-center justify-between">
-                <span className="font-mono text-[10px] text-slate-400 truncate">
+              <div className="bg-white border border-[#E2ECE6] rounded-xl p-2.5 flex items-center justify-between shadow-xs">
+                <span className="font-mono text-[10px] text-slate-500 truncate">
                   SHA-256: {zoomEvidence.foto_hash_sha256}
                 </span>
                 <button
                   type="button"
                   onClick={() => handleCopyHash(zoomEvidence.foto_hash_sha256)}
-                  className="text-[10px] text-cyan-400 hover:text-cyan-300 font-semibold ml-2 shrink-0"
+                  className="text-[10px] text-teal-700 hover:text-teal-900 font-bold ml-2 shrink-0"
                 >
                   {copiedHash === zoomEvidence.foto_hash_sha256 ? 'Copiado!' : 'Copiar Hash'}
                 </button>

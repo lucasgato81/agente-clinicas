@@ -134,26 +134,26 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl max-w-xl w-full overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4 overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
+      <div className="bg-white border border-[#E2ECE6] rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
         {/* Cabeçalho */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800 bg-slate-900/90 shrink-0">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center">
-              <AlertTriangle className="w-4 h-4 text-indigo-400" />
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[#E2ECE6] bg-[#F8FAF9] shrink-0">
+          <div className="flex items-center space-x-3">
+            <div className="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center shadow-sm">
+              <AlertTriangle className="w-5 h-5 text-amber-600" />
             </div>
             <div>
-              <h3 className="font-semibold text-slate-100 text-sm">
+              <h3 className="font-bold text-slate-900 text-sm">
                 Registrar Incidente no Núcleo de Segurança (NSP)
               </h3>
-              <p className="text-[11px] text-slate-400">
+              <p className="text-[11px] text-slate-500 font-medium">
                 RDC 1002/2025 Anvisa • Gestão de Risco para Pacientes & Equipe do Consultório
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-slate-200 p-1 rounded-lg hover:bg-slate-800 transition"
+            className="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition"
           >
             <X className="w-5 h-5" />
           </button>
@@ -163,66 +163,66 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
         <form onSubmit={handleSubmit} className="p-6 space-y-4 text-xs overflow-y-auto flex-1">
           {/* SELETOR DO PÚBLICO AFETADO / ENVOLVIDO */}
           <div className="space-y-1.5">
-            <label className="text-[11px] font-bold text-slate-200 block">
+            <label className="text-[11px] font-bold text-slate-800 block">
               Quem foi envolvido / afetado no incidente? *
             </label>
             <div className="grid grid-cols-3 gap-2">
               <button
                 type="button"
                 onClick={() => handleSelectType('TEAM_MEMBER')}
-                className={`p-2.5 rounded-xl border text-left transition flex items-center space-x-2 ${
+                className={`p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 ${
                   affectedType === 'TEAM_MEMBER'
-                    ? 'bg-amber-950/40 border-amber-500/70 text-amber-300 ring-1 ring-amber-500/50'
-                    : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
+                    ? 'bg-amber-50 border-amber-400 text-amber-950 ring-2 ring-amber-400/30 font-bold shadow-sm'
+                    : 'bg-white border-[#E2ECE6] text-slate-600 hover:bg-slate-50'
                 }`}
               >
-                <Users className="w-4 h-4 shrink-0 text-amber-400" />
+                <Users className="w-4 h-4 shrink-0 text-amber-600" />
                 <div>
-                  <span className="font-bold block text-xs">Membro da Equipe</span>
-                  <span className="text-[10px] text-slate-400 block">ASB, TSB, Dentista</span>
+                  <span className="font-bold block text-xs text-slate-900">Membro da Equipe</span>
+                  <span className="text-[10px] text-slate-500 font-medium block">ASB, TSB, Dentista</span>
                 </div>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleSelectType('PATIENT')}
-                className={`p-2.5 rounded-xl border text-left transition flex items-center space-x-2 ${
+                className={`p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 ${
                   affectedType === 'PATIENT'
-                    ? 'bg-cyan-950/40 border-cyan-500/70 text-cyan-300 ring-1 ring-cyan-500/50'
-                    : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
+                    ? 'bg-teal-50 border-teal-500 text-teal-950 ring-2 ring-teal-500/30 font-bold shadow-sm'
+                    : 'bg-white border-[#E2ECE6] text-slate-600 hover:bg-slate-50'
                 }`}
               >
-                <User className="w-4 h-4 shrink-0 text-cyan-400" />
+                <User className="w-4 h-4 shrink-0 text-teal-600" />
                 <div>
-                  <span className="font-bold block text-xs">Paciente</span>
-                  <span className="text-[10px] text-slate-400 block">Durante atendimento</span>
+                  <span className="font-bold block text-xs text-slate-900">Paciente</span>
+                  <span className="text-[10px] text-slate-500 font-medium block">Durante atendimento</span>
                 </div>
               </button>
 
               <button
                 type="button"
                 onClick={() => handleSelectType('ENVIRONMENT_PROCESS')}
-                className={`p-2.5 rounded-xl border text-left transition flex items-center space-x-2 ${
+                className={`p-3 rounded-2xl border text-left transition flex items-center space-x-2.5 ${
                   affectedType === 'ENVIRONMENT_PROCESS'
-                    ? 'bg-indigo-950/40 border-indigo-500/70 text-indigo-300 ring-1 ring-indigo-500/50'
-                    : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
+                    ? 'bg-emerald-50 border-emerald-500 text-emerald-950 ring-2 ring-emerald-500/30 font-bold shadow-sm'
+                    : 'bg-white border-[#E2ECE6] text-slate-600 hover:bg-slate-50'
                 }`}
               >
-                <Settings className="w-4 h-4 shrink-0 text-indigo-400" />
+                <Settings className="w-4 h-4 shrink-0 text-emerald-600" />
                 <div>
-                  <span className="font-bold block text-xs">CME / Processo</span>
-                  <span className="text-[10px] text-slate-400 block">Autoclave, lote, falha</span>
+                  <span className="font-bold block text-xs text-slate-900">CME / Processo</span>
+                  <span className="text-[10px] text-slate-500 font-medium block">Autoclave, lote, falha</span>
                 </div>
               </button>
             </div>
           </div>
 
           {/* DADOS DA PESSOA ENVOLVIDA */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-slate-950/70 p-3 rounded-xl border border-slate-800">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-[#F8FAF9] p-3.5 rounded-2xl border border-[#E2ECE6]">
             {affectedType === 'TEAM_MEMBER' && (
               <>
                 <div>
-                  <label className="text-[11px] font-medium text-slate-300 block mb-1">
+                  <label className="text-[11px] font-bold text-slate-800 block mb-1">
                     Colaborador da Equipe Envolvido *
                   </label>
                   {teamMembers.length > 0 ? (
@@ -233,7 +233,7 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
                         setAffectedPersonName(e.target.value);
                         if (selected) setAffectedPersonRole(selected.roleName);
                       }}
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                      className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                     >
                       {teamMembers.map((m) => (
                         <option key={m.id} value={m.name}>
@@ -248,12 +248,12 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
                       placeholder="Nome do colaborador"
                       value={affectedPersonName}
                       onChange={(e) => setAffectedPersonName(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                      className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                     />
                   )}
                 </div>
                 <div>
-                  <label className="text-[11px] font-medium text-slate-300 block mb-1">
+                  <label className="text-[11px] font-bold text-slate-800 block mb-1">
                     Função / Cargo do Profissional
                   </label>
                   <input
@@ -261,7 +261,7 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
                     value={affectedPersonRole}
                     onChange={(e) => setAffectedPersonRole(e.target.value)}
                     placeholder="Ex: ASB, TSB, Cirurgião-Dentista"
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                   />
                 </div>
               </>
@@ -270,7 +270,7 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
             {affectedType === 'PATIENT' && (
               <>
                 <div>
-                  <label className="text-[11px] font-medium text-slate-300 block mb-1">
+                  <label className="text-[11px] font-bold text-slate-800 block mb-1">
                     Nome Completo do Paciente *
                   </label>
                   <input
@@ -279,11 +279,11 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
                     placeholder="Ex: João da Silva Santos"
                     value={affectedPersonName}
                     onChange={(e) => setAffectedPersonName(e.target.value)}
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                   />
                 </div>
                 <div>
-                  <label className="text-[11px] font-medium text-slate-300 block mb-1">
+                  <label className="text-[11px] font-bold text-slate-800 block mb-1">
                     Número do Prontuário / CPF
                   </label>
                   <input
@@ -291,7 +291,7 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
                     value={affectedPersonRole}
                     onChange={(e) => setAffectedPersonRole(e.target.value)}
                     placeholder="Ex: Prontuário #4820 ou CPF"
-                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                    className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                   />
                 </div>
               </>
@@ -299,7 +299,7 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
 
             {affectedType === 'ENVIRONMENT_PROCESS' && (
               <div className="sm:col-span-2">
-                <label className="text-[11px] font-medium text-slate-300 block mb-1">
+                <label className="text-[11px] font-bold text-slate-800 block mb-1">
                   Setor / Equipamento Envolvido *
                 </label>
                 <input
@@ -308,7 +308,7 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
                   placeholder="Ex: Autoclave Cristófoli 21L (CME) ou Sala de Limpeza"
                   value={affectedPersonName}
                   onChange={(e) => setAffectedPersonName(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+                  className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
                 />
               </div>
             )}
@@ -316,13 +316,13 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
 
           {/* Categoria do Incidente (Contextual) */}
           <div>
-            <label className="text-[11px] font-medium text-slate-300 block mb-1">
+            <label className="text-[11px] font-bold text-slate-800 block mb-1">
               Categoria do Incidente *
             </label>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500"
+              className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
             >
               {affectedType === 'TEAM_MEMBER' &&
                 teamCategories.map((c) => (
@@ -347,13 +347,13 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
 
           {/* Classificação de Severidade */}
           <div>
-            <label className="text-[11px] font-medium text-slate-300 block mb-1">
+            <label className="text-[11px] font-bold text-slate-800 block mb-1">
               Classificação de Severidade (Matriz de Risco RDC 1002) *
             </label>
             <select
               value={severity}
               onChange={(e) => setSeverity(e.target.value as IncidentSeverity)}
-              className="w-full bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-100 focus:outline-none focus:border-cyan-500 font-semibold"
+              className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-teal-600 font-bold shadow-sm"
             >
               <option value="MILD">Leve (Quase-Erro / Near Miss sem Dano Físico)</option>
               <option value="MODERATE">Moderado (Dano Reversível / Interrupção de Procedimento sem Sequelas)</option>
@@ -363,12 +363,12 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
 
           {/* Alerta de Obrigatoriedade Notivisa */}
           {severity === 'SEVERE_HARM' && (
-            <div className="bg-red-950/80 border border-red-700 p-4 rounded-xl space-y-2 text-red-200">
-              <div className="flex items-center space-x-2 font-bold text-xs text-red-300">
-                <ShieldAlert className="w-4 h-4 text-red-400" />
+            <div className="bg-red-50 border border-red-300 p-4 rounded-2xl space-y-2 text-red-900 shadow-sm">
+              <div className="flex items-center space-x-2 font-bold text-xs text-red-700">
+                <ShieldAlert className="w-4 h-4 text-red-600" />
                 <span>EXIGÊNCIA REGULATÓRIA: NOTIFICAÇÃO OBRIGATÓRIA NO NOTIVISA</span>
               </div>
-              <p className="text-[11px] leading-relaxed text-red-200">
+              <p className="text-[11px] leading-relaxed text-red-800">
                 Conforme a RDC 1002/2025 e regulamentos do SNVS, incidentes com dano grave ou óbito
                 devem ser notificados no sistema Notivisa da Anvisa em até 72 horas úteis pelo
                 Responsável Técnico.
@@ -378,7 +378,7 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
                   href="https://www8.anvisa.gov.br/notivisa/"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-red-800 hover:bg-red-700 text-white rounded-lg text-xs font-semibold w-fit transition"
+                  className="inline-flex items-center space-x-1.5 px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-xl text-xs font-bold w-fit transition shadow-sm"
                 >
                   <span>Acessar Portal Notivisa Anvisa</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -389,7 +389,7 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
                   placeholder="Informe o Nº do Protocolo Notivisa *"
                   value={notivisaProtocol}
                   onChange={(e) => setNotivisaProtocol(e.target.value)}
-                  className="flex-1 bg-slate-900 border border-red-600 rounded-lg px-3 py-1.5 text-xs text-white placeholder-red-300 focus:outline-none focus:border-white font-mono"
+                  className="flex-1 bg-white border border-red-300 rounded-xl px-3 py-1.5 text-xs text-slate-900 placeholder-red-400 focus:outline-none focus:border-red-600 font-mono shadow-sm"
                   required
                 />
               </div>
@@ -398,9 +398,9 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
 
           {/* Conduta Clínica / Profilática Imediata Adotada */}
           <div>
-            <label className="text-[11px] font-medium text-slate-300 flex items-center justify-between mb-1">
+            <label className="text-[11px] font-bold text-slate-800 flex items-center justify-between mb-1">
               <span>Conduta Imediata Adotada (Primeiros Socorros / Profilaxia) *</span>
-              <span className="text-[10px] text-slate-500">
+              <span className="text-[10px] text-slate-500 font-medium">
                 {affectedType === 'TEAM_MEMBER' ? 'Ex: Lavagem, PEP, CAT' : 'Ex: Sutura, Rx de controle, medicação'}
               </span>
             </label>
@@ -413,14 +413,14 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
                   ? 'Ex: Lavagem abundante do local com água e sabão, teste rápido sorológico de fonte/vítima, encaminhamento ao centro de referência para PEP em até 2h e abertura de CAT.'
                   : 'Ex: Remoção imediata do fragmento sob irrigação, radiografia periapical digital de controle, prescrição medicamentosa e orientações pós-atendimento.'
               }
-              className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 leading-relaxed"
+              className="w-full bg-white border border-[#E2ECE6] rounded-xl p-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-600 leading-relaxed shadow-sm"
               required
             />
           </div>
 
           {/* Descrição do Fato */}
           <div>
-            <label className="text-[11px] font-medium text-slate-300 block mb-1">
+            <label className="text-[11px] font-bold text-slate-800 block mb-1">
               Descrição Detalhada do Fato e Causas *
             </label>
             <textarea
@@ -428,14 +428,14 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Descreva detalhadamente o que ocorreu, instrumentos ou materiais envolvidos e fatores que contribuíram..."
-              className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 leading-relaxed"
+              className="w-full bg-white border border-[#E2ECE6] rounded-xl p-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-600 leading-relaxed shadow-sm"
               required
             />
           </div>
 
           {/* Análise de Causa & Ação Preventiva */}
           <div>
-            <label className="text-[11px] font-medium text-slate-300 block mb-1">
+            <label className="text-[11px] font-bold text-slate-800 block mb-1">
               Ação Preventiva / Corretiva no Ciclo PDCA *
             </label>
             <textarea
@@ -443,40 +443,40 @@ export const NewIncidentModal: React.FC<NewIncidentModalProps> = ({
               value={preventiveAction}
               onChange={(e) => setPreventiveAction(e.target.value)}
               placeholder="Ex: Treinamento imediato de descarte seguro, revisão de lote de instrumentais, reforço de POP..."
-              className="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 leading-relaxed"
+              className="w-full bg-white border border-[#E2ECE6] rounded-xl p-3 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-600 leading-relaxed shadow-sm"
               required
             />
           </div>
 
           {/* Data de Reavaliação de Eficácia */}
-          <div className="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-1">
-            <div className="flex items-center space-x-1.5 text-cyan-400 font-semibold text-xs">
-              <Calendar className="w-3.5 h-3.5" />
+          <div className="bg-[#F8FAF9] p-3.5 rounded-2xl border border-[#E2ECE6] space-y-1">
+            <div className="flex items-center space-x-2 text-teal-800 font-bold text-xs">
+              <Calendar className="w-4 h-4 text-teal-600" />
               <span>Ciclo de Reavaliação de Eficácia (PDCA - 15 a 30 dias)</span>
             </div>
-            <p className="text-[10px] text-slate-400">
+            <p className="text-[10px] text-slate-600">
               O sistema disparará um alerta preventivo no Dashboard nesta data para auditar se a falha reincidiu.
             </p>
             <input
               type="date"
               value={reevaluationDate}
               onChange={(e) => setReevaluationDate(e.target.value)}
-              className="w-full sm:w-48 bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1 text-xs text-slate-100 focus:outline-none focus:border-cyan-500 mt-1"
+              className="w-full sm:w-48 bg-white border border-[#E2ECE6] rounded-xl px-3 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-teal-600 mt-1 shadow-sm font-medium"
             />
           </div>
 
           {/* Rodapé */}
-          <div className="pt-2 flex justify-end space-x-2 shrink-0">
+          <div className="pt-3 border-t border-[#E2ECE6] flex justify-end space-x-2.5 shrink-0">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white hover:bg-slate-800 rounded-lg transition"
+              className="px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="flex items-center space-x-1.5 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg text-xs shadow-md transition cursor-pointer"
+              className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold rounded-xl text-xs shadow-md shadow-teal-700/20 transition cursor-pointer"
             >
               <CheckCircle2 className="w-4 h-4" />
               <span>Registrar no Livro do NSP</span>

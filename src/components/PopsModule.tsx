@@ -34,7 +34,7 @@ interface PopsModuleProps {
   onDeletePhotoEvidence?: (popId: string, evidenceId: string) => void;
 }
 
-// Renderizador rico de Markdown livre de vazamento de caracteres (###, **, etc.)
+// Renderizador rico de Markdown com alto contraste e legibilidade cirúrgica (grafite escuro / preto)
 const renderRichMarkdown = (markdown: string) => {
   const lines = markdown.split('\n');
   const elements: React.ReactNode[] = [];
@@ -44,10 +44,10 @@ const renderRichMarkdown = (markdown: string) => {
     if (currentList) {
       if (currentList.type === 'ul') {
         elements.push(
-          <ul key={`ul-${elements.length}`} className="space-y-1.5 my-2 pl-2">
+          <ul key={`ul-${elements.length}`} className="space-y-2 my-2.5 pl-2">
             {currentList.items.map((it, idx) => (
-              <li key={idx} className="flex items-start space-x-2 text-slate-300">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-1.5 shrink-0" />
+              <li key={idx} className="flex items-start space-x-2 text-slate-800 text-xs">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-600 mt-1.5 shrink-0" />
                 <span className="leading-relaxed">{it}</span>
               </li>
             ))}
@@ -55,10 +55,10 @@ const renderRichMarkdown = (markdown: string) => {
         );
       } else {
         elements.push(
-          <ol key={`ol-${elements.length}`} className="space-y-2 my-2 pl-1">
+          <ol key={`ol-${elements.length}`} className="space-y-2.5 my-2.5 pl-1">
             {currentList.items.map((it, idx) => (
-              <li key={idx} className="flex items-start space-x-2 text-slate-300">
-                <span className="font-mono text-[11px] font-bold text-cyan-400 bg-cyan-950/60 border border-cyan-800/60 px-1.5 py-0.2 rounded shrink-0 mt-0.5">
+              <li key={idx} className="flex items-start space-x-2.5 text-slate-800 text-xs">
+                <span className="font-mono text-[11px] font-bold text-teal-800 bg-teal-50 border border-teal-200 px-1.5 py-0.5 rounded shrink-0 mt-0.5 shadow-2xs">
                   {idx + 1}
                 </span>
                 <span className="leading-relaxed">{it}</span>
@@ -71,13 +71,13 @@ const renderRichMarkdown = (markdown: string) => {
     }
   };
 
-  // Helper para formatar negritos **texto** dentro de linhas
+  // Helper para formatar negritos **texto** dentro de linhas com alto contraste
   const parseInlineBold = (text: string): React.ReactNode => {
     const parts = text.split(/(\*\*[^*]+\*\*)/g);
     return parts.map((part, i) => {
       if (part.startsWith('**') && part.endsWith('**')) {
         return (
-          <strong key={i} className="text-slate-100 font-semibold">
+          <strong key={i} className="text-slate-950 font-bold">
             {part.slice(2, -2)}
           </strong>
         );
@@ -99,9 +99,9 @@ const renderRichMarkdown = (markdown: string) => {
       flushList();
       const titleText = line.replace(/^#+\s*/, '');
       elements.push(
-        <div key={`h-${index}`} className="pt-3 pb-1.5 border-b border-slate-800/80 mb-2">
-          <h4 className="text-xs font-bold text-cyan-300 uppercase tracking-wider flex items-center space-x-2">
-            <span className="w-2 h-2 rounded-sm bg-cyan-500" />
+        <div key={`h-${index}`} className="pt-4 pb-1.5 border-b border-[#E2ECE6] mb-2.5">
+          <h4 className="text-xs font-bold text-teal-900 uppercase tracking-wider flex items-center space-x-2">
+            <span className="w-2 h-2 rounded-sm bg-teal-600" />
             <span>{parseInlineBold(titleText)}</span>
           </h4>
         </div>
@@ -134,7 +134,7 @@ const renderRichMarkdown = (markdown: string) => {
     // Parágrafo regular
     flushList();
     elements.push(
-      <p key={`p-${index}`} className="text-xs text-slate-300 leading-relaxed my-1.5">
+      <p key={`p-${index}`} className="text-xs text-slate-800 leading-relaxed my-2">
         {parseInlineBold(line)}
       </p>
     );

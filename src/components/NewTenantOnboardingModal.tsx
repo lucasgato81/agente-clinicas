@@ -120,27 +120,27 @@ export const NewTenantOnboardingModal: React.FC<NewTenantOnboardingModalProps> =
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-3 md:p-6 overflow-y-auto animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-3 md:p-6 overflow-y-auto animate-in fade-in duration-200"
       onClick={onClose}
     >
       <div
-        className="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full my-auto overflow-hidden shadow-2xl flex flex-col max-h-[95vh]"
+        className="bg-white border border-[#E2ECE6] rounded-3xl max-w-2xl w-full my-auto overflow-hidden shadow-2xl flex flex-col max-h-[95vh]"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Cabeçalho */}
-        <div className="p-5 md:px-6 md:py-4 bg-gradient-to-b from-slate-900 to-slate-950 border-b border-slate-800 flex items-center justify-between shrink-0">
+        <div className="p-5 md:px-6 md:py-4 bg-[#F8FAF9] border-b border-[#E2ECE6] flex items-center justify-between shrink-0">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-slate-950 shadow-md shadow-cyan-950/50">
+            <div className="w-10 h-10 rounded-2xl bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-700 shadow-sm">
               <Building2 className="w-5 h-5 font-black" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white tracking-tight flex items-center space-x-2">
+              <h3 className="text-base font-bold text-slate-900 tracking-tight flex items-center space-x-2">
                 <span>Cadastrar Nova Clínica (SaaS Onboarding)</span>
-                <span className="text-cyan-400 text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-800">
+                <span className="text-teal-800 text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-teal-50 border border-teal-200">
                   14 Dias Grátis
                 </span>
               </h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 font-medium">
                 Provisionamento multi-tenant automático para auditoria sanitária da sua clínica
               </p>
             </div>
@@ -148,7 +148,7 @@ export const NewTenantOnboardingModal: React.FC<NewTenantOnboardingModalProps> =
 
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1.5 rounded-xl hover:bg-slate-800 transition"
+            className="text-slate-400 hover:text-slate-700 p-1.5 rounded-xl hover:bg-slate-100 transition"
           >
             <X className="w-4 h-4" />
           </button>
@@ -157,8 +157,8 @@ export const NewTenantOnboardingModal: React.FC<NewTenantOnboardingModalProps> =
         {/* Formulário */}
         <form onSubmit={handleSubmit} className="p-5 md:p-6 space-y-4 overflow-y-auto flex-1">
           {/* Passo 1: Busca por CNPJ */}
-          <div className="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 space-y-2">
-            <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block">
+          <div className="bg-[#F8FAF9] border border-teal-200 rounded-2xl p-4 space-y-2">
+            <label className="text-xs font-bold text-teal-900 uppercase tracking-wider block">
               1. CNPJ da Clínica (Busca Automática na Receita Federal):
             </label>
             <div className="flex gap-2">
@@ -167,13 +167,13 @@ export const NewTenantOnboardingModal: React.FC<NewTenantOnboardingModalProps> =
                 value={cnpj}
                 onChange={(e) => setCnpj(e.target.value)}
                 placeholder="Ex: 12.345.678/0001-90"
-                className="flex-1 bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-cyan-500 font-mono"
+                className="flex-1 bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-600 font-mono shadow-sm"
               />
               <button
                 type="button"
                 onClick={handleSearchCnpj}
                 disabled={isSearchingCnpj}
-                className="flex items-center space-x-1.5 px-4 py-2 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold rounded-xl text-xs transition disabled:opacity-50 shrink-0"
+                className="flex items-center space-x-1.5 px-4 py-2 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold rounded-xl text-xs transition disabled:opacity-50 shrink-0 shadow-sm"
               >
                 {isSearchingCnpj ? (
                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />
@@ -185,7 +185,7 @@ export const NewTenantOnboardingModal: React.FC<NewTenantOnboardingModalProps> =
             </div>
 
             {cnpjError && (
-              <p className="text-[11px] text-amber-400 flex items-center space-x-1 pt-1">
+              <p className="text-[11px] text-amber-700 font-medium flex items-center space-x-1 pt-1">
                 <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                 <span>{cnpjError}</span>
               </p>
@@ -195,56 +195,56 @@ export const NewTenantOnboardingModal: React.FC<NewTenantOnboardingModalProps> =
           {/* Passo 2: Dados Principais */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
             <div>
-              <label className="text-slate-400 block mb-1">Nome Fantasia da Clínica *</label>
+              <label className="text-slate-800 font-bold block mb-1">Nome Fantasia da Clínica *</label>
               <input
                 type="text"
                 required
                 value={tradeName}
                 onChange={(e) => setTradeName(e.target.value)}
                 placeholder="Ex: Clínica Odonto Inova"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
               />
             </div>
             <div>
-              <label className="text-slate-400 block mb-1">Razão Social (PJ)</label>
+              <label className="text-slate-800 font-bold block mb-1">Razão Social (PJ)</label>
               <input
                 type="text"
                 value={legalName}
                 onChange={(e) => setLegalName(e.target.value)}
                 placeholder="Ex: Odonto Inova Serviços Médicos Ltda"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
               />
             </div>
 
             <div>
-              <label className="text-slate-400 block mb-1">Responsável Técnico (RT) *</label>
+              <label className="text-slate-800 font-bold block mb-1">Responsável Técnico (RT) *</label>
               <input
                 type="text"
                 required
                 value={technicalResponsibleName}
                 onChange={(e) => setTechnicalResponsibleName(e.target.value)}
                 placeholder="Ex: Dr. Lucas Ribeiro"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
               />
             </div>
             <div>
-              <label className="text-slate-400 block mb-1">CRO do Responsável Técnico *</label>
+              <label className="text-slate-800 font-bold block mb-1">CRO do Responsável Técnico *</label>
               <input
                 type="text"
                 required
                 value={technicalResponsibleCro}
                 onChange={(e) => setTechnicalResponsibleCro(e.target.value)}
                 placeholder="Ex: CRO-SP 123456"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:border-teal-600 shadow-sm"
               />
             </div>
 
             <div>
-              <label className="text-slate-400 block mb-1">Qtd. de Consultórios / Cadeiras</label>
+              <label className="text-slate-800 font-bold block mb-1">Qtd. de Consultórios / Cadeiras</label>
               <select
                 value={chairsCount}
                 onChange={(e) => setChairsCount(parseInt(e.target.value))}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-slate-900 focus:outline-none focus:border-teal-600 shadow-sm"
               >
                 <option value={1}>1 Consultório (Consultório Individual)</option>
                 <option value={2}>2 Consultórios</option>
@@ -255,20 +255,20 @@ export const NewTenantOnboardingModal: React.FC<NewTenantOnboardingModalProps> =
             </div>
 
             <div>
-              <label className="text-slate-400 block mb-1">Inscrição CRO-PJ (Clínica)</label>
+              <label className="text-slate-800 font-bold block mb-1">Inscrição CRO-PJ (Clínica)</label>
               <input
                 type="text"
                 value={croPj}
                 onChange={(e) => setCroPj(e.target.value)}
                 placeholder="Ex: CRO-SP 98765-PJ"
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-white font-mono focus:outline-none focus:border-cyan-500"
+                className="w-full bg-white border border-[#E2ECE6] rounded-xl px-3 py-2 text-slate-900 font-mono focus:outline-none focus:border-teal-600 shadow-sm"
               />
             </div>
           </div>
 
           {/* Passo 3: Escolha do Plano SaaS */}
           <div className="pt-2">
-            <label className="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-2">
+            <label className="text-xs font-bold text-slate-800 uppercase tracking-wider block mb-2">
               2. Escolha o Plano (Inicie com 14 Dias Grátis sem Cartão):
             </label>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
@@ -280,28 +280,28 @@ export const NewTenantOnboardingModal: React.FC<NewTenantOnboardingModalProps> =
                 <div
                   key={pl.id}
                   onClick={() => setSelectedPlan(pl.id)}
-                  className={`p-3 rounded-xl border cursor-pointer transition ${
+                  className={`p-3 rounded-2xl border cursor-pointer transition ${
                     selectedPlan === pl.id
-                      ? 'bg-cyan-950/80 border-cyan-500 text-cyan-200 ring-1 ring-cyan-500/50'
-                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
+                      ? 'bg-teal-50 border-teal-500 text-teal-950 ring-2 ring-teal-500/30 shadow-sm'
+                      : 'bg-white border-[#E2ECE6] text-slate-600 hover:bg-slate-50'
                   }`}
                 >
-                  <div className="font-bold text-white flex justify-between items-center">
+                  <div className="font-bold text-slate-900 flex justify-between items-center">
                     <span>{pl.name}</span>
-                    <span className="text-cyan-400 font-mono text-[11px]">{pl.price}</span>
+                    <span className="text-teal-700 font-mono text-[11px] font-bold">{pl.price}</span>
                   </div>
-                  <p className="text-[10px] text-slate-400 mt-0.5">{pl.desc}</p>
+                  <p className="text-[10px] text-slate-500 mt-1">{pl.desc}</p>
                 </div>
               ))}
             </div>
           </div>
 
           {isSuccess && (
-            <div className="p-3 bg-emerald-950 border border-emerald-600 rounded-2xl text-emerald-200 text-xs flex items-center space-x-2 animate-in zoom-in-95 duration-150">
-              <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+            <div className="p-3.5 bg-emerald-50 border border-emerald-300 rounded-2xl text-emerald-900 text-xs flex items-center space-x-2.5 animate-in zoom-in-95 duration-150 shadow-sm">
+              <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
               <div>
                 <p className="font-bold">Clínica Criada com Sucesso!</p>
-                <p className="text-[11px] text-emerald-300">
+                <p className="text-[11px] text-emerald-700">
                   Tenant configurado e 14 dias de avaliação ativados.
                 </p>
               </div>
@@ -309,17 +309,17 @@ export const NewTenantOnboardingModal: React.FC<NewTenantOnboardingModalProps> =
           )}
 
           {/* Botão de Finalização */}
-          <div className="pt-3 border-t border-slate-800 flex justify-end space-x-3">
+          <div className="pt-3 border-t border-[#E2ECE6] flex justify-end space-x-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-slate-400 hover:text-white rounded-xl transition"
+              className="px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-xl transition"
             >
               Cancelar
             </button>
             <button
               type="submit"
-              className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold rounded-xl text-xs shadow-lg shadow-cyan-950/50 transition active:scale-98"
+              className="flex items-center space-x-2 px-5 py-2.5 bg-gradient-to-r from-teal-600 to-emerald-600 hover:from-teal-700 hover:to-emerald-700 text-white font-bold rounded-xl text-xs shadow-md shadow-teal-700/20 transition cursor-pointer"
             >
               <Sparkles className="w-4 h-4" />
               <span>Criar Conta & Iniciar Teste Grátis</span>

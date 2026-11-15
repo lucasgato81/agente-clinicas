@@ -753,7 +753,7 @@ export default function LandingPage() {
 
                   <div className="pt-8">
                     <Link
-                      href="/"
+                      href={`/?onboarding=true&plan=${plan.id}&period=${billingPeriod}`}
                       className={`w-full py-3.5 rounded-xl font-bold text-xs flex items-center justify-center space-x-2 transition ${
                         plan.popular
                           ? 'bg-gradient-to-r from-cyan-400 to-teal-400 hover:brightness-110 text-slate-950 shadow-lg shadow-cyan-500/25'

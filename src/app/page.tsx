@@ -65,6 +65,7 @@ import { NewTenantOnboardingModal } from '@/components/NewTenantOnboardingModal'
 import { EnterpriseFranchiseModal } from '@/components/EnterpriseFranchiseModal';
 import { EhrIntegrationModal } from '@/components/EhrIntegrationModal';
 import { SuperAdminModal } from '@/components/SuperAdminModal';
+import { QuickOnboardingModal } from '@/components/QuickOnboardingModal';
 import {
   CURRENT_CLINIC,
   CURRENT_USER,
@@ -144,14 +145,36 @@ export default function HomePage() {
   const [isFranchiseOpen, setIsFranchiseOpen] = useState<boolean>(false);
   const [isEhrOpen, setIsEhrOpen] = useState<boolean>(false);
   const [isSuperAdminOpen, setIsSuperAdminOpen] = useState<boolean>(false);
+  const [isQuickOnboardingOpen, setIsQuickOnboardingOpen] = useState<boolean>(false);
+  const [selectedOnboardingPlan, setSelectedOnboardingPlan] = useState<'SOLO' | 'PRO' | 'ENTERPRISE'>('PRO');
 
   // Sincronização em tempo real (PostgreSQL / Nuvem Render) e Restauração de Sessão
   useEffect(() => {
-    // 1. Restaurar sessão salva do usuário
+    // 1. Restaurar sessão salva do usuário ou verificar necessidade de Onboarding
     try {
+      const savedClinic = localStorage.getItem('odontoshield_registered_clinic');
+      if (savedClinic) {
+        setClinic(JSON.parse(savedClinic));
+        setIsNewClinicMode(false);
+      }
+
       const savedUser = localStorage.getItem('odontoshield_auth_user');
       if (savedUser) {
         setCurrentUser(JSON.parse(savedUser));
+      }
+
+      // Se veio da Landing Page (?onboarding=true) ou não tem clínica cadastrada, abrir Onboarding
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search);
+        const isOnboarding = params.get('onboarding') === 'true';
+        const planParam = params.get('plan') as 'SOLO' | 'PRO' | 'ENTERPRISE' | null;
+
+        if (isOnboarding || !savedClinic) {
+          if (planParam && ['SOLO', 'PRO', 'ENTERPRISE'].includes(planParam)) {
+            setSelectedOnboardingPlan(planParam);
+          }
+          setIsQuickOnboardingOpen(true);
+        }
       }
     } catch (e) {
       console.warn('Erro ao restaurar sessão local:', e);
@@ -1699,6 +1722,21 @@ export default function HomePage() {
           }}
         />
       )}
+
+      {/* Modal de Cadastro Simples para Novos Testadores vindos da LP */}
+      <QuickOnboardingModal
+        isOpen={isQuickOnboardingOpen}
+        initialPlan={selectedOnboardingPlan}
+        onComplete={(newClinic, newUser) => {
+          setClinic(newClinic);
+          setCurrentUser(newUser);
+          setIsNewClinicMode(false);
+          setIsQuickOnboardingOpen(false);
+          if (typeof window !== 'undefined') {
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }
+        }}
+      />
 
       {isFranchiseOpen && (
         <EnterpriseFranchiseModal

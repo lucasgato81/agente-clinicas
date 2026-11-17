@@ -251,10 +251,29 @@ export const SuperAdminModal: React.FC<SuperAdminModalProps> = ({
     checkAuthStatus();
   };
 
+  const getSuperAdminToken = () => {
+    try {
+      const stored = localStorage.getItem('odontoshield_superadmin_session');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        return parsed.token || '';
+      }
+    } catch {
+      return '';
+    }
+    return '';
+  };
+
   const fetchAdminData = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/admin/tenants');
+      const token = getSuperAdminToken();
+      const res = await fetch('/api/admin/tenants', {
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+      });
       if (res.ok) {
         const json = await res.json();
         setData(json);
@@ -270,9 +289,13 @@ export const SuperAdminModal: React.FC<SuperAdminModalProps> = ({
 
   const handleExtendTrial = async (tenantId: string) => {
     try {
+      const token = getSuperAdminToken();
       const res = await fetch('/api/admin/tenants', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ tenantId, action: 'EXTEND_TRIAL', extraDays: 14 }),
       });
       if (res.ok) {
@@ -287,9 +310,13 @@ export const SuperAdminModal: React.FC<SuperAdminModalProps> = ({
 
   const handleActivateSubscription = async (tenantId: string) => {
     try {
+      const token = getSuperAdminToken();
       const res = await fetch('/api/admin/tenants', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
         body: JSON.stringify({ tenantId, action: 'ACTIVATE' }),
       });
       if (res.ok) {

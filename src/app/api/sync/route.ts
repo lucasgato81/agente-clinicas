@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { query, isDatabaseConfigured, initDatabase } from '@/lib/db';
+import { getSessionFromRequest, logLgpdAudit } from '@/lib/auth';
 import {
   CURRENT_CLINIC,
   MOCK_CME_BATCHES,
@@ -30,19 +31,21 @@ async function ensureDbInit() {
   }
 }
 
-// GET: Sincroniza dados da clínica para computadores e celulares
-export async function GET() {
+// GET: Sincroniza dados da clínica para computadores e celulares (Isolamento Multi-Tenant)
+export async function GET(request: Request) {
   try {
     await ensureDbInit();
+    const session = getSessionFromRequest(request);
+    const tenantId = session?.tenantId;
 
-    if (isDatabaseConfigured()) {
+    if (isDatabaseConfigured() && tenantId) {
       try {
         const [batchesRes, packagesRes, popsRes, incidentsRes, equipRes] = await Promise.all([
-          query('SELECT * FROM cme_batches ORDER BY created_at DESC LIMIT 50'),
-          query('SELECT * FROM sterile_packages ORDER BY created_at DESC LIMIT 100'),
-          query('SELECT * FROM pop_documents ORDER BY code ASC'),
-          query('SELECT * FROM safety_incidents ORDER BY created_at DESC LIMIT 50'),
-          query('SELECT * FROM clinic_equipments ORDER BY name ASC'),
+          query('SELECT * FROM cme_batches WHERE tenant_id = $1 ORDER BY created_at DESC LIMIT 50', [tenantId]),
+          query('SELECT * FROM sterile_packages WHERE tenant_id = $1 ORDER BY created_at DESC LIMIT 100', [tenantId]),
+          query('SELECT * FROM pop_documents WHERE tenant_id = $1 ORDER BY code ASC', [tenantId]),
+          query('SELECT * FROM safety_incidents WHERE tenant_id = $1 ORDER BY created_at DESC LIMIT 50', [tenantId]),
+          query('SELECT * FROM clinic_equipments WHERE tenant_id = $1 ORDER BY name ASC', [tenantId]),
         ]);
 
         // Se houver dados no banco, compor com o estado
@@ -117,11 +120,13 @@ export async function GET() {
   }
 }
 
-// POST: Recebe atualizações de qualquer aparelho e salva para todos
+// POST: Recebe atualizações de qualquer aparelho e salva para a clínica correta (Multi-Tenant)
 export async function POST(request: Request) {
   try {
     await ensureDbInit();
+    const session = getSessionFromRequest(request);
     const action = await request.json();
+    const tenantId = session?.tenantId || action.payload?.tenantId || 'clinica_01';
 
     switch (action.type) {
       case 'NEW_BATCH': {
@@ -141,7 +146,7 @@ export async function POST(request: Request) {
               ON CONFLICT (id) DO UPDATE SET status = EXCLUDED.status, finished_at = EXCLUDED.finished_at`,
               [
                 batch.id,
-                'clinica_01',
+                tenantId,
                 batch.batchCode,
                 batch.shortCode,
                 batch.cycleNumber,
@@ -231,7 +236,7 @@ export async function POST(request: Request) {
               [
                 evidence.evidencia_id,
                 evidence.pop_codigo,
-                'clinica_01',
+                tenantId,
                 evidence.ciclo_id || null,
                 evidence.tipo_evidencia,
                 evidence.titulo_evidencia || null,
@@ -268,7 +273,7 @@ export async function POST(request: Request) {
               ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)`,
               [
                 incident.id,
-                'clinica_01',
+                tenantId,
                 incident.reportedAt,
                 incident.category,
                 incident.severity,
@@ -365,7 +370,7 @@ export async function POST(request: Request) {
                 pin = EXCLUDED.pin`,
               [
                 member.id,
-                'clinica_01',
+                tenantId,
                 member.name,
                 member.email,
                 member.role,

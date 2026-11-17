@@ -3,6 +3,7 @@ import { query, isDatabaseConfigured, initDatabase } from '@/lib/db';
 import { isStripeConfigured } from '@/lib/stripe';
 import { CURRENT_CLINIC, MOCK_TEAM_MEMBERS, MOCK_CME_BATCHES } from '@/lib/mockData';
 import { ClinicTenant } from '@/lib/types';
+import { getSessionFromRequest } from '@/lib/auth';
 
 // Lista em memória como fallback se DATABASE_URL ainda não estiver no Render
 const inMemoryTenants: ClinicTenant[] = [
@@ -79,9 +80,17 @@ async function ensureDb() {
   }
 }
 
-// GET: Retorna dados para o Painel de SuperAdmin
-export async function GET() {
+// GET: Retorna dados para o Painel de SuperAdmin (Protegido por Autenticação)
+export async function GET(request: Request) {
   try {
+    const session = getSessionFromRequest(request);
+    if (!session || !session.isSuperAdmin) {
+      return NextResponse.json(
+        { error: 'Acesso negado. Credenciais de SuperAdmin necessárias.' },
+        { status: 401 }
+      );
+    }
+
     await ensureDb();
     const dbConfigured = isDatabaseConfigured();
 
@@ -188,6 +197,14 @@ export async function GET() {
 // POST: Cadastra ou sincroniza uma nova clínica no SuperAdmin
 export async function POST(request: Request) {
   try {
+    const session = getSessionFromRequest(request);
+    if (!session || !session.isSuperAdmin) {
+      return NextResponse.json(
+        { error: 'Acesso negado. Credenciais de SuperAdmin necessárias.' },
+        { status: 401 }
+      );
+    }
+
     await ensureDb();
     const body = await request.json();
     const tenant: ClinicTenant = body.tenant || body;
@@ -299,6 +316,14 @@ export async function POST(request: Request) {
 // PATCH: Atualiza dados de trial ou ativação da clínica pelo SuperAdmin
 export async function PATCH(request: Request) {
   try {
+    const session = getSessionFromRequest(request);
+    if (!session || !session.isSuperAdmin) {
+      return NextResponse.json(
+        { error: 'Acesso negado. Credenciais de SuperAdmin necessárias.' },
+        { status: 401 }
+      );
+    }
+
     await ensureDb();
     const { tenantId, action, extraDays, newStatus } = await request.json();
 

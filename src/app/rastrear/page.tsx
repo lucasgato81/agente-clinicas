@@ -30,35 +30,33 @@ function TrackingContent() {
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    // 1. Tenta carregar do sync/backend se disponível
+    // 1. Consulta segura do pacote específico via API de rastreabilidade (sem vazar outros registros)
     const fetchPackageData = async () => {
+      if (!token) {
+        if (MOCK_PACKAGES.length > 0) {
+          setPkg(MOCK_PACKAGES[0]);
+          setBatch(MOCK_CME_BATCHES[0]);
+        }
+        setLoading(false);
+        return;
+      }
+
       try {
-        const res = await fetch('/api/sync');
+        const res = await fetch(`/api/track?token=${encodeURIComponent(token)}`);
         if (res.ok) {
           const data = await res.json();
-          const allPkgs: SterilePackageItem[] = data.packages || MOCK_PACKAGES;
-          const allBatches: CmeBatchItem[] = data.batches || MOCK_CME_BATCHES;
-
-          const foundPkg = allPkgs.find(
-            (p) =>
-              p.qrCodeToken.toLowerCase() === token.toLowerCase() ||
-              p.shortCode.toLowerCase() === token.toLowerCase() ||
-              p.id.toLowerCase() === token.toLowerCase()
-          );
-
-          if (foundPkg) {
-            setPkg(foundPkg);
-            const foundBatch = allBatches.find((b) => b.batchCode === foundPkg.batchCode);
-            setBatch(foundBatch || null);
+          if (data.package) {
+            setPkg(data.package);
+            setBatch(data.batch || null);
             setLoading(false);
             return;
           }
         }
       } catch {
-        // Fallback para mock local
+        // Fallback local
       }
 
-      // Fallback local se a API não retornar
+      // Fallback local caso offline
       const localPkg = MOCK_PACKAGES.find(
         (p) =>
           p.qrCodeToken.toLowerCase() === token.toLowerCase() ||
@@ -70,10 +68,6 @@ function TrackingContent() {
         setPkg(localPkg);
         const localBatch = MOCK_CME_BATCHES.find((b) => b.batchCode === localPkg.batchCode);
         setBatch(localBatch || null);
-      } else if (MOCK_PACKAGES.length > 0) {
-        // Se não passou token ou não achou, mostra o primeiro pacote como demonstração
-        setPkg(MOCK_PACKAGES[0]);
-        setBatch(MOCK_CME_BATCHES[0]);
       }
       setLoading(false);
     };

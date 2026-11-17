@@ -1,8 +1,15 @@
 const { Pool } = require('pg');
 
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) {
+  console.error('❌ ERRO: A variável de ambiente DATABASE_URL não está definida.');
+  console.error('Execute: $env:DATABASE_URL="sua_conexao_aqui"; node scripts/init_remote_db.js');
+  process.exit(1);
+}
+
 const pool = new Pool({
-  connectionString: 'postgresql://odontoshield_user:r9sgeIST2xigATJ23tqUy5n6Vhb3DaPo@dpg-dbo7mdbrjlhs73al2qt0-a.oregon-postgres.render.com/odontoshield',
-  ssl: { rejectUnauthorized: false },
+  connectionString: databaseUrl,
+  ssl: databaseUrl.includes('localhost') ? false : { rejectUnauthorized: false },
 });
 
 async function run() {

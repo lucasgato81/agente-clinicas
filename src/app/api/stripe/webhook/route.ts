@@ -12,20 +12,31 @@ export async function POST(request: Request) {
 
     let event: Stripe.Event;
 
-    if (webhookSecret && signature && stripe) {
-      try {
-        event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
-      } catch (err) {
-        console.error('[STRIPE WEBHOOK SIGNATURE ERROR]', err);
-        return NextResponse.json({ error: 'Assinatura inválida do webhook' }, { status: 400 });
-      }
-    } else {
-      // Se ainda não tiver webhook secret configurado, parse do payload diretamente (ambiente dev/teste)
-      try {
-        event = JSON.parse(rawBody) as Stripe.Event;
-      } catch {
-        return NextResponse.json({ error: 'Payload JSON inválido' }, { status: 400 });
-      }
+    if (!webhookSecret) {
+      console.error('[STRIPE WEBHOOK ERROR] STRIPE_WEBHOOK_SECRET não está configurada no ambiente.');
+      return NextResponse.json(
+        { error: 'Webhook não configurado no servidor' },
+        { status: 500 }
+      );
+    }
+
+    if (!signature) {
+      console.warn('[STRIPE WEBHOOK BLOCKED] Tentativa de chamada sem header stripe-signature');
+      return NextResponse.json(
+        { error: 'Assinatura stripe-signature ausente' },
+        { status: 400 }
+      );
+    }
+
+    if (!stripe) {
+      return NextResponse.json({ error: 'Stripe não inicializado' }, { status: 500 });
+    }
+
+    try {
+      event = stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
+    } catch (err) {
+      console.error('[STRIPE WEBHOOK SIGNATURE ERROR]', err);
+      return NextResponse.json({ error: 'Assinatura inválida do webhook' }, { status: 400 });
     }
 
     console.log(`[STRIPE WEBHOOK] Evento recebido: ${event.type}`);

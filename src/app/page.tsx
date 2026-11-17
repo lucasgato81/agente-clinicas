@@ -180,10 +180,13 @@ export default function HomePage() {
       console.warn('Erro ao restaurar sessão local:', e);
     }
 
-    // 2. Sincronizar dados entre celulares e computadores
+    // 2. Sincronizar dados entre celulares e computadores com autenticação
     const syncCloudData = async () => {
       try {
-        const res = await fetch('/api/sync');
+        const token = typeof window !== 'undefined' ? localStorage.getItem('odontoshield_auth_token') : null;
+        const res = await fetch('/api/sync', {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        });
         if (res.ok) {
           const data = await res.json();
           if (data.batches && data.batches.length > 0) {
@@ -206,11 +209,15 @@ export default function HomePage() {
     return () => clearInterval(interval);
   }, []);
 
-  // Dispara ação para o backend / banco de dados na nuvem
+  // Dispara ação para o backend / banco de dados na nuvem com token de autorização
   const postSyncAction = (type: string, payload: unknown) => {
+    const token = typeof window !== 'undefined' ? localStorage.getItem('odontoshield_auth_token') : null;
     fetch('/api/sync', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
       body: JSON.stringify({ type, payload }),
     }).catch((err) => console.warn('[SYNC ERROR]', err));
   };

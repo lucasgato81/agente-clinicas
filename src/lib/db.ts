@@ -1,19 +1,10 @@
 import { Pool } from 'pg';
 
 // Configuração do pool de conexões PostgreSQL
-// Conexão nativa com o banco odontoshield-db no Render
-const RENDER_INTERNAL_DB = 'postgresql://odontoshield_user:r9sgeIST2xigATJ23tqUy5n6Vhb3DaPo@dpg-dbo7mdbrjlhs73al2qt0-a/odontoshield';
-const RENDER_EXTERNAL_DB = 'postgresql://odontoshield_user:r9sgeIST2xigATJ23tqUy5n6Vhb3DaPo@dpg-dbo7mdbrjlhs73al2qt0-a.oregon-postgres.render.com/odontoshield';
-
-// Detecta se a variável DATABASE_URL é uma URL válida ou aplica o banco odontoshield-db oficial do Render
+// As credenciais DEVEM vir exclusivamente de variáveis de ambiente seguras (process.env.DATABASE_URL)
 const rawEnvUrl = process.env.DATABASE_URL;
 const isValidEnvUrl = rawEnvUrl && (rawEnvUrl.startsWith('postgres://') || rawEnvUrl.startsWith('postgresql://'));
-
-const connectionString = isValidEnvUrl
-  ? rawEnvUrl
-  : (process.env.RENDER || process.env.NODE_ENV === 'production'
-      ? RENDER_INTERNAL_DB
-      : RENDER_EXTERNAL_DB);
+const connectionString = isValidEnvUrl ? rawEnvUrl : null;
 
 let pool: Pool | null = null;
 
@@ -99,6 +90,7 @@ export async function initDatabase() {
         tenant_id VARCHAR(100) REFERENCES clinic_tenants(id) ON DELETE CASCADE,
         name VARCHAR(255) NOT NULL,
         email VARCHAR(255) UNIQUE NOT NULL,
+        password_hash VARCHAR(255),
         role VARCHAR(50) NOT NULL,
         role_name VARCHAR(100),
         cpf VARCHAR(30),
@@ -107,6 +99,25 @@ export async function initDatabase() {
         phone VARCHAR(30),
         pin VARCHAR(10), -- PIN de 4 dígitos para bancada
         active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+
+      -- Adiciona coluna de hash de senha caso a tabela já tenha sido criada anteriormente
+      ALTER TABLE clinic_users ADD COLUMN IF NOT EXISTS password_hash VARCHAR(255);
+
+      -- Trilha de Auditoria LGPD e Segurança
+      CREATE TABLE IF NOT EXISTS lgpd_audit_logs (
+        id VARCHAR(100) PRIMARY KEY,
+        tenant_id VARCHAR(100),
+        user_id VARCHAR(100),
+        user_name VARCHAR(255),
+        user_role VARCHAR(50),
+        action VARCHAR(100) NOT NULL,
+        resource_type VARCHAR(100) NOT NULL,
+        resource_id VARCHAR(100),
+        details TEXT,
+        ip_address VARCHAR(50),
+        user_agent TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 

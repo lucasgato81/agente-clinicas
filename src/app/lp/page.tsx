@@ -78,7 +78,6 @@ export default function LandingPage() {
         'Integração com prontuários (Clinicorp, Simples Dental)',
         '8 POPs com assinaturas touch e hash SHA-256',
         'Dossiê Fiscal Consolidado em 1 clique',
-        'Garantia Anti-Multa com risco zero',
       ],
       notIncluded: [
         'Dashboard multi-unidades matriz / filiais',
@@ -129,10 +128,6 @@ export default function LandingPage() {
       q: 'O fiscal da Vigilância Sanitária aceita o livro de autoclave no celular/computador?',
       a: 'Com certeza! A RDC 1002/2025 e a RDC 15/2012 da Anvisa autorizam e estimulam explicitamente registros informatizados, desde que garantam a rastreabilidade e a integridade das informações por no mínimo 5 anos. Na verdade, os fiscais preferem o Dossiê Digital porque todas as informações de temperatura, pressão e fotos dos testes estão auditadas e ordenadas cronologicamente.',
     },
-    {
-      q: 'Como funciona a Garantia Anti-Multa de Risco Zero?',
-      a: 'Se a sua clínica mantiver os registros atualizados no OdontoShield e, durante a vigência da anuidade, for autuada pela Vigilância Sanitária por qualquer inconformidade nos livros e POPs cobertos pela plataforma, nós devolvemos 100% do valor pago pela assinatura e colocamos nossa assessoria sanitária à disposição para redigir sua defesa.',
-    },
   ];
 
   return (
@@ -163,7 +158,6 @@ export default function LandingPage() {
             <a href="#como-funciona" className="hover:text-cyan-400 transition">Como Funciona</a>
             <a href="#comparativo" className="hover:text-cyan-400 transition">Antes vs. Depois</a>
             <a href="#planos" className="hover:text-cyan-400 transition">Planos & Preços</a>
-            <a href="#garantia" className="hover:text-cyan-400 transition">Garantia Anti-Multa</a>
             <a href="#faq" className="hover:text-cyan-400 transition">Dúvidas Frequentes</a>
           </nav>
 
@@ -673,7 +667,7 @@ export default function LandingPage() {
               Escolha o tamanho da sua proteção
             </h2>
             <p className="text-slate-400 max-w-2xl mx-auto text-sm">
-              Sem taxas escondidas de implantação. Cancele a qualquer momento com garantia incondicional de 30 dias.
+              Sem taxas escondidas de implantação. Cancele a qualquer momento sem fidelidade.
             </p>
 
             {/* Toggle Mensal / Anual */}
@@ -771,31 +765,7 @@ export default function LandingPage() {
         </section>
 
         {/* ============================================================== */}
-        {/* 7. GARANTIA ANTI-MULTA & GRAND SLAM OFFER                      */}
-        {/* ============================================================== */}
-        <section id="garantia" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative bg-gradient-to-br from-emerald-950/40 via-slate-900 to-cyan-950/40 border border-emerald-500/40 rounded-3xl p-6 sm:p-10 overflow-hidden shadow-2xl">
-            <div className="flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
-              <div className="w-20 h-20 rounded-2xl bg-emerald-500/20 border border-emerald-400/50 flex items-center justify-center shrink-0 shadow-lg shadow-emerald-500/10">
-                <ShieldCheck className="w-10 h-10 text-emerald-400" />
-              </div>
-
-              <div className="space-y-3 text-center sm:text-left">
-                <span className="text-xs font-bold text-emerald-400 uppercase tracking-widest">Compromisso Contratual</span>
-                <h3 className="text-2xl font-bold text-white">Garantia Anti-Multa com Risco Reverso</h3>
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                  Confiamos tanto no rigor pericial do OdontoShield que assumimos o risco por você: use o sistema normalmente. Se sua clínica for autuada pela Vigilância Sanitária por inconformidade nos livros e POPs cobertos pela plataforma, nós <strong className="text-white">devolvemos 100% da sua anuidade</strong> e disponibilizamos nossa consultoria sanitária para elaborar a sua defesa.
-                </p>
-                <div className="text-xs text-emerald-300 font-semibold pt-1">
-                  ✓ Sem letras miúdas. Você não corre risco algum ao experimentar.
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ============================================================== */}
-        {/* 8. FAQ INTERATIVO                                              */}
+        {/* 7. FAQ INTERATIVO                                              */}
         {/* ============================================================== */}
         <section id="faq" className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
           <div className="text-center space-y-2">
@@ -841,7 +811,7 @@ export default function LandingPage() {
               Não espere o fiscal da Vigilância Sanitária bater na sua recepção para se organizar.
             </h2>
             <p className="text-cyan-100 max-w-2xl mx-auto text-sm sm:text-base font-medium">
-              Comece hoje mesmo com 30 dias de garantia incondicional e os 8 POPs essenciais da RDC 1002 já configurados.
+              Comece hoje mesmo com teste gratuito e os 8 POPs essenciais da RDC 1002 já configurados.
             </p>
 
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -884,7 +854,6 @@ export default function LandingPage() {
             <div className="flex items-center space-x-6 text-slate-400">
               <a href="#como-funciona" className="hover:text-cyan-400 transition">Como Funciona</a>
               <a href="#planos" className="hover:text-cyan-400 transition">Planos</a>
-              <a href="#garantia" className="hover:text-cyan-400 transition">Garantia</a>
               <Link href="/rastrear" className="hover:text-cyan-400 transition">Portal de Rastreabilidade</Link>
               <Link href="/" className="hover:text-cyan-400 transition">Painel da Clínica</Link>
             </div>

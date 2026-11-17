@@ -1,20 +1,12 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
 import { query, isDatabaseConfigured } from '@/lib/db';
-
-const SALT = 'ODONTOSHIELD_SUPERADMIN_SECRET_SALT_2026';
-
-function hashPassword(password: string): string {
-  return crypto
-    .createHash('sha256')
-    .update(password + SALT)
-    .digest('hex');
-}
-
-function generateSessionToken(email: string): string {
-  const payload = `${email}:${Date.now()}:${SALT}`;
-  return crypto.createHash('sha256').update(payload).digest('hex');
-}
+import {
+  hashPassword,
+  verifyPassword,
+  createSessionToken,
+  verifySessionToken,
+  checkRateLimit,
+} from '@/lib/auth';
 
 // Fallback em memória caso o banco de dados esteja indisponível
 let inMemoryMasterUser: {
@@ -48,21 +40,35 @@ export async function GET() {
   }
 }
 
-// POST: Cadastro inicial ou Login
+// POST: Cadastro inicial, Login ou Verificação de Sessão
 export async function POST(request: Request) {
   try {
+    const ip = request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || '127.0.0.1';
     const body = await request.json();
     const { action, name, email, password, token } = body;
 
-    // 1. AÇÃO: VERIFICAR TOKEN DE SESSÃO ATIVO
+    // ----------------------------------------------------
+    // 1. AÇÃO: VERIFICAR TOKEN DE SESSÃO ATIVO (Validação Criptográfica Real)
+    // ----------------------------------------------------
     if (action === 'VERIFY_TOKEN') {
       if (!token) {
         return NextResponse.json({ valid: false }, { status: 401 });
       }
-      return NextResponse.json({ valid: true });
+
+      const session = verifySessionToken(token);
+      if (!session || !session.isSuperAdmin) {
+        return NextResponse.json({ valid: false, message: 'Token inválido ou expirado' }, { status: 401 });
+      }
+
+      return NextResponse.json({
+        valid: true,
+        user: { name: session.name, email: session.email },
+      });
     }
 
+    // ----------------------------------------------------
     // 2. AÇÃO: CADASTRO DO PRIMEIRO MASTER (Dono do SaaS)
+    // ----------------------------------------------------
     if (action === 'REGISTER_MASTER') {
       if (!name || !email || !password) {
         return NextResponse.json(
@@ -71,9 +77,9 @@ export async function POST(request: Request) {
         );
       }
 
-      if (password.length < 6) {
+      if (password.length < 8) {
         return NextResponse.json(
-          { success: false, message: 'A senha deve conter no mínimo 6 caracteres.' },
+          { success: false, message: 'A senha de SuperAdmin deve conter no mínimo 8 caracteres.' },
           { status: 400 }
         );
       }
@@ -103,12 +109,30 @@ export async function POST(request: Request) {
             [newId, name.trim(), cleanEmail, pHash]
           );
 
-          const sessionToken = generateSessionToken(cleanEmail);
-          return NextResponse.json({
+          const sessionToken = createSessionToken({
+            userId: newId,
+            email: cleanEmail,
+            name: name.trim(),
+            role: 'SUPERADMIN',
+            tenantId: 'GLOBAL',
+            isSuperAdmin: true,
+          });
+
+          const response = NextResponse.json({
             success: true,
             token: sessionToken,
             user: { name: name.trim(), email: cleanEmail },
           });
+
+          response.cookies.set('superadmin_token', sessionToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 7 * 24 * 60 * 60,
+          });
+
+          return response;
         } catch (dbErr) {
           console.error('[SUPERADMIN REGISTER DB ERROR]', dbErr);
         }
@@ -129,16 +153,47 @@ export async function POST(request: Request) {
         passwordHash: pHash,
       };
 
-      const sessionToken = generateSessionToken(cleanEmail);
-      return NextResponse.json({
+      const sessionToken = createSessionToken({
+        userId: newId,
+        email: cleanEmail,
+        name: name.trim(),
+        role: 'SUPERADMIN',
+        tenantId: 'GLOBAL',
+        isSuperAdmin: true,
+      });
+
+      const response = NextResponse.json({
         success: true,
         token: sessionToken,
         user: { name: inMemoryMasterUser.name, email: inMemoryMasterUser.email },
       });
+
+      response.cookies.set('superadmin_token', sessionToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 7 * 24 * 60 * 60,
+      });
+
+      return response;
     }
 
+    // ----------------------------------------------------
     // 3. AÇÃO: LOGIN DO SUPERADMIN
+    // ----------------------------------------------------
     if (action === 'LOGIN_MASTER') {
+      const rateLimitCheck = checkRateLimit(`superadmin_login_${ip}`, 5, 60);
+      if (!rateLimitCheck.allowed) {
+        return NextResponse.json(
+          {
+            success: false,
+            message: `Muitas tentativas de login de administrador. Aguarde ${rateLimitCheck.retryAfterSeconds} segundos.`,
+          },
+          { status: 429 }
+        );
+      }
+
       if (!email || !password) {
         return NextResponse.json(
           { success: false, message: 'Informe e-mail e senha.' },
@@ -147,7 +202,6 @@ export async function POST(request: Request) {
       }
 
       const cleanEmail = email.trim().toLowerCase();
-      const pHash = hashPassword(password);
 
       if (isDatabaseConfigured()) {
         try {
@@ -164,7 +218,8 @@ export async function POST(request: Request) {
           }
 
           const master = res.rows[0];
-          if (master.password_hash !== pHash) {
+          const isValid = verifyPassword(password, master.password_hash);
+          if (!isValid) {
             return NextResponse.json(
               { success: false, message: 'E-mail ou senha incorretos.' },
               { status: 401 }
@@ -176,12 +231,30 @@ export async function POST(request: Request) {
             master.id,
           ]);
 
-          const sessionToken = generateSessionToken(cleanEmail);
-          return NextResponse.json({
+          const sessionToken = createSessionToken({
+            userId: master.id,
+            email: cleanEmail,
+            name: master.name,
+            role: 'SUPERADMIN',
+            tenantId: 'GLOBAL',
+            isSuperAdmin: true,
+          });
+
+          const response = NextResponse.json({
             success: true,
             token: sessionToken,
             user: { name: master.name, email: master.email },
           });
+
+          response.cookies.set('superadmin_token', sessionToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            path: '/',
+            maxAge: 7 * 24 * 60 * 60,
+          });
+
+          return response;
         } catch (dbErr) {
           console.error('[SUPERADMIN LOGIN DB ERROR]', dbErr);
         }
@@ -191,14 +264,32 @@ export async function POST(request: Request) {
       if (
         inMemoryMasterUser &&
         inMemoryMasterUser.email === cleanEmail &&
-        inMemoryMasterUser.passwordHash === pHash
+        verifyPassword(password, inMemoryMasterUser.passwordHash)
       ) {
-        const sessionToken = generateSessionToken(cleanEmail);
-        return NextResponse.json({
+        const sessionToken = createSessionToken({
+          userId: inMemoryMasterUser.id,
+          email: cleanEmail,
+          name: inMemoryMasterUser.name,
+          role: 'SUPERADMIN',
+          tenantId: 'GLOBAL',
+          isSuperAdmin: true,
+        });
+
+        const response = NextResponse.json({
           success: true,
           token: sessionToken,
           user: { name: inMemoryMasterUser.name, email: inMemoryMasterUser.email },
         });
+
+        response.cookies.set('superadmin_token', sessionToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          path: '/',
+          maxAge: 7 * 24 * 60 * 60,
+        });
+
+        return response;
       }
 
       return NextResponse.json(

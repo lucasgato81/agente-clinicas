@@ -113,6 +113,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({
       const data = await res.json();
 
       if (data.success && data.user) {
+        if (data.token) {
+          try {
+            localStorage.setItem('odontoshield_auth_token', data.token);
+          } catch {}
+        }
         onLoginSuccess(data.user);
         setPinDigits('');
         if (onClose) onClose();
@@ -180,6 +185,11 @@ export const LoginModal: React.FC<LoginModalProps> = ({
       const data = await res.json();
 
       if (data.success && data.user) {
+        if (data.token) {
+          try {
+            localStorage.setItem('odontoshield_auth_token', data.token);
+          } catch {}
+        }
         onLoginSuccess(data.user);
         setEmail('');
         setPassword('');

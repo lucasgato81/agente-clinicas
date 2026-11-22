@@ -109,17 +109,29 @@ export const SuperAdminModal: React.FC<SuperAdminModalProps> = ({
     setAuthChecking(true);
     setAuthError(null);
 
-    // 1. Verificar se há sessão salva
+    // 1. Verificar se há sessão salva e validar token no servidor
     try {
       const savedSession = localStorage.getItem('odontoshield_superadmin_session');
       if (savedSession) {
         const session = JSON.parse(savedSession);
         if (session.token && session.user) {
-          setIsAuthenticated(true);
-          setLoggedInUser(session.user);
-          setAuthChecking(false);
-          fetchAdminData();
-          return;
+          // Valida se o token ainda é válido no novo formato criptografado
+          const verifyRes = await fetch('/api/admin/auth', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'VERIFY_TOKEN', token: session.token }),
+          });
+
+          if (verifyRes.ok) {
+            setIsAuthenticated(true);
+            setLoggedInUser(session.user);
+            setAuthChecking(false);
+            fetchAdminData();
+            return;
+          } else {
+            // Token antigo ou inválido: limpa para forçar login atualizado
+            localStorage.removeItem('odontoshield_superadmin_session');
+          }
         }
       }
     } catch {
@@ -277,6 +289,9 @@ export const SuperAdminModal: React.FC<SuperAdminModalProps> = ({
       if (res.ok) {
         const json = await res.json();
         setData(json);
+      } else if (res.status === 401) {
+        // Se a sessão antiga for recusada pelo servidor, limpa e força novo login
+        handleLogout();
       }
     } catch (err) {
       console.warn('Erro ao carregar dados do admin:', err);

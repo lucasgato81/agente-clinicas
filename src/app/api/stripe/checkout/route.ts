@@ -24,7 +24,7 @@ export async function POST(request: Request) {
     const interval = isAnnual ? 'year' : 'month';
     const planLabel = `${selectedPlan.name} (${isAnnual ? 'Anual - 20% OFF' : 'Mensal'})`;
 
-    const origin = request.headers.get('origin') || 'https://agente-clinicas.onrender.com';
+    const origin = request.headers.get('origin') || 'https://odontoshield.com.br';
 
     // 1. Se o Stripe estiver configurado com a chave do cliente
     if (isStripeConfigured() && stripe) {
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
               product_data: {
                 name: planLabel,
                 description: `Assinatura de Governança Sanitária e Biossegurança OdontoShield (RDC 1002/2025). Até ${selectedPlan.chairsLimit} cadeiras monitoradas.`,
-                images: ['https://agente-clinicas.onrender.com/logo-odontoshield.png'],
+                images: ['https://odontoshield.com.br/logo-odontoshield.png'],
               },
               unit_amount: unitAmount,
               recurring: {

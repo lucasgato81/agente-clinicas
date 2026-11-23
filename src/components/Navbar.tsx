@@ -22,6 +22,7 @@ import {
   PlusCircle,
   Globe,
   Crown,
+  Mail,
 } from 'lucide-react';
 import { ClinicTenant, UserProfile } from '@/lib/types';
 import { CURRENT_CLINIC, CURRENT_USER } from '@/lib/mockData';
@@ -195,6 +196,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>WhatsApp</span>
               </button>
             )}
+
+            <a
+              href="mailto:contato@odontoshield.com.br"
+              className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-teal-50 hover:bg-teal-100 border border-teal-200 text-teal-800 text-xs font-semibold shadow-2xs transition cursor-pointer"
+              title="Suporte Oficial: contato@odontoshield.com.br"
+            >
+              <Mail className="w-3.5 h-3.5 text-teal-600" />
+              <span>Suporte</span>
+            </a>
 
             <button
               onClick={onOpenDossier}

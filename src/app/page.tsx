@@ -1673,6 +1673,26 @@ export default function HomePage() {
         )}
       </main>
 
+      {/* Footer Institucional OdontoShield */}
+      <footer className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 mt-12 border-t border-[#E2ECE6] text-xs text-slate-500 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex items-center space-x-2">
+          <ShieldCheck className="w-4 h-4 text-teal-600" />
+          <span className="font-bold text-slate-700">OdontoShield</span>
+          <span>•</span>
+          <span>Suporte & Atendimento Oficial:</span>
+          <a
+            href="mailto:contato@odontoshield.com.br"
+            className="text-teal-700 hover:text-teal-900 font-semibold underline flex items-center space-x-1"
+          >
+            <Mail className="w-3.5 h-3.5 inline mr-1" />
+            contato@odontoshield.com.br
+          </a>
+        </div>
+        <div className="text-[11px] text-slate-400">
+          Governança Regulatória Odontológica • RDC 1002/2025 da Anvisa
+        </div>
+      </footer>
+
       {/* ============================================================== */}
       {/* MODAIS GLOBAIS DE OPERAÇÃO                                     */}
       {/* ============================================================== */}

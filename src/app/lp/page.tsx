@@ -29,6 +29,7 @@ import {
   Flame,
   Star,
   ExternalLink,
+  Mail,
 } from 'lucide-react';
 
 export default function LandingPage() {
@@ -162,6 +163,15 @@ export default function LandingPage() {
           </nav>
 
           <div className="flex items-center space-x-3">
+            <a
+              href="mailto:contato@odontoshield.com.br"
+              className="text-xs text-slate-400 hover:text-cyan-400 items-center space-x-1.5 transition hidden lg:inline-flex px-3 py-1.5 rounded-xl border border-slate-800 bg-slate-900/50 hover:border-cyan-500/40"
+              title="Fale Conosco"
+            >
+              <Mail className="w-3.5 h-3.5 text-cyan-400" />
+              <span>contato@odontoshield.com.br</span>
+            </a>
+
             <Link
               href="/"
               className="px-4 py-2 text-xs font-semibold rounded-xl text-slate-300 hover:text-white hover:bg-slate-800 border border-slate-800 transition hidden sm:inline-flex"
@@ -851,11 +861,18 @@ export default function LandingPage() {
               <span className="text-[10px] text-slate-500">| Governança & Perícia Sanitária Odontológica</span>
             </div>
 
-            <div className="flex items-center space-x-6 text-slate-400">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-slate-400">
               <a href="#como-funciona" className="hover:text-cyan-400 transition">Como Funciona</a>
               <a href="#planos" className="hover:text-cyan-400 transition">Planos</a>
               <Link href="/rastrear" className="hover:text-cyan-400 transition">Portal de Rastreabilidade</Link>
               <Link href="/" className="hover:text-cyan-400 transition">Painel da Clínica</Link>
+              <a
+                href="mailto:contato@odontoshield.com.br"
+                className="hover:text-cyan-400 text-cyan-300/90 font-medium transition flex items-center space-x-1.5"
+              >
+                <Mail className="w-3.5 h-3.5 text-cyan-400" />
+                <span>contato@odontoshield.com.br</span>
+              </a>
             </div>
           </div>
 
@@ -863,8 +880,12 @@ export default function LandingPage() {
             <div>
               © 2026 OdontoShield Tecnologias em Saúde Ltda. Todos os direitos reservados.
             </div>
-            <div>
-              Em conformidade com a RDC 1002/2025, RDC 15/2012 e RDC 63/2011 da Anvisa.
+            <div className="flex flex-wrap items-center gap-3">
+              <span>Em conformidade com a RDC 1002/2025, RDC 15/2012 e RDC 63/2011 da Anvisa.</span>
+              <span>•</span>
+              <a href="mailto:contato@odontoshield.com.br" className="text-cyan-400 hover:underline">
+                Suporte Oficial: contato@odontoshield.com.br
+              </a>
             </div>
           </div>
         </div>

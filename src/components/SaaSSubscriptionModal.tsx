@@ -16,6 +16,7 @@ import {
   Copy,
   Receipt,
   FileCheck,
+  Mail,
 } from 'lucide-react';
 import { ClinicTenant } from '@/lib/types';
 
@@ -443,19 +444,28 @@ export const SaaSSubscriptionModal: React.FC<SaaSSubscriptionModalProps> = ({
         </div>
 
         {/* Rodapé */}
-        <div className="p-4 bg-[#F8FAF9] border-t border-[#E2ECE6] flex items-center justify-between text-xs text-slate-600 shrink-0">
+        <div className="p-4 bg-[#F8FAF9] border-t border-[#E2ECE6] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600 shrink-0">
           <div className="flex items-center space-x-1.5 text-teal-800 font-medium">
-            <ShieldCheck className="w-4 h-4 text-teal-600" />
+            <ShieldCheck className="w-4 h-4 text-teal-600 shrink-0" />
             <span>Garantia de 30 dias: Satisfação total ou estorno integral</span>
           </div>
 
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-[#E2ECE6] font-bold rounded-xl transition shadow-sm"
-          >
-            Fechar
-          </button>
+          <div className="flex items-center space-x-4">
+            <a
+              href="mailto:contato@odontoshield.com.br"
+              className="text-teal-700 hover:text-teal-900 font-semibold underline flex items-center space-x-1 text-[11px]"
+            >
+              <Mail className="w-3.5 h-3.5 text-teal-600" />
+              <span>contato@odontoshield.com.br</span>
+            </a>
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-[#E2ECE6] font-bold rounded-xl transition shadow-sm"
+            >
+              Fechar
+            </button>
+          </div>
         </div>
       </div>
     </div>
